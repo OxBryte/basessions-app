@@ -6,7 +6,7 @@ export default function Navbar() {
     <div className="w-full mx-auto flex items-center justify-between gap-8 py-5">
       <div className="w-10 h-10 rounded-full bg-white/30"></div>
       <div className="flex gap-4 itemx-center">
-        <div className="text-blue-600">
+        <div className="text-[#0052FE]">
           <p>Get premium</p>
         </div>
         <div className="m-0 text-white/20">

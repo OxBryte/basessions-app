@@ -35,7 +35,7 @@ export default function ContentCard() {
             <p className="text-white/80 text-sm">Price</p>
             <p className="text-white/60 text-sm">0.02ETH</p>
           </div>
-          <button className="px-6 py-2.5 bg-blue-600 rounded-full text-sm">
+          <button className="px-6 py-2.5 bg-[#0052FE] rounded-full text-sm">
             Mint
           </button>
         </div>
