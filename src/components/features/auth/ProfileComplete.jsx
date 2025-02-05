@@ -1,11 +1,12 @@
 import { BiEditAlt } from "react-icons/bi";
 import { IoChevronBack } from "react-icons/io5";
+import { goBack } from "../../libs/utils";
 
 export default function ProfileComplete() {
   return (
     <div className="w-full max-w-[780px] mx-auto px-4 my-10">
       <div className="space-y-4">
-        <div>
+        <div onClick={goBack} className="cursor-pointer">
           <IoChevronBack size={24} />
         </div>
         <div className="flex flex-col gap-6 items-center">
@@ -47,7 +48,7 @@ export default function ProfileComplete() {
             <span className="self-end text-xs font-light">0/40</span>
           </div>
           <div className="w-full flex flex-col gap-2">
-            <label htmlFor="userName" className="font-light">
+            <label htmlFor="twitter" className="font-light">
               Twitter (X)
             </label>
             <input
