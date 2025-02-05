@@ -2,10 +2,10 @@ export default function AuthLogin() {
   return (
     <div className="w-full h-screen space-y-4">
       <div
-        className="h-[55vh] w-full bg-fill bg-no-repeat bg-top relative"
+        className="h-[55vh] w-full max-w-[780px] mx-auto bg-fill bg-no-repeat bg-top relative"
         style={{ backgroundImage: "url(/bg-login.png)" }}
       >
-        <div className="before:absolute before:inset-0 before:bg-gradient-to-b before:from-transparent before:to-black"></div>
+        <div className="before:absolute before:inset-0 before:bg-gradient-to-b before:from-transparent before:to-[#131313]"></div>
       </div>
       <div className="space-y-8 w-full max-w-lg mx-auto mt-4 px-6">
         <div className="flex flex-col gap-4 items-left">
