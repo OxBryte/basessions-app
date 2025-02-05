@@ -1,11 +1,12 @@
 import { BiSearch } from "react-icons/bi";
 import { BsFillBellFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
     <div className="w-full mx-auto flex items-center justify-between gap-8 py-5">
       <div className="w-10 h-10 rounded-full bg-white/30"></div>
-      <div className="flex gap-4 itemx-center">
+      {/* <div className="flex gap-4 itemx-center">
         <div className="text-[#0052FE]">
           <p>Get premium</p>
         </div>
@@ -15,7 +16,12 @@ export default function Navbar() {
         <div className="m-0 text-white/20">
           <BsFillBellFill size={24} />
         </div>
-      </div>
+      </div> */}
+      <Link to="/login">
+        <button className="bg-[#0052FE] text-xs px-4 py-2 rounded-xl">
+          Login / Signup
+        </button>
+      </Link>
     </div>
   );
 }
