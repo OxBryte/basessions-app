@@ -11,17 +11,17 @@ export const useSignup = () => {
       return await userSignup(body);
     },
     onSuccess(data) {
-    //   console.log(data);
+      console.log(data);
       toast.success(`${data.message}`);
 
       //set user data and session in global state
       queryClient.setQueryData(["user"], data.data.user);
 
       //save token in local storage
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.data.token);
 
         //redirect to dashboard
-        window.location.href = "/complete-profile";
+        // window.location.href = "/complete-profile";
     },
     onError(error) {
       console.log(error);

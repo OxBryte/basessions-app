@@ -13,3 +13,15 @@ export async function userSignup(body) {
     );
   }
 }
+
+export async function userLogin(body) {
+  try {
+    const { data } = await axios.post(`${apiURL}user/login`, body);
+    return data;
+  } catch (error) {
+    console.error("Error during login:", error);
+    throw new Error(
+      error.response?.data?.error || "An error occurred during login"
+    );
+  }
+}

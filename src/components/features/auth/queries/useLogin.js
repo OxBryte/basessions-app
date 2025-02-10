@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { userSignup } from "../../../services/apiAuth";
 import toast from "react-hot-toast";
+import { userLogin } from "../../../services/apiAuth";
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
@@ -8,7 +8,7 @@ export const useLogin = () => {
   const { mutateAsync: loginFn, isLoading } = useMutation({
     mutationKey: ["login"],
     mutationFn: async (body) => {
-      return await userSignup(body);
+      return await userLogin(body);
     },
     onSuccess(data) {
       console.log(data);

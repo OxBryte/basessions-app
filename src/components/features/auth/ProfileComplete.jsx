@@ -58,7 +58,7 @@ export default function ProfileComplete() {
             />
           </div>
           <button className="bg-[#0052FE] px-4 py-3 w-full rounded-full">
-            Login / Signup
+            Complete Profile
           </button>
         </div>
       </div>
