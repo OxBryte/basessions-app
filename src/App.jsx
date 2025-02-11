@@ -22,10 +22,10 @@ function App() {
           <Route path="/select" element={<SelectAccount />} />
           <Route path="/verify" element={<VerifyEmail />} />
         </Route>
+          <Route path="/complete-profile" element={<ProfileComplete />} />
 
         {/* Protected Route */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/complete-profile" element={<ProfileComplete />} />
           <Route path="/upload" element={<UploadVideo />} />
           <Route path="/profile" element={<Profile />} />
         </Route>

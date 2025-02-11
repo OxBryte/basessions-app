@@ -5,13 +5,15 @@ import { useAuth } from "../context/AppContext";
 
 export default function Navbar() {
   const { user } = useAuth();
+  console.log(user);
+  
 
   return (
     <div className="w-full mx-auto flex items-center justify-between gap-8 py-5">
       <Link to="/profile">
         <div className="w-10 h-10 rounded-full bg-white/30"></div>
       </Link>
-      {user.data.type === "creator" ? (
+      {user?.data.type === "creator" && (
         <div className="flex gap-4 items-center">
           <div className="m-0">
             <BiPlusCircle size={24} />
@@ -23,7 +25,8 @@ export default function Navbar() {
             <BsFillBellFill size={24} />
           </div>
         </div>
-      ) : (
+      )}
+      {user?.data.type === "fan" && (
         <div className="flex gap-4 itemx-center">
           <div className="text-[#0052FE]">
             <p>Get premium</p>

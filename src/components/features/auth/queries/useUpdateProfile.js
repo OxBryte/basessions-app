@@ -17,7 +17,7 @@ export const useUpdateProfile = () => {
       toast.success(`${data.message}`);
 
       //set user data and session in global state
-      queryClient.setQueryData(["user"], data.data.user);
+      queryClient.setQueryData(["user"], data);
 
       //redirect to dashboard
       navigate("/");

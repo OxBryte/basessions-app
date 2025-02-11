@@ -28,6 +28,9 @@ export const AuthProvider = ({ children }) => {
       return res.json();
     },
     enabled: !!token,
+    onSuccess: (data) => {
+      queryClient.setQueryData(["user", token], data);
+    },
   });
 
   console.log(user);
@@ -36,6 +39,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     setToken(null);
     queryClient.invalidateQueries(["user"]);
+    // window.location.href = "/";
   };
 
   return (

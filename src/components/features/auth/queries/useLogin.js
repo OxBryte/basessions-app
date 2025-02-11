@@ -17,11 +17,11 @@ export const useLogin = () => {
       toast(`${data.message}`, { icon: "🚀" });
 
       //set user data and session in global state
-      queryClient.setQueryData(["user"], data.data);
+      queryClient.setQueryData(["user"], data);
 
       //save token in local storage
       localStorage.setItem("token", data.data.token);
-      navigate("/");
+      window.location.href = "/";
     },
     onError(error) {
       toast(`${error.message}`, { icon: "🔥" });
