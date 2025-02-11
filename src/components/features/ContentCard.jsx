@@ -15,7 +15,7 @@ export default function ContentCard() {
         dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
         proident, sunt in...see more
       </p>
-      <div className="flex gap-4 justify-between items-center">
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-left md:items-center">
         <div className="flex items-center gap-4">
           <div className="flex gap-2 items-center text-white/60">
             <FiThumbsUp size={21} />
@@ -27,11 +27,11 @@ export default function ContentCard() {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex flex-col items-center">
+          <div className="flex md:flex-col md:gap-0 gap-2 items-center">
             <p className="text-white/80 text-sm">Total Mints</p>
             <p className="text-white/60 text-sm">20/100</p>
           </div>
-          <div className="flex flex-col items-center">
+          <div className="flex md:flex-col md:gap-0 gap-2 items-center">
             <p className="text-white/80 text-sm">Price</p>
             <p className="text-white/60 text-sm">0.02ETH</p>
           </div>
