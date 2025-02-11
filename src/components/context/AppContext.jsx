@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
+
 // Create Auth Context
 const AuthContext = createContext(null);
 
@@ -20,8 +21,8 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (!res.ok) {
-        localStorage.removeItem("token"); // Clear invalid token
-        setToken(null);
+        // localStorage.removeItem("token"); // Clear invalid token
+        // setToken(null);
         return null;
       }
 
@@ -33,13 +34,11 @@ export const AuthProvider = ({ children }) => {
     },
   });
 
-  console.log(user);
-
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
     queryClient.invalidateQueries(["user"]);
-    // window.location.href = "/";
+    window.location.href = "/";
   };
 
   return (
@@ -50,6 +49,4 @@ export const AuthProvider = ({ children }) => {
 };
 
 // Custom Hook to use Auth Context
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+

@@ -1,7 +1,7 @@
 import { BiChevronLeft, BiHistory } from "react-icons/bi";
 import { CiSettings } from "react-icons/ci";
 import { goBack } from "../../libs/utils";
-import { useAuth } from "../../context/AppContext";
+import { useAuth } from "../../hooks/useAuth";
 import { FaChartPie } from "react-icons/fa";
 
 export default function ProfileNav() {
@@ -14,7 +14,7 @@ export default function ProfileNav() {
           <BiChevronLeft size={28} />
         </div>
         <div className="flex items-center gap-3">
-          {user?.data.type === "creator" && (
+          {user?.data?.type === "creator" && (
             <div>
               <FaChartPie size={26} />
             </div>

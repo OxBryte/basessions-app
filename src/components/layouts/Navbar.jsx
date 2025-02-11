@@ -1,19 +1,25 @@
 import { BiPlusCircle, BiSearch } from "react-icons/bi";
 import { BsFillBellFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AppContext";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Navbar() {
   const { user } = useAuth();
-  console.log(user);
-  
+
 
   return (
     <div className="w-full mx-auto flex items-center justify-between gap-8 py-5">
       <Link to="/profile">
         <div className="w-10 h-10 rounded-full bg-white/30"></div>
       </Link>
-      {user?.data.type === "creator" && (
+      {user?.length ==0 && (
+        <Link to="/login">
+          <button className="bg-[#0052FE] text-xs px-4 py-2 rounded-xl">
+            Login / Signup
+          </button>
+        </Link>
+      )}
+      {user?.data?.type === "creator" && (
         <div className="flex gap-4 items-center">
           <div className="m-0">
             <BiPlusCircle size={24} />
@@ -26,7 +32,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
-      {user?.data.type === "fan" && (
+      {user?.data?.type === "fan" && (
         <div className="flex gap-4 itemx-center">
           <div className="text-[#0052FE]">
             <p>Get premium</p>
@@ -38,13 +44,6 @@ export default function Navbar() {
             <BsFillBellFill size={24} />
           </div>
         </div>
-      )}
-      {!user && (
-        <Link to="/login">
-          <button className="bg-[#0052FE] text-xs px-4 py-2 rounded-xl">
-            Login / Signup
-          </button>
-        </Link>
       )}
     </div>
   );

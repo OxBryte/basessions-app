@@ -2,11 +2,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { userLogin } from "../../../services/apiAuth";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate()
 
+  const {setUser}= useAuth()
   const { mutateAsync: loginFn, isPending } = useMutation({
     mutationKey: ["login"],
     mutationFn: async (body) => {
@@ -18,10 +20,11 @@ export const useLogin = () => {
 
       //set user data and session in global state
       queryClient.setQueryData(["user"], data);
+      setUser(data.data)
 
       //save token in local storage
       localStorage.setItem("token", data.data.token);
-      window.location.href = "/";
+      navigate("/")
     },
     onError(error) {
       toast(`${error.message}`, { icon: "🔥" });
