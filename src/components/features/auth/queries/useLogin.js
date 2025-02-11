@@ -18,7 +18,7 @@ export const useLogin = () => {
       queryClient.setQueryData(["user"], data.data.user);
 
       //save token in local storage
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.data.token);
     },
     onError(error) {
       toast(`${error.message}`, { icon: "🔥" });

@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import UploadVideo from "./components/features/UploadVideo";
 import SelectAccount from "./components/features/auth/SelectAccount";
 import VerifyEmail from "./pages/VerifyEmail";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   return (
@@ -17,9 +18,13 @@ function App() {
         <Route path="/Signup" element={<AuthSignup />} />
         <Route path="/select" element={<SelectAccount />} />
         <Route path="/verify" element={<VerifyEmail />} />
-        <Route path="/complete-profile" element={<ProfileComplete />} />
-        <Route path="/upload" element={<UploadVideo />} />
-        <Route path="/profile" element={<Profile />} />
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="/complete-profile" element={<ProfileComplete />} />
+          <Route path="/upload" element={<UploadVideo />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
         </Route>
