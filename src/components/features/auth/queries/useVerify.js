@@ -1,16 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { userSignup } from "../../../services/apiAuth";
 import toast from "react-hot-toast";
+import { verifyUser } from "../../../services/apiAuth";
 import { useNavigate } from "react-router-dom";
 
-export const useSignup = () => {
+export const useVerify = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { mutateAsync: signupFn, isPending } = useMutation({
-    mutationKey: ["signup"],
+  const { mutateAsync: verifyFn, isPending } = useMutation({
+    mutationKey: ["verify"],
     mutationFn: async (body) => {
-      return await userSignup(body);
+      return await verifyUser(body);
     },
     onSuccess(data) {
       console.log(data);
@@ -20,12 +20,10 @@ export const useSignup = () => {
       queryClient.setQueryData(["user"], data.data.user);
 
       //save token in local storage
-      localStorage.setItem("userEmail", data.data.user.email);
       localStorage.setItem("token", data.data.token);
 
         //redirect to dashboard
-        navigate("/verify");
-       
+        navigate("/complete-profile");
     },
     onError(error) {
       console.log(error);
@@ -33,5 +31,5 @@ export const useSignup = () => {
       toast.error(`${error.message}`);
     },
   });
-  return { signupFn, isPending };
+  return { verifyFn, isPending };
 };

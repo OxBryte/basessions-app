@@ -15,14 +15,6 @@ export default function Home() {
       <ContentCard />
       <ContentCard />
       <ContentCard />
-      <ContentCard />
-      <ContentCard />
-      <ContentCard />
-      <ContentCard />
-      <ContentCard />
-      <ContentCard />
-      <ContentCard />
-      <ContentCard />
     </div>
   );
 }

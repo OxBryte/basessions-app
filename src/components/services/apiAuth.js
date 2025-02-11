@@ -9,7 +9,7 @@ export async function userSignup(body) {
   } catch (error) {
     console.error("Error during signup:", error);
     throw new Error(
-      error.response?.data?.error || "An error occurred during signup"
+      error.response?.data?.message || "An error occurred during signup"
     );
   }
 }
@@ -21,7 +21,19 @@ export async function userLogin(body) {
   } catch (error) {
     console.error("Error during login:", error);
     throw new Error(
-      error.response?.data?.error || "An error occurred during login"
+      error.response?.data?.message || "An error occurred during login"
+    );
+  }
+}
+
+export async function verifyUser(body) {
+  try {
+    const { data } = await axios.patch(`${apiURL}user/verify`, body);
+    return data;
+  } catch (error) {
+    console.error("Error while verifying user:", error);
+    throw new Error(
+      error.response?.data?.message || "An error occurred while verifying user"
     );
   }
 }
