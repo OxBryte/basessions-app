@@ -52,6 +52,7 @@ export async function getCurrentUser() {
     return data;
   } catch (error) {
     console.error("Error while fetching user:", error);
+    // window.location.href = "/";
     throw new Error(
       error.response?.data?.message || "An error occurred while fetching user"
     );

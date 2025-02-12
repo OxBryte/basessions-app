@@ -7,16 +7,18 @@ import { AuthContext } from "../../context/AppContext";
 
 export default function ProfileDetails() {
   const { user } = useUser();
-  const {logout} = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
   return (
     <div className="space-y-4 w-full pb-5 border-b border-white/10">
       <div className="flex items-center justify-between gap-8">
         <div className="w-14 h-14 rounded-full bg-white/40 border border-3 border-[#131313]" />
-        <div className="bg-[#FFFFFF0D] rounded-full px-5 py-2 flex gap-2 items-center">
-          <BiEditAlt />
-          Edit
-        </div>
+        <Link to="/edit-profile">
+          <div className="bg-[#FFFFFF0D] rounded-full px-5 py-2 flex gap-2 items-center">
+            <BiEditAlt />
+            Edit
+          </div>
+        </Link>
       </div>
       <div className="space-y-1">
         <div className="flex items-center gap-4">
@@ -36,17 +38,30 @@ export default function ProfileDetails() {
           </div>
         </Link>
       </div>
-      <div className="mt-4 flex gap-3 text-[10px] md:text-md">
-        <p className="m-0">
-          Tips sent <span className="text-[#FFFFFF80] m-0 ml-1">$0</span>{" "}
-        </p>
-        <p className="m-0">
-          Mints purchased <span className="text-[#FFFFFF80] m-0 ml-1">0</span>{" "}
-        </p>
-        <p className="m-0">
-          Token Reward <span className="text-[#FFFFFF80] m-0 ml-1">0</span>{" "}
-        </p>
-      </div>
+      {user?.data?.type === "creator" ? (
+        <div className="mt-4 flex gap-3 text-[10px] md:text-md">
+          <p className="m-0">
+            Total Tips Earned{" "}
+            <span className="text-[#FFFFFF80] m-0 ml-1">0 ETH</span>{" "}
+          </p>
+          <p className="m-0">
+            Total Mints Sold{" "}
+            <span className="text-[#FFFFFF80] m-0 ml-1">0</span>{" "}
+          </p>
+        </div>
+      ) : (
+        <div className="mt-4 flex gap-3 text-[10px] md:text-md">
+          <p className="m-0">
+            Tips sent <span className="text-[#FFFFFF80] m-0 ml-1">$0</span>{" "}
+          </p>
+          <p className="m-0">
+            Mints purchased <span className="text-[#FFFFFF80] m-0 ml-1">0</span>{" "}
+          </p>
+          <p className="m-0">
+            Token Reward <span className="text-[#FFFFFF80] m-0 ml-1">0</span>{" "}
+          </p>
+        </div>
+      )}
       <button onClick={logout}>Logout</button>
     </div>
   );

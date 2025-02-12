@@ -5,12 +5,16 @@ import Layout from "./components/layouts/layout";
 import Home from "./pages/Home";
 import ProfileComplete from "./components/features/auth/ProfileComplete";
 import Profile from "./pages/Profile";
-import UploadVideo from "./components/features/UploadVideo";
+import UploadVideo from "./pages/UploadVideo";
 import SelectAccount from "./components/features/auth/SelectAccount";
 import VerifyEmail from "./pages/VerifyEmail";
 import ProtectedRoute from "./ProtectedRoute";
+import { useUser } from "./components/hooks/useUser";
+import EditProfile from "./pages/EditProfile";
 
 function App() {
+  const { user } = useUser();
+
   return (
     <BrowserRouter>
       <Routes>
@@ -23,7 +27,11 @@ function App() {
         {/* Protected Route */}
         <Route element={<ProtectedRoute />}>
           <Route path="/complete-profile" element={<ProfileComplete />} />
-          <Route path="/upload" element={<UploadVideo />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+
+          {user?.data?.type === "creator" && (
+            <Route path="/upload" element={<UploadVideo />} />
+          )}
           <Route path="/profile" element={<Profile />} />
         </Route>
 

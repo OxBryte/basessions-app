@@ -6,7 +6,6 @@ import { useUser } from "../hooks/useUser";
 export default function Navbar() {
   const { user } = useUser();
 
-
   return (
     <div className="w-full mx-auto flex items-center justify-between gap-8 py-5">
       <Link to="/profile">
@@ -21,9 +20,11 @@ export default function Navbar() {
       )}
       {user?.data?.type === "creator" && (
         <div className="flex gap-4 items-center">
-          <div className="m-0">
-            <BiPlusCircle size={24} />
-          </div>
+          <Link to="/upload">
+            <div className="m-0">
+              <BiPlusCircle size={24} />
+            </div>
+          </Link>
           <div className="m-0">
             <BiSearch size={24} />
           </div>
