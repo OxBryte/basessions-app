@@ -30,18 +30,18 @@ export default function EditProfile() {
 
   const onSubmit = (data) => {
     const formData = new FormData();
-    
+
     if (imageFile) {
-      formData.append('avatar', imageFile);
+      formData.append("avatar", imageFile);
     }
-  
+
     // Only append non-empty values
     Object.entries(data).forEach(([key, value]) => {
-      if (value && value.trim() !== '') {
+      if (value && value.trim() !== "") {
         formData.append(key, value);
       }
     });
-  
+
     updateProfileFn(formData);
   };
 
@@ -55,7 +55,7 @@ export default function EditProfile() {
           <p>Edit Profile</p>
         </div>
         <form
-          onSubmit={handleSubmit()}
+          onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-6 items-center"
         >
           <div className="relative">
@@ -125,7 +125,8 @@ export default function EditProfile() {
             />
           </div>
           <button
-            onClick={handleSubmit(onSubmit)}
+            // onClick={handleSubmit(onSubmit)}
+            type="submit"
             className="bg-[#0052FE] px-4 py-3 w-full rounded-full"
           >
             {isPending ? "Loading..." : "Complete Profile"}
