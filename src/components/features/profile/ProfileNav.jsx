@@ -1,11 +1,11 @@
 import { BiChevronLeft, BiHistory } from "react-icons/bi";
 import { CiSettings } from "react-icons/ci";
 import { goBack } from "../../libs/utils";
-import { useAuth } from "../../hooks/useAuth";
 import { FaChartPie } from "react-icons/fa";
+import { useUser } from "../../hooks/useUser";
 
 export default function ProfileNav() {
-  const { user } = useAuth();
+  const { user } = useUser();
 
   return (
     <div className="bg-[#2C2C2C]">

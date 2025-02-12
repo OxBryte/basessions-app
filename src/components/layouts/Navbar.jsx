@@ -1,10 +1,10 @@
 import { BiPlusCircle, BiSearch } from "react-icons/bi";
 import { BsFillBellFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { useUser } from "../hooks/useUser";
 
 export default function Navbar() {
-  const { user } = useAuth();
+  const { user } = useUser();
 
 
   return (
@@ -12,7 +12,7 @@ export default function Navbar() {
       <Link to="/profile">
         <div className="w-10 h-10 rounded-full bg-white/30"></div>
       </Link>
-      {user?.length ==0 && (
+      {!user && (
         <Link to="/login">
           <button className="bg-[#0052FE] text-xs px-4 py-2 rounded-xl">
             Login / Signup
