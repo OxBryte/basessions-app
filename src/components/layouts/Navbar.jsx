@@ -9,7 +9,15 @@ export default function Navbar() {
   return (
     <div className="w-full mx-auto flex items-center justify-between gap-8 py-5">
       <Link to="/profile">
-        <div className="w-10 h-10 rounded-full bg-white/30"></div>
+        <div
+          className="w-10 h-10 rounded-full bg-white/30"
+          style={{
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundImage: `url(${user?.data?.avatar_url})`,
+          }}
+        ></div>
       </Link>
       {!user && (
         <Link to="/login">

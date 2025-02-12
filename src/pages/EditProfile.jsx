@@ -3,6 +3,7 @@ import { IoChevronBack } from "react-icons/io5";
 import { useForm } from "react-hook-form";
 import { useUpdateProfile } from "../components/features/auth/queries/useUpdateProfile";
 import { goBack } from "../components/libs/utils";
+import { useState } from "react";
 
 export default function EditProfile() {
   const {
@@ -12,10 +13,36 @@ export default function EditProfile() {
     // formState: { errors },
   } = useForm();
   const { updateProfileFn, isPending } = useUpdateProfile();
+  const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const onSubmit = (data) => {
-    console.log(data);
-    updateProfileFn(data);
+    const formData = new FormData();
+    
+    if (imageFile) {
+      formData.append('avatar', imageFile);
+    }
+  
+    // Only append non-empty values
+    Object.entries(data).forEach(([key, value]) => {
+      if (value && value.trim() !== '') {
+        formData.append(key, value);
+      }
+    });
+  
+    updateProfileFn(formData);
   };
 
   return (
@@ -28,11 +55,26 @@ export default function EditProfile() {
           <p>Edit Profile</p>
         </div>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit()}
           className="flex flex-col gap-6 items-center"
         >
           <div className="relative">
-            <div className="w-24 h-24 bg-gray-300 rounded-full" />
+            <div
+              className="w-24 h-24 bg-gray-300 rounded-full cursor-pointer"
+              onClick={() => document.getElementById("imageUpload").click()}
+              style={{
+                backgroundImage: `url(${image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            />
+            <input
+              type="file"
+              id="imageUpload"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageUpload}
+            />
             <div className="absolute bottom-0 right-0 bg-[#131313] border border-2 border-[#131313] rounded-full p-1 cursor-pointer">
               <BiEditAlt />
             </div>
@@ -45,7 +87,7 @@ export default function EditProfile() {
               type="text"
               placeholder="Enter display name"
               className="bg-[#FFFFFF08] px-4 py-2.5 rounded-lg"
-              {...register("display_name", { required: true })}
+              {...register("display_name")}
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -56,7 +98,7 @@ export default function EditProfile() {
               type="text"
               placeholder="Enter username"
               className="bg-[#FFFFFF08] px-4 py-2.5 rounded-lg"
-              {...register("username", { required: true })}
+              {...register("username")}
             />
           </div>
           <div className="w-full flex flex-col gap-2">
@@ -67,7 +109,7 @@ export default function EditProfile() {
               rows={6}
               placeholder="Write a short bio under 40 words"
               className="bg-[#FFFFFF08] px-4 py-2.5 rounded-lg"
-              {...register("bio", { required: true })}
+              {...register("bio")}
             />
             <span className="self-end text-xs font-light">0/40</span>
           </div>
@@ -79,7 +121,7 @@ export default function EditProfile() {
               type="text"
               placeholder="Enter X username"
               className="bg-[#FFFFFF08] px-4 py-2.5 rounded-lg"
-              {...register("twitter_id", { required: true })}
+              {...register("twitter_id")}
             />
           </div>
           <button

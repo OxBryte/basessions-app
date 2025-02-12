@@ -165,7 +165,7 @@ export default function UploadVideo() {
                   type="number"
                   placeholder="0"
                   className="bg-[#FFFFFF08] px-4 py-2.5 rounded-lg"
-                  {...register("mints", { required: true })}
+                  // {...register("max_mint", { required: true })}
                 />
               </div>
             </div>

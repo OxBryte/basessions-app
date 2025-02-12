@@ -7,12 +7,22 @@ import { AuthContext } from "../../context/AppContext";
 
 export default function ProfileDetails() {
   const { user } = useUser();
+  console.log(user);
+
   const { logout } = useContext(AuthContext);
 
   return (
     <div className="space-y-4 w-full pb-5 border-b border-white/10">
       <div className="flex items-center justify-between gap-8">
-        <div className="w-14 h-14 rounded-full bg-white/40 border border-3 border-[#131313]" />
+        <div
+          className="w-20 h-20 rounded-full bg-white/40 border border-3 border-[#131313]"
+          style={{
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundImage: `url(${user?.data?.avatar_url})`,
+          }}
+        />
         <Link to="/edit-profile">
           <div className="bg-[#FFFFFF0D] rounded-full px-5 py-2 flex gap-2 items-center">
             <BiEditAlt />
