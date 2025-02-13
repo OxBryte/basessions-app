@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useUser } from "../../hooks/useUser";
 
 export default function FanSection() {
   const [activeTab, setActiveTab] = useState("tab1");

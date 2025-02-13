@@ -3,19 +3,35 @@ import { IoChevronBack } from "react-icons/io5";
 import { goBack } from "../../libs/utils";
 import { useForm } from "react-hook-form";
 import { useUpdateProfile } from "./queries/useUpdateProfile";
+import { useState } from "react";
 
 export default function ProfileComplete() {
+  const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const {
     register,
     handleSubmit,
     // watch,
     // formState: { errors },
   } = useForm();
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const { updateProfileFn, isPending } = useUpdateProfile();
 
   const onSubmit = (data) => {
-    console.log(data);
-    updateProfileFn(data);
+    // console.log(data);
+    updateProfileFn({ ...data, avatar: imageFile || "" });
   };
 
   return (
@@ -29,7 +45,22 @@ export default function ProfileComplete() {
           className="flex flex-col gap-6 items-center"
         >
           <div className="relative">
-            <div className="w-24 h-24 bg-gray-300 rounded-full" />
+            <div
+              className="w-24 h-24 bg-gray-300 rounded-full cursor-pointer"
+              onClick={() => document.getElementById("imageUpload").click()}
+              style={{
+                backgroundImage: `url(${image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            />
+            <input
+              type="file"
+              id="imageUpload"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageUpload}
+            />
             <div className="absolute bottom-0 right-0 bg-[#131313] border border-2 border-[#131313] rounded-full p-1 cursor-pointer">
               <BiEditAlt />
             </div>

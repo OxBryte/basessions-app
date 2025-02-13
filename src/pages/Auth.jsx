@@ -28,6 +28,18 @@ export function AuthLogin() {
         style={{ backgroundImage: "url(/bg-login.png)" }}
       >
         <div className="before:absolute before:inset-0 before:bg-gradient-to-b before:from-transparent before:to-[#131313]"></div>
+        <div className="w-full h-full flex flex-col gap-6 items-center justify-center relative z-10">
+          <img src="session_logo.svg" alt="" />
+          <div className="flex flex-col gap-2 w-full items-center">
+            <p>Welcome to</p>
+            <h1 className="font-bold text-3xl">Sessions</h1>
+            <p className="text-center text-white/50 text-xs max-w-[320px]">
+              Step into the future of video streaming Onchain. Connect with
+              creators, mint exclusive videos, and explore content in an
+              entirely new way.
+            </p>
+          </div>
+        </div>
       </div>
       <div className="space-y-8 w-full max-w-lg mx-auto mt-4 px-6">
         <form
@@ -129,6 +141,18 @@ export function AuthSignup() {
         style={{ backgroundImage: "url(/bg-login.png)" }}
       >
         <div className="before:absolute before:inset-0 before:bg-gradient-to-b before:from-transparent before:to-[#131313]"></div>
+        <div className="w-full h-full flex flex-col gap-6 items-center justify-center relative z-10">
+          <img src="session_logo.svg" alt="" />
+          <div className="flex flex-col gap-2 w-full items-center">
+            <p>Welcome to</p>
+            <h1 className="font-bold text-3xl">Sessions</h1>
+            <p className="text-center text-white/50 text-xs max-w-[320px]">
+              Step into the future of video streaming Onchain. Connect with
+              creators, mint exclusive videos, and explore content in an
+              entirely new way.
+            </p>
+          </div>
+        </div>
       </div>
       <div className="space-y-8 w-full max-w-lg mx-auto mt-4 px-6">
         <form
