@@ -6,7 +6,11 @@ export async function updateProfile(body) {
   try {
     const token = localStorage.getItem('token');
     const formData = new FormData();
-    Object.keys(body).forEach(key => formData.append(key, body[key]));
+    Object.keys(body).forEach(key => {
+      if (body[key] !== '') {
+        formData.append(key, body[key]);
+      }
+    });
 
     const config = {
       headers: {

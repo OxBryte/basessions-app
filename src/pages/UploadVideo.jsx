@@ -190,7 +190,7 @@ export default function UploadVideo() {
               onClick={handleSubmit(onSubmit)}
               className="bg-[#0052FE] px-4 py-3 w-full rounded-full"
             >
-              {isPending ? "Uploading" : "Upload and Mint"}
+              {isPending ? "Uploading..." : "Upload and Mint"}
             </button>
           </form>
         </div>

@@ -29,20 +29,7 @@ export default function EditProfile() {
   };
 
   const onSubmit = (data) => {
-    const formData = new FormData();
-
-    if (imageFile) {
-      formData.append("avatar", imageFile);
-    }
-
-    // Only append non-empty values
-    Object.entries(data).forEach(([key, value]) => {
-      if (value && value.trim() !== "") {
-        formData.append(key, value);
-      }
-    });
-
-    updateProfileFn(formData);
+    updateProfileFn({ ...data, avatar: imageFile || "" });
   };
 
   return (
