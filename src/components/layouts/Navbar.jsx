@@ -5,8 +5,6 @@ import { useUser } from "../hooks/useUser";
 
 export default function Navbar() {
   const { user } = useUser();
-  console.log(user);
-  
 
   return (
     <div className="w-full mx-auto flex items-center justify-between gap-8 py-5">
@@ -17,7 +15,7 @@ export default function Navbar() {
             backgroundPosition: "center",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
-            backgroundImage: `url(${user?.avatar_url})`,
+            backgroundImage: `url(${user?.data?.avatar_url})`,
           }}
         ></div>
       </Link>
@@ -28,7 +26,7 @@ export default function Navbar() {
           </button>
         </Link>
       )}
-      {user?.type === "creator" && (
+      {user?.data?.type === "creator" && (
         <div className="flex gap-4 items-center">
           <Link to="/upload">
             <div className="m-0">
@@ -43,7 +41,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
-      {user?.type === "fan" && (
+      {user?.data?.type === "fan" && (
         <div className="flex gap-4 itemx-center">
           <div className="text-[#0052FE]">
             <p>Get premium</p>

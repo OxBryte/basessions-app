@@ -49,7 +49,7 @@ export async function getCurrentUser() {
     };
     const { data } = await axios.get(`${apiURL}user/profile`, config);
 
-    return data.data;
+    return data;
   } catch (error) {
     console.error("Error while fetching user:", error);
     // window.location.href = "/";
