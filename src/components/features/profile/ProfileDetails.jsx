@@ -7,8 +7,6 @@ import { AuthContext } from "../../context/AppContext";
 
 export default function ProfileDetails() {
   const { user } = useUser();
-  console.log(user);
-
   const { logout } = useContext(AuthContext);
 
   return (
@@ -20,7 +18,7 @@ export default function ProfileDetails() {
             backgroundPosition: "center",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
-            backgroundImage: `url(${user?.data?.avatar_url})`,
+            backgroundImage: `url(${user?.avatar_url})`,
           }}
         />
         <Link to="/edit-profile">
@@ -32,23 +30,23 @@ export default function ProfileDetails() {
       </div>
       <div className="space-y-1">
         <div className="flex items-center gap-4">
-          <h1 className="font-semibold text-2xl">{user?.data?.display_name}</h1>
+          <h1 className="font-semibold text-2xl">{user?.display_name}</h1>
           <p className="bg-[#FF9A354D] text-xs px-3 py-1.5 rounded-full">
-            Premium {user?.data?.type}
+            Premium {user?.type}
           </p>
         </div>
-        <p className="text-white/40 text-xs">@{user?.data?.username}</p>
+        <p className="text-white/40 text-xs">@{user?.username}</p>
       </div>
-      <p className="text-xs font-light max-w-[420px]">{user?.data?.bio}</p>
+      <p className="text-xs font-light max-w-[420px]">{user?.bio}</p>
       <div>
-        <Link to={`https://x.com/${user?.data?.twitter_id}`} target="_blank">
+        <Link to={`https://x.com/${user?.twitter_id}`} target="_blank">
           <div className="flex items-center gap-2 border border-white/40 hover:bg-white/10 cursor-pointer rounded-full w-fit text-xs px-3 py-1.5">
             <BsTwitterX />
-            {user?.data?.twitter_id}
+            {user?.twitter_id}
           </div>
         </Link>
       </div>
-      {user?.data?.type === "creator" ? (
+      {user?.type === "creator" ? (
         <div className="mt-4 flex gap-3 text-[10px] md:text-md">
           <p className="m-0">
             Total Tips Earned{" "}

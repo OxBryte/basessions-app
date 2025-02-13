@@ -8,7 +8,7 @@ import { useUploadMedia } from "../queries/useUploadMedia";
 
 export default function UploadVideo() {
   const { user } = useUser();
-  const userId = user?.data?.id;
+  const userId = user?.id;
 
   const [freeMint, setFreeMint] = useState(false);
   const [description, setDescription] = useState(""); // Add state for description

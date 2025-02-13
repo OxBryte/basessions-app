@@ -3,12 +3,13 @@ import { useMedia } from "../components/hooks/useUser";
 
 export default function Home() {
   const { medias, isLoading } = useMedia();
-  console.log(medias);
+
+
 
   if (isLoading)
     return (
       <div className="w-full min-h-[70dvh] flex items-center justify-center">
-        Fetching medias...
+        Fetching media...
       </div>
     );
 

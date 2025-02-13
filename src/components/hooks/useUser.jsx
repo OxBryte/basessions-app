@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "../services/apiAuth";
-import { getMedias } from "../services/apiMedia";
+import { getMedias, getUserMedias } from "../services/apiMedia";
 
 export function useUser() {
   const token = localStorage.getItem("token");
@@ -19,4 +19,14 @@ export function useMedia() {
   });
 
   return { isLoading, medias };
+}
+
+export function useUserMedia(userId) {
+  const { isPending: isLoading, data: userMedia } = useQuery({
+    queryKey: ["userMedia", userId],
+    queryFn: () => getUserMedias(userId),
+    enabled: !!userId,
+  });
+
+  return { isLoading, userMedia };
 }

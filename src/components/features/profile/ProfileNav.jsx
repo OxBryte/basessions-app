@@ -14,7 +14,7 @@ export default function ProfileNav() {
           <BiChevronLeft size={28} />
         </div>
         <div className="flex items-center gap-3">
-          {user?.data?.type === "creator" && (
+          {user?.type === "creator" && (
             <div>
               <FaChartPie size={26} />
             </div>

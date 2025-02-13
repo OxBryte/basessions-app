@@ -29,7 +29,7 @@ function App() {
           <Route path="/complete-profile" element={<ProfileComplete />} />
           <Route path="/edit-profile" element={<EditProfile />} />
 
-          {user?.data?.type === "creator" && (
+          {user?.type === "creator" && (
             <Route path="/upload" element={<UploadVideo />} />
           )}
           <Route path="/profile" element={<Profile />} />

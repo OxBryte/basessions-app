@@ -43,12 +43,17 @@ export default function ContentCard({ media }) {
       </div>
       <div className="w-full flex items-center gap-4 justify-between">
         <div className="flex gap-3 items-center">
-          <div className="w-12 h-12 bg-white/30 rounded-full"></div>
-          <div className="space-y-0">
-            <h1 className="font-semibold !m-0 text-lg text-white/80">
+          <div className="w-12 h-12 bg-white/30 rounded-full"  style={{
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundImage: `url(${media?.creator?.avatar_url})`,
+          }}></div>
+          <div className="!space-y-1">
+            <h1 className="font-semibold !m-0 text-md text-white">
               {media?.creator?.display_name}
             </h1>
-            <p className="text-white/60 !m-0 text-sm">
+            <p className="text-white/60 !m-0 text-xs">
               @{media?.creator?.username}
             </p>
           </div>
