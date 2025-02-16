@@ -6,7 +6,7 @@ import FanSection from "../components/features/profile/FanSection";
 
 export default function Profile() {
   const { user } = useUser();
-  console.log(user);
+  // console.log(user);
 
   return (
     <div>

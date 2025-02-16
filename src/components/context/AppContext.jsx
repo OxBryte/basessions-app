@@ -15,9 +15,14 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     setToken(null);
     queryClient.invalidateQueries(["user"]);
-    window.location.href = "/";
+    window.location.href = "/"; // Redirect to login page
   };
 
+  // // Check for error or token expiration
+  // if (error || !localStorage.getItem("token")) {
+  //   logout(); // Call logout to handle redirection
+  //   return null; // Prevent rendering of children
+  // }
   return (
     <AuthContext.Provider value={{ user, logout, isLoading }}>
       {children}

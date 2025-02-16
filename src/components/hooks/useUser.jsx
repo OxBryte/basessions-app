@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCurrentUser } from "../services/apiAuth";
+import { getCreatorProfile, getCurrentUser } from "../services/apiAuth";
 import { getMedias, getUserMedias } from "../services/apiMedia";
 
 export function useUser() {
   const token = localStorage.getItem("token");
-  const { isPending: isLoading, data: user } = useQuery({
+  const { isPending: isLoading, data: user, error } = useQuery({
     queryKey: ["user"],
     queryFn: getCurrentUser,
   });
 
-  return { isLoading, user, isAuthenticated: token !== null };
+  return { isLoading, user, error, isAuthenticated: token !== null };
 }
 
 export function useMedia() {
@@ -29,4 +29,14 @@ export function useUserMedia(userId) {
   });
 
   return { isLoading, userMedia };
+}
+
+export function useCreatorProfile(creatorId) {
+  const { isPending: isLoading, data: creatorProfile } = useQuery({
+    queryKey: ["creatorProfile", creatorId],
+    queryFn: () => getCreatorProfile(creatorId),
+    enabled: !!creatorId,
+  });
+
+  return { isLoading, creatorProfile };
 }

@@ -2,6 +2,7 @@ import moment from "moment";
 import { FiThumbsUp } from "react-icons/fi";
 import { HiOutlineCurrencyDollar } from "react-icons/hi";
 import { TbMessage2 } from "react-icons/tb";
+import { Link } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 export default function ContentCard({ media }) {
@@ -41,31 +42,38 @@ export default function ContentCard({ media }) {
           </button>
         </div>
       </div>
-      <div className="w-full flex items-center gap-4 justify-between">
-        <div className="flex gap-3 items-center">
-          <div className="w-12 h-12 bg-white/30 rounded-full"  style={{
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundImage: `url(${media?.creator?.avatar_url})`,
-          }}></div>
-          <div className="!space-y-1">
-            <h1 className="font-semibold !m-0 text-md text-white">
-              {media?.creator?.display_name}
-            </h1>
-            <p className="text-white/60 !m-0 text-xs">
-              @{media?.creator?.username}
-            </p>
-          </div>
+      {media?.creator && (
+        <div className="w-full flex items-center gap-4 justify-between">
+          <Link to={`/profile/${media?.creator?.id}`}>
+            <div className="flex gap-3 items-center">
+              <div
+                className="w-12 h-12 bg-white/30 rounded-full"
+                style={{
+                  backgroundPosition: "center",
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                  backgroundImage: `url(${media?.creator?.avatar_url})`,
+                }}
+              ></div>
+              <div className="!space-y-1">
+                <h1 className="font-semibold !m-0 text-md text-white">
+                  {media?.creator?.display_name}
+                </h1>
+                <p className="text-white/60 !m-0 text-xs">
+                  @{media?.creator?.username}
+                </p>
+              </div>
+            </div>
+          </Link>
           <p className="text-xs text-white/60">
             {moment(media?.created_at).startOf("hour").fromNow()}
           </p>
+          <button className="border border-white/60 text-white/60 px-3 py-1.5 gap-2 rounded-full flex items-center">
+            <HiOutlineCurrencyDollar size={20} />
+            Tip
+          </button>
         </div>
-        <button className="border border-white/60 text-white/60 px-3 py-1.5 gap-2 rounded-full flex items-center">
-          <HiOutlineCurrencyDollar size={20} />
-          Tip
-        </button>
-      </div>
+      )}
     </div>
   );
 }
