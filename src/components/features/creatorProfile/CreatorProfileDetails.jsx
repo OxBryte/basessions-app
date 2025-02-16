@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 export default function CreatorProfileDetails({ creator }) {
-  console.log(creator);
-
+  // console.log(creator);
   return (
     <div className="space-y-4 w-full pb-5 border-b border-white/10">
       <div className="flex items-center justify-between gap-8">

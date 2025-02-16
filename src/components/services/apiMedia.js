@@ -38,3 +38,30 @@ export async function getUserMedias(userId) {
     );
   }
 }
+
+
+
+export async function updateLike(mediaId, body) {
+  try {
+    // Assuming the token is stored in localStorage or similar
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.put(
+      `${apiURL}media/${mediaId}`,
+      body,
+      config,
+    );
+
+    return data.data;
+  } catch (error) {
+    console.error("Error while fetching media:", error);
+    // window.location.href = "/";
+    throw new Error(
+      error.response?.data?.message || "An error occurred while fetching media"
+    );
+  }
+}

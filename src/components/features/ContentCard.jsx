@@ -1,25 +1,65 @@
 import moment from "moment";
-import { FiThumbsUp } from "react-icons/fi";
 import { HiOutlineCurrencyDollar } from "react-icons/hi";
 import { TbMessage2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
+import { useLike } from "../../queries/useLike";
+import { useState } from "react";
+import { useUser } from "../hooks/useUser";
+import { RiThumbUpFill, RiThumbUpLine } from "react-icons/ri";
 
 // eslint-disable-next-line react/prop-types
 export default function ContentCard({ media }) {
+  // console.log(media);
+  const { user } = useUser();
+  const userId = user?.id;
+  const mediaId = media?.id;
+  const [like, setLike] = useState(false);
+  const { likeFn, isPending } = useLike();
+  const [count, setCount] = useState(media?.liked_by?.length);
+
+  const handleLike = () => {
+    const newLikeStatus = !like;
+    setLike(newLikeStatus);
+
+    likeFn(
+      {
+        mediaId: mediaId,
+        status: newLikeStatus,
+      },
+      {
+        onError: () => {
+          setLike(like);
+        },
+      },
+      {
+        onSuccess: () => {
+          setCount(count + 1);
+        },
+      }
+    );
+  };
+
+  console.log(media);
+
   return (
     <div className="w-full mx-auto space-y-4">
-      <div className="w-full h-56 md:h-[30vh] rounded-xl overflow-hidden bg-white/40"></div>
-      {/* <video src={media?.url}></video> */}
+      {/* <div className="w-full h-56 md:h-[30vh] rounded-xl overflow-hidden bg-white/40"></div> */}
+      <video className="max-w-full h-[360px] background-cover" src={media?.url}></video>
       <h1 className="text-lg text-white/80 font-semibold">{media?.title} </h1>
       <p className="text-white/40 text-sm">{media?.description}</p>
       <div className="flex flex-col md:flex-row gap-4 justify-between items-left md:items-center">
         <div className="flex items-center gap-4">
           <div className="flex gap-2 items-center text-white/60">
-            <FiThumbsUp size={21} />
-            <p className="!m-0 text-sm text-white/90">
-              {" "}
-              {media?.liked_by?.length}
-            </p>
+            {like || media?.liked_by?.filter((liker) => liker.id === userId) ? ( // Check if user liked the media
+              <button className="text-blue-500">
+                <RiThumbUpFill size={21} />
+              </button>
+            ) : (
+              <button onClick={() => handleLike()} disabled={isPending}>
+                <RiThumbUpLine size={21} />
+              </button>
+            )}
+            <p className="!m-0 text-sm text-white/90"> {count}</p>
           </div>
           <div className="flex gap-2 items-center text-white/60">
             <TbMessage2 size={21} />
