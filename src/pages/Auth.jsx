@@ -24,7 +24,7 @@ export function AuthLogin() {
   return (
     <div className="w-full h-screen space-y-4">
       <div
-        className="h-[55vh] w-full max-w-[780px] mx-auto bg-fill bg-no-repeat bg-top relative"
+        className="h-[55vh] w-full max-w-[620px] mx-auto bg-fill bg-no-repeat bg-top relative"
         style={{ backgroundImage: "url(/bg-login.png)" }}
       >
         <div className="before:absolute before:inset-0 before:bg-gradient-to-b before:from-transparent before:to-[#131313]"></div>
@@ -137,7 +137,7 @@ export function AuthSignup() {
   return (
     <div className="w-full h-screen space-y-4">
       <div
-        className="h-[55vh] w-full max-w-[780px] mx-auto bg-fill bg-no-repeat bg-top relative"
+        className="h-[55vh] w-full max-w-[620px] mx-auto bg-fill bg-no-repeat bg-top relative"
         style={{ backgroundImage: "url(/bg-login.png)" }}
       >
         <div className="before:absolute before:inset-0 before:bg-gradient-to-b before:from-transparent before:to-[#131313]"></div>

@@ -12,13 +12,13 @@ export default function CreatorProfile() {
   return (
     <div>
       <div className="bg-[#2C2C2C]">
-        <div className="max-w-[780px] mx-auto flex gap-4 justify-between items-center w-full p-4 min-h-[80px] bg-[#2C2C2C] ">
+        <div className="max-w-[620px] mx-auto flex gap-4 justify-between items-center w-full p-4 min-h-[80px] bg-[#2C2C2C] ">
           <div onClick={goBack} className="cursor-pointer">
             <BiChevronLeft size={28} />
           </div>
         </div>
       </div>
-      <div className="w-full max-w-[780px] mx-auto px-4 py-4">
+      <div className="w-full max-w-[620px] mx-auto px-4 py-4">
         <CreatorProfileDetails creator={creatorProfile?.data} />
         <CreatorProfileSection userId={id} />
       </div>

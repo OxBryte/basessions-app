@@ -9,7 +9,7 @@ export default function ProfileNav() {
 
   return (
     <div className="bg-[#2C2C2C]">
-      <div className="max-w-[780px] mx-auto flex gap-4 justify-between items-center w-full p-4 min-h-[80px] bg-[#2C2C2C] ">
+      <div className="max-w-[620px] mx-auto flex gap-4 justify-between items-center w-full p-4 min-h-[80px] bg-[#2C2C2C] ">
         <div onClick={goBack} className="cursor-pointer">
           <BiChevronLeft size={28} />
         </div>

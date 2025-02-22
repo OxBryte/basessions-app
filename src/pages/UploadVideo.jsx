@@ -51,6 +51,10 @@ export default function UploadVideo() {
   };
 
   const onSubmit = async (data) => {
+    if (!userId) {
+      alert("You must be logged in to upload a video."); // Alert if userId is undefined
+      return; // Prevent submission
+    }
     const edited = {
       ...data,
       description,
@@ -66,7 +70,7 @@ export default function UploadVideo() {
 
   return (
     <div>
-      <div className="w-full max-w-[780px] mx-auto px-4 my-10">
+      <div className="w-full max-w-[620px] mx-auto px-4 my-10">
         <div className="space-y-4">
           <div className="flex items-center gap-5">
             <div onClick={goBack} className="cursor-pointer">

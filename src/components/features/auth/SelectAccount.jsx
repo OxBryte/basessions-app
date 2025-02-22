@@ -13,7 +13,7 @@ export default function SelectAccount() {
     navigate(`?accountType=${accountType}`);
   };
   return (
-    <div className="w-full max-w-[780px] mx-auto px-4 my-10">
+    <div className="w-full max-w-[620px] mx-auto px-4 my-10">
       <div className="w-full h-screen flex flex-col items-center gap-8">
         <div className="flex w-full items-center gap-4">
           <div onClick={goBack} className="cursor-pointer">
