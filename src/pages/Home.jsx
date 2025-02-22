@@ -4,6 +4,9 @@ import { useMedia } from "../components/hooks/useUser";
 export default function Home() {
   const { medias, isLoading } = useMedia();
 
+  console.log(medias);
+  
+
 
 
   if (isLoading)

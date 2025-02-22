@@ -12,6 +12,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { useUser } from "./components/hooks/useUser";
 import EditProfile from "./pages/EditProfile";
 import CreatorProfile from "./pages/CreatorProfile";
+import WatchVideo from "./pages/WatchVideo";
 
 function App() {
   const { user } = useUser();
@@ -35,6 +36,7 @@ function App() {
           )}
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:id" element={<CreatorProfile />} />
+          <Route path="/:id" element={<WatchVideo />} />
         </Route>
 
         {/* Route */}

@@ -1,7 +1,7 @@
 import { IoChevronBack } from "react-icons/io5";
 import { goBack } from "../components/libs/utils";
 import { useState } from "react";
-import { PiVideoFill } from "react-icons/pi";
+import { PiImageFill, PiVideoFill } from "react-icons/pi";
 import { useUser } from "../components/hooks/useUser";
 import { useForm } from "react-hook-form";
 import { useUploadMedia } from "../queries/useUploadMedia";
@@ -13,6 +13,7 @@ export default function UploadVideo() {
   const [freeMint, setFreeMint] = useState(false);
   const [description, setDescription] = useState(""); // Add state for description
   const [videoFile, setVideoFile] = useState(null); // Add state for video file
+  const [thumbnail, setThumbnail] = useState(null); // Add state for thumbnail
   const { uploadMediaFn, isPending } = useUploadMedia();
 
   const {
@@ -42,13 +43,21 @@ export default function UploadVideo() {
     }
   };
 
+  const handleChangeThumbnail = (event) => {
+    const file = event.target.files[0]; // Get the selected file
+    if (file) {
+      setThumbnail(file); // Update state with the selected file
+    }
+  };
+
   const onSubmit = async (data) => {
     const edited = {
       ...data,
       description,
       media_file: videoFile,
+      thumbnail: thumbnail,
       free: freeMint,
-      price: freeMint === true && 0,
+      // price: freeMint === true && 0,
       user_id: userId,
     };
     uploadMediaFn(edited);
@@ -59,7 +68,7 @@ export default function UploadVideo() {
     <div>
       <div className="w-full max-w-[780px] mx-auto px-4 my-10">
         <div className="space-y-4">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-5">
             <div onClick={goBack} className="cursor-pointer">
               <IoChevronBack size={24} />
             </div>
@@ -69,7 +78,47 @@ export default function UploadVideo() {
             onSubmit={handleSubmit}
             className="flex flex-col gap-6 items-center"
           >
-            <div className="relative w-full">
+            <div className="relative space-y-6 w-full">
+              <div className="relative w-full p-4 border border-dashed rounded-xl flex flex-col gap-2 items-center justify-center min-h-[200px]">
+                {thumbnail ? ( // Check if a thumbnail is uploaded
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <img
+                      src={URL.createObjectURL(thumbnail)} // Create a URL for the uploaded thumbnail
+                      alt="Thumbnail Preview"
+                      className="object-cover w-full h-full rounded-xl"
+                    />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                      <label className="bg-[#0052FE] rounded-full text-xs px-3 py-1.5 cursor-pointer">
+                        Choose an thumbnail
+                        <input
+                          type="file"
+                          accept="image/*" // Restrict to image types
+                          className="hidden" // Hide the input
+                          onChange={handleChangeThumbnail} // Handle file change
+                        />
+                      </label>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <PiImageFill size={48} />
+                    <p className="text-lg font-light">Upload a thumbnail</p>
+                    <p className="text-xs text-white/40 text-center w-3/4">
+                      Upload a thumbnail for your video <br /> maximum 5mb.
+                      Preferred format is MP4.
+                    </p>
+                    <label className="bg-[#0052FE] rounded-full text-xs px-3 py-1.5 cursor-pointer">
+                      Choose an thumbnail
+                      <input
+                        type="file"
+                        accept="image/*" // Restrict to image types
+                        className="hidden" // Hide the input
+                        onChange={handleChangeThumbnail} // Handle file change
+                      />
+                    </label>
+                  </>
+                )}
+              </div>
               <div className="w-full p-4 border border-dashed rounded-xl flex flex-col gap-2 items-center justify-center min-h-[200px]">
                 <PiVideoFill size={48} />
                 <p className="text-lg font-light">Select video file</p>
@@ -99,10 +148,8 @@ export default function UploadVideo() {
                   </div>
                 )}
               </div>
-              <div className="absolute bottom-0 right-0 bg-[#131313] border border-2 border-[#131313] rounded-full p-1 cursor-pointer">
-                {/* <BiEditAlt /> */}
-              </div>
             </div>
+
             <div className="w-full flex flex-col gap-2">
               <label htmlFor="title" className="font-light">
                 Title*
@@ -151,7 +198,7 @@ export default function UploadVideo() {
                 <input
                   type="number"
                   placeholder="0"
-                  value={freeMint ? "0" : undefined} // Set value to 0 if freeMint is true
+                  value={freeMint ? 0 : undefined} // Set value to 0 if freeMint is true
                   disabled={freeMint}
                   className="bg-[#FFFFFF08] px-4 py-2.5 rounded-lg"
                   {...register("price")}
@@ -165,7 +212,7 @@ export default function UploadVideo() {
                   type="number"
                   placeholder="0"
                   className="bg-[#FFFFFF08] px-4 py-2.5 rounded-lg"
-                  // {...register("max_mint", { required: true })}
+                  {...register("max_mints", { required: true })}
                 />
               </div>
             </div>
