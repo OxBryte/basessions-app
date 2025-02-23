@@ -2,15 +2,29 @@ import { HiOutlineCurrencyDollar } from "react-icons/hi2";
 import { RiThumbUpFill, RiThumbUpLine } from "react-icons/ri";
 import { TbMessage2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
+import { useSingleMedia } from "../components/hooks/useUser";
+import { useParams } from "react-router-dom";
+import moment from "moment";
+import Player from "../components/features/videoPlayer/Player";
 
 export default function WatchVideo() {
+  const { id } = useParams();
+
+  const { singleMedia, isLoading } = useSingleMedia(id);
+  // console.log(singleMedia);
+
   return (
-    <div>
-      <div className="w-full h-60 md:h-[40vh] overflow-hidden bg-white/40"></div>
+    <div className="max-w-[620px] mx-auto">
+      <div className="max-h-[340px] w-full">
+        <Player src={singleMedia?.url} thumbnail={singleMedia?.thumbnail_url} />
+      </div>
+      {/* <div className="w-full h-60 md:h-[40vh] overflow-hidden bg-white/40"></div> */}
       <div className="space-y-6 px-4 py-6">
         <div className="space-y-4">
-          <h1 className="text-lg text-white/80 font-semibold">Title </h1>
-          <p className="text-white/40 text-sm">description</p>
+          <h1 className="text-lg text-white/80 font-semibold">
+            {singleMedia?.title}{" "}
+          </h1>
+          <p className="text-white/40 text-sm">{singleMedia?.description}</p>
         </div>
         <div className="flex flex-row gap-4 justify-between items-left md:items-center">
           <div className="flex items-center gap-4">
@@ -21,7 +35,10 @@ export default function WatchVideo() {
               <button>
                 <RiThumbUpLine size={21} />
               </button>
-              <p className="!m-0 text-sm text-white/90"> 0</p>
+              <p className="!m-0 text-sm text-white/90">
+                {" "}
+                {singleMedia?.liked_by?.length}
+              </p>
             </div>
             <div className="flex gap-2 items-center text-white/60">
               <TbMessage2 size={21} />
@@ -31,11 +48,13 @@ export default function WatchVideo() {
           <div className="flex items-center gap-4">
             <div className="flex flex-col md:gap-0 gap-2 items-center">
               <p className="text-white/80 text-sm">Total Mints</p>
-              <p className="text-white/60 text-sm">0/0</p>
+              <p className="text-white/60 text-sm">
+                0/{singleMedia?.max_mints}
+              </p>
             </div>
             <div className="flex flex-col md:gap-0 gap-2 items-center">
               <p className="text-white/80 text-sm">Price</p>
-              <p className="text-white/60 text-sm"> 0</p>
+              <p className="text-white/60 text-sm"> {singleMedia?.price} ETH</p>
             </div>
             <button className="px-6 py-2.5 bg-[#0052FE] rounded-full text-sm">
               Mint
@@ -47,23 +66,25 @@ export default function WatchVideo() {
             <div className="flex gap-3 items-center">
               <div
                 className="w-12 h-12 bg-white/30 rounded-full"
-                //   style={{
-                //     backgroundPosition: "center",
-                //     backgroundSize: "cover",
-                //     backgroundRepeat: "no-repeat",
-                //     backgroundImage: `url(${media?.creator?.avatar_url})`,
-                //   }}
+                style={{
+                  backgroundPosition: "center",
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                  backgroundImage: `url(${singleMedia?.creator?.avatar_url})`,
+                }}
               ></div>
               <div className="!space-y-1">
                 <h1 className="font-semibold !m-0 text-md text-white">
-                  display_name
+                  {singleMedia?.creator?.display_name}
                 </h1>
-                <p className="text-white/60 !m-0 text-xs">@username</p>
+                <p className="text-white/60 !m-0 text-xs">
+                  @{singleMedia?.creator?.username}
+                </p>
               </div>
             </div>
           </Link>
           <p className="text-xs text-white/60">
-            {/* {moment(media?.created_at).startOf("hour").fromNow()} */}
+            {moment(singleMedia?.created_at).startOf("hour").fromNow()}
           </p>
           <button className="border border-white/60 text-white/60 px-3 py-1.5 gap-2 rounded-full flex items-center">
             <HiOutlineCurrencyDollar size={20} />

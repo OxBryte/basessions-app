@@ -13,7 +13,7 @@ export const useLogin = () => {
       return await userLogin(body);
     },
     onSuccess(data) {
-      console.log(data);
+      // console.log(data);
       toast(`${data.message}`, { icon: "🚀" });
 
       //set user data and session in global state

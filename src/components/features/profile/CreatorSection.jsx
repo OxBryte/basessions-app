@@ -5,9 +5,10 @@ import CreatorContentCard from "./CreatorContentCard";
 export default function CreatorSection() {
   const [activeTab, setActiveTab] = useState("tab1");
   const { user } = useUser();
-  const userId = user?.id;
+  const userId = user?.data?.id;
 
   const { userMedia, isLoading } = useUserMedia(userId);
+  console.log(userMedia);
 
   return (
     <>

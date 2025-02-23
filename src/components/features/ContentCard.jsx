@@ -36,19 +36,23 @@ export default function ContentCard({ media }) {
 
   return (
     <div className="w-full mx-auto space-y-4">
-      <div className="space-y-4">
-        {!media?.thumbnail_url ? (
-          <div className=" w-full h-[220px] rounded-xl bg-white/40"></div>
-        ) : (
-          <img
-            src={media?.thumbnail_url}
-            alt=""
-            className=" w-full max-h-[360px] rounded-xl object-cover"
-          />
-        )}
-        <h1 className="text-lg text-white/80 font-semibold">{media?.title} </h1>
-        <p className="text-white/40 text-sm">{media?.description}</p>
-      </div>
+      <Link to={`/${media?.id}`}>
+        <div className="space-y-4">
+          {!media?.thumbnail_url ? (
+            <div className=" w-full h-[220px] rounded-xl bg-white/40"></div>
+          ) : (
+            <img
+              src={media?.thumbnail_url}
+              alt=""
+              className=" w-full max-h-[360px] rounded-xl object-cover"
+            />
+          )}
+          <h1 className="text-lg text-white/80 font-semibold">
+            {media?.title}{" "}
+          </h1>
+          <p className="text-white/40 text-sm">{media?.description}</p>
+        </div>
+      </Link>
       <div className="flex flex-row gap-4 justify-between items-left md:items-center">
         <div className="flex items-center gap-4">
           <div className="flex gap-2 items-center text-white/60">

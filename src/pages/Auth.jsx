@@ -18,6 +18,7 @@ export function AuthLogin() {
   } = useForm();
 
   const onSubmit = (data) => {
+    data.email = data.email.toLowerCase();
     loginFn(data);
   };
 
@@ -131,6 +132,7 @@ export function AuthSignup() {
   } = useForm();
 
   const onSubmit = (data) => {
+    data.email = data.email.toLowerCase();
     signupFn({ ...data, type: accountType });
   };
 

@@ -8,7 +8,7 @@ import { useUploadMedia } from "../queries/useUploadMedia";
 
 export default function UploadVideo() {
   const { user } = useUser();
-  const userId = user?.id;
+  const userId = user?.data?.id;
 
   const [freeMint, setFreeMint] = useState(false);
   const [description, setDescription] = useState(""); // Add state for description
@@ -83,7 +83,7 @@ export default function UploadVideo() {
             className="flex flex-col gap-6 items-center"
           >
             <div className="relative space-y-6 w-full">
-              <div className="relative w-full p-4 border border-dashed rounded-xl flex flex-col gap-2 items-center justify-center min-h-[200px]">
+              <div className="relative w-full p-4 border border-dashed rounded-xl flex flex-col gap-2 items-center justify-center min-h-[240px]">
                 {thumbnail ? ( // Check if a thumbnail is uploaded
                   <div className="absolute inset-0 flex items-center justify-center">
                     <img

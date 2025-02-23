@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { FaEllipsisVertical } from "react-icons/fa6";
 import { FiThumbsUp } from "react-icons/fi";
 import { TbMessage2 } from "react-icons/tb";
+import { Link } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 export default function CreatorContentCard({ media }) {
@@ -24,8 +25,17 @@ export default function CreatorContentCard({ media }) {
 
   return (
     <div className="w-full mx-auto space-y-4">
-      <div className="w-full h-56 md:h-[30vh] rounded-xl overflow-hidden bg-white/40"></div>
-      {/* <video src={media?.url}></video> */}
+      <Link to={`/${media?.id}`}>
+        {!media?.thumbnail_url ? (
+          <div className=" w-full h-[220px] rounded-xl bg-white/40"></div>
+        ) : (
+          <img
+            src={media?.thumbnail_url}
+            alt=""
+            className=" w-full max-h-[360px] rounded-xl object-cover"
+          />
+        )}
+      </Link>
       <div className="flex items-center justify-between w-full">
         <div className="space-y-1 ">
           <h1 className="text-lg text-white/80 font-semibold">
