@@ -183,19 +183,25 @@ const Player = ({ src, thumbnail }) => {
 
   const renderCustomControls = () => {
     return (
-      <>
-        <button onClick={togglePlayPause}>
-          {isPlaying ? <FaPause /> : <FaPlay />}
-        </button>
-        <button onClick={stopVideo}>
-          <FaStop />
-        </button>
+      <div className="flex items-center justify-between gap-4 w-full text-white/80">
+        <div className="flex items-center gap-4">
+          <button onClick={togglePlayPause}>
+            {isPlaying ? <FaPause /> : <FaPlay />}
+          </button>
+          <button onClick={stopVideo}>
+            <FaStop />
+          </button>
+        </div>
         <input
           type="range"
           min="0"
           max="100"
           value={progress}
           onChange={handleSeek}
+          style={{
+            width: '80%',
+            background: `linear-gradient(to right, #4caf50 ${progress}%, #ddd ${progress}%)`,
+          }}
         />
         <button onClick={toggleMute}>
           {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
@@ -211,12 +217,12 @@ const Player = ({ src, thumbnail }) => {
         <button onClick={toggleFullScreen}>
           {isFullScreen ? <FaCompress /> : <FaExpand />}
         </button>
-      </>
+      </div>
     );
   };
 
   return (
-    <>
+    <div className="w-full space-y-2 mb-3">
       <div className="relative h-[340px] w-full overflow-hidden">
         <video
           className="video-player h-full w-full object-contain object-center"
@@ -230,7 +236,7 @@ const Player = ({ src, thumbnail }) => {
         />
       </div>
       {!useNativeControls && renderCustomControls()}
-    </>
+    </div>
   );
 };
 

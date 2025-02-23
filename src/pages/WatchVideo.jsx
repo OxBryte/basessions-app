@@ -15,7 +15,7 @@ export default function WatchVideo() {
 
   return (
     <div className="max-w-[620px] mx-auto">
-      <div className="max-h-[340px] w-full">
+      <div className="w-full">
         <Player src={singleMedia?.url} thumbnail={singleMedia?.thumbnail_url} />
       </div>
       {/* <div className="w-full h-60 md:h-[40vh] overflow-hidden bg-white/40"></div> */}
