@@ -2,6 +2,7 @@ import { IoChevronBack } from "react-icons/io5";
 import { goBack } from "../components/libs/utils";
 import { useVerify } from "../components/features/auth/queries/useVerify";
 import { useState } from "react";
+import Spinner from "../components/ui/Spinner";
 
 export default function VerifyEmail() {
   const userEmail = localStorage.getItem("userEmail");
@@ -64,7 +65,7 @@ export default function VerifyEmail() {
             className="bg-[#0052FE] px-8 py-3 w-[60%] rounded-full"
             onClick={handleVerify}
           >
-            {isPending ? "Verifying..." : "Verify"}
+            {isPending ? <Spinner /> : "Verify"}
           </button>
         </div>
       </div>

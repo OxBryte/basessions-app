@@ -5,6 +5,7 @@ import { PiImageFill, PiVideoFill } from "react-icons/pi";
 import { useUser } from "../components/hooks/useUser";
 import { useForm } from "react-hook-form";
 import { useUploadMedia } from "../queries/useUploadMedia";
+import Spinner from "../components/ui/Spinner";
 
 export default function UploadVideo() {
   const { user } = useUser();
@@ -241,7 +242,7 @@ export default function UploadVideo() {
               onClick={handleSubmit(onSubmit)}
               className="bg-[#0052FE] px-4 py-3 w-full rounded-full"
             >
-              {isPending ? "Uploading..." : "Upload and Mint"}
+              {isPending ? <Spinner /> : "Upload and Mint"}
             </button>
           </form>
         </div>

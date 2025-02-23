@@ -4,6 +4,7 @@ import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import { useSignup } from "../components/features/auth/queries/useSignup";
 import { useLogin } from "../components/features/auth/queries/useLogin";
+import Spinner from "../components/ui/Spinner";
 
 export function AuthLogin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -106,9 +107,9 @@ export function AuthLogin() {
         <div className="flex flex-col gap-3 w-full">
           <button
             onClick={handleSubmit(onSubmit)}
-            className="bg-[#0052FE] hover:bg-[#0052FE]/80 w-full rounded-2xl px-6 py-4"
+            className="bg-[#0052FE] text-white hover:bg-[#0052FE]/80 w-full rounded-2xl px-6 py-4"
           >
-            {isPending ? "Loading..." : "Login"}
+            {isPending ? <Spinner /> : "Login"}
           </button>
         </div>
       </div>
@@ -223,7 +224,7 @@ export function AuthSignup() {
             className="bg-[#0052FE] hover:bg-[#0052FE]/80 w-full rounded-2xl px-6 py-4"
             onClick={handleSubmit(onSubmit)}
           >
-            {isPending ? "Loading..." : "Continue"}
+            {isPending ? <Spinner /> : "Continue"}
           </button>
         </div>
       </div>

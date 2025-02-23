@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useUpdateProfile } from "../components/features/auth/queries/useUpdateProfile";
 import { goBack } from "../components/libs/utils";
 import { useState } from "react";
+import Spinner from "../components/ui/Spinner";
 
 export default function EditProfile() {
   const {
@@ -116,7 +117,7 @@ export default function EditProfile() {
             type="submit"
             className="bg-[#0052FE] px-4 py-3 w-full rounded-full"
           >
-            {isPending ? "Loading..." : "Complete Profile"}
+            {isPending ? <Spinner /> : "Complete Profile"}
           </button>
         </form>
       </div>

@@ -4,6 +4,7 @@ import { goBack } from "../../libs/utils";
 import { useForm } from "react-hook-form";
 import { useUpdateProfile } from "./queries/useUpdateProfile";
 import { useState } from "react";
+import Spinner from "../../ui/Spinner";
 
 export default function ProfileComplete() {
   const [image, setImage] = useState(null);
@@ -114,7 +115,7 @@ export default function ProfileComplete() {
             onClick={handleSubmit(onSubmit)}
             className="bg-[#0052FE] px-4 py-3 w-full rounded-full"
           >
-            {isPending ? "Loading..." : "Complete Profile"}
+            {isPending ? <Spinner /> : "Complete Profile"}
           </button>
         </form>
       </div>
