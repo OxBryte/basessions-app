@@ -7,7 +7,15 @@ import CreatorProfileSection from "../components/features/creatorProfile/Creator
 
 export default function CreatorProfile() {
   const { id } = useParams();
-  const { creatorProfile } = useCreatorProfile(id);
+  const { creatorProfile, isLoading } = useCreatorProfile(id);
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-[60dvh] flex items-center justify-center">
+        <img src="session_logo.svg" alt="" className="animate-pulse" />
+      </div>
+    );
+  }
 
   return (
     <div>

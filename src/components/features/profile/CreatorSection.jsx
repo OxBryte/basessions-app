@@ -4,11 +4,18 @@ import CreatorContentCard from "./CreatorContentCard";
 
 export default function CreatorSection() {
   const [activeTab, setActiveTab] = useState("tab1");
-  const { user } = useUser();
+  const { user, isLoading: loading } = useUser();
   const userId = user?.data?.id;
 
   const { userMedia, isLoading } = useUserMedia(userId);
-  console.log(userMedia);
+
+  if (loading) {
+    return (
+      <div className="w-full h-[60dvh] flex items-center justify-center">
+        <img src="session_logo.svg" alt="" className="animate-pulse" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -40,13 +47,15 @@ export default function CreatorSection() {
         {activeTab === "tab1" && (
           <div className="w-full space-y-6">
             {isLoading && (
-              <div className="w-full h-[20dvh] flex items-center justify-center">
-                Loading...
+              <div className="w-full h-[60dvh] flex items-center justify-center">
+                <img src="session_logo.svg" alt="" className="animate-pulse" />
               </div>
             )}
-            {userMedia?.map((media) => (
-              <CreatorContentCard key={media.id} media={media} />
-            ))}
+            {userMedia
+              ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              .map((media) => (
+                <CreatorContentCard key={media.id} media={media} />
+              ))}
           </div>
         )}
       </div>

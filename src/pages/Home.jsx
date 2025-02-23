@@ -4,12 +4,13 @@ import { useMedia } from "../components/hooks/useUser";
 export default function Home() {
   const { medias, isLoading } = useMedia();
 
-  if (isLoading)
+  if (isLoading) {
     return (
-      <div className="w-full min-h-[70dvh] flex items-center justify-center">
-        Fetching media...
+      <div className="w-full h-[60dvh] flex items-center justify-center">
+        <img src="session_logo.svg" alt="" className="animate-pulse" />
       </div>
     );
+  }
 
   return (
     <div className="w-full space-y-10 mx-auto">

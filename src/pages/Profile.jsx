@@ -5,8 +5,13 @@ import CreatorSection from "../components/features/profile/CreatorSection";
 import FanSection from "../components/features/profile/FanSection";
 
 export default function Profile() {
-  const { user } = useUser();
-  // console.log(user);
+  const { user, isLoading } = useUser();
+
+  if (isLoading) {
+    <div className="w-full h-[60dvh] flex items-center justify-center">
+      <img src="session_logo.svg" alt="" className="animate-pulse" />
+    </div>;
+  }
 
   return (
     <div>

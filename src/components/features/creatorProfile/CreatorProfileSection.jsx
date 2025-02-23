@@ -38,13 +38,15 @@ export default function CreatorProfileSection({ userId }) {
         {activeTab === "tab1" && (
           <div className="w-full space-y-6">
             {isLoading && (
-              <div className="w-full h-[20dvh] flex items-center justify-center">
-                Loading...
+              <div className="w-full h-[60dvh] flex items-center justify-center">
+                <img src="session_logo.svg" alt="" className="animate-pulse" />
               </div>
             )}
-            {userMedia?.map((media) => (
-              <ContentCard key={media.id} media={media} />
-            ))}
+            {userMedia
+              ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sort by createdAt in descending order
+              .map((media) => (
+                <ContentCard key={media.id} media={media} />
+              ))}
           </div>
         )}
       </div>

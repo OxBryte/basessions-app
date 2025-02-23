@@ -1,5 +1,5 @@
 import { HiOutlineCurrencyDollar } from "react-icons/hi2";
-import { RiThumbUpFill, RiThumbUpLine } from "react-icons/ri";
+import { RiThumbUpLine } from "react-icons/ri";
 import { TbMessage2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useSingleMedia } from "../components/hooks/useUser";
@@ -13,7 +13,14 @@ export default function WatchVideo() {
   const { id } = useParams();
 
   const { singleMedia, isLoading } = useSingleMedia(id);
-  // console.log(singleMedia);
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-[90dvh] flex items-center justify-center">
+        <img src="session_logo.svg" alt="" className="animate-pulse" />
+      </div>
+    );
+  }
 
   return (
     <>
