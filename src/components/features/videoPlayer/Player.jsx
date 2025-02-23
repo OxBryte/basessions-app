@@ -184,7 +184,7 @@ const Player = ({ src, thumbnail }) => {
   const renderCustomControls = () => {
     return (
       <div className="flex items-center justify-between gap-4 w-full text-white/80">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <button onClick={togglePlayPause}>
             {isPlaying ? <FaPause /> : <FaPlay />}
           </button>
@@ -199,21 +199,23 @@ const Player = ({ src, thumbnail }) => {
           value={progress}
           onChange={handleSeek}
           style={{
-            width: '80%',
+            width: "80%",
             background: `linear-gradient(to right, #4caf50 ${progress}%, #ddd ${progress}%)`,
           }}
         />
-        <button onClick={toggleMute}>
-          {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
-        </button>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.05"
-          value={volume}
-          onChange={handleVolumeChange}
-        />
+        <div className="flex items-center gap-3">
+          <button onClick={toggleMute}>
+            {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
+          </button>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.05"
+            value={volume}
+            onChange={handleVolumeChange}
+          />
+        </div>
         <button onClick={toggleFullScreen}>
           {isFullScreen ? <FaCompress /> : <FaExpand />}
         </button>

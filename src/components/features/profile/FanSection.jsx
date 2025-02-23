@@ -30,6 +30,17 @@ export default function FanSection() {
             </button>
           </div>
         </div>
+        <div className="w-full">
+          {activeTab === "tab1" && (
+            <div className="space-y-6 w-full">
+              <p className="w-full h-[320px]">No minted videos yet</p>
+            </div>
+          )}
+          {activeTab === "tab2" && (
+            <div className="space-y-6 w-full">
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

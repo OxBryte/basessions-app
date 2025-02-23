@@ -13,9 +13,11 @@ export default function Home() {
 
   return (
     <div className="w-full space-y-10 mx-auto">
-      {medias?.map((media) => (
-        <ContentCard key={media.id} media={media} />
-      ))}
+      {medias
+        ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .map((media) => (
+          <ContentCard key={media.id} media={media} />
+        ))}
     </div>
   );
 }
