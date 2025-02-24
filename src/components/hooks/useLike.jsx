@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { updateLike } from "../components/services/apiMedia";
+import { updateLike } from "../services/apiMedia";
 
 export const useLike = () => {
   const { mutate: likeFn, isPending } = useMutation({

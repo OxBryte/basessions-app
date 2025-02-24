@@ -4,7 +4,7 @@ import { useState } from "react";
 import { PiImageFill, PiVideoFill } from "react-icons/pi";
 import { useUser } from "../components/hooks/useUser";
 import { useForm } from "react-hook-form";
-import { useUploadMedia } from "../queries/useUploadMedia";
+import { useUploadMedia } from "../components/hooks/useUploadMedia";
 import Spinner from "../components/ui/Spinner";
 
 export default function UploadVideo() {

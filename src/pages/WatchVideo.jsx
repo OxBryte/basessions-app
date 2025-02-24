@@ -1,18 +1,57 @@
 import { HiOutlineCurrencyDollar } from "react-icons/hi2";
-import { RiThumbUpLine } from "react-icons/ri";
+import { RiThumbUpFill, RiThumbUpLine } from "react-icons/ri";
 import { TbMessage2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
-import { useSingleMedia } from "../components/hooks/useUser";
+import { useSingleMedia, useUser } from "../components/hooks/useUser";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import Player from "../components/features/videoPlayer/Player";
 import { BiChevronLeft } from "react-icons/bi";
 import { goBack } from "../components/libs/utils";
+import { useEffect, useState } from "react";
+import { useLike } from "../components/hooks/useLike";
 
 export default function WatchVideo() {
+  const { user } = useUser();
+  const userId = user?.data?.id;
   const { id } = useParams();
-
   const { singleMedia, isLoading } = useSingleMedia(id);
+
+  const [like, setLike] = useState(false);
+  const [likeCount, setLikeCount] = useState(
+    singleMedia?.liked_by?.length || 0
+  );
+
+  const { likeFn, isPending } = useLike();
+
+  useEffect(() => {
+    // Ensure state updates correctly if media changes
+    setLike(singleMedia?.liked_by?.some((liker) => liker.id === userId));
+    setLikeCount(singleMedia?.liked_by?.length || 0);
+  }, [singleMedia, userId]);
+
+  const handleLike = () => {
+    const newLikeStatus = !like;
+    setLike(newLikeStatus);
+
+    // Optimistically update the count
+    setLikeCount((prevCount) =>
+      newLikeStatus ? prevCount + 1 : prevCount - 1
+    );
+
+    likeFn(
+      { mediaId: id, status: newLikeStatus },
+      {
+        onError: () => {
+          // Revert state if mutation fails
+          setLike(!newLikeStatus);
+          setLikeCount((prevCount) =>
+            newLikeStatus ? prevCount - 1 : prevCount + 1
+          );
+        },
+      }
+    );
+  };
 
   if (isLoading) {
     return (
@@ -52,13 +91,18 @@ export default function WatchVideo() {
                 {/* <button className="text-blue-500">
                 <RiThumbUpFill size={21} />
               </button> */}
-                <button>
-                  <RiThumbUpLine size={21} />
+                <button
+                  onClick={handleLike}
+                  disabled={isPending}
+                  className={like ? "text-blue-500" : ""}
+                >
+                  {like ? (
+                    <RiThumbUpFill size={21} />
+                  ) : (
+                    <RiThumbUpLine size={21} />
+                  )}
                 </button>
-                <p className="!m-0 text-sm text-white/90">
-                  {" "}
-                  {singleMedia?.liked_by?.length}
-                </p>
+                <p className="!m-0 text-sm text-white/90"> {likeCount}</p>
               </div>
               <div className="flex gap-2 items-center text-white/60">
                 <TbMessage2 size={21} />

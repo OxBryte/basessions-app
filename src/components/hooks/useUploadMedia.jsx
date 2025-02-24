@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { uploadMedia } from "../components/services/apiProfile";
+import { uploadMedia } from "../services/apiProfile";
 
 export const useUploadMedia = () => {
   const navigate = useNavigate();

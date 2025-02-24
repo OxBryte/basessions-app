@@ -2,11 +2,10 @@ import moment from "moment";
 import { HiOutlineCurrencyDollar } from "react-icons/hi";
 import { TbMessage2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
-import { useLike } from "../../queries/useLike";
-import { useState } from "react";
+import { useLike } from "../hooks/useLike";
+import { useEffect, useState } from "react";
 import { useUser } from "../hooks/useUser";
 import { RiThumbUpFill, RiThumbUpLine } from "react-icons/ri";
-import ReactPlayer from "react-player";
 
 // eslint-disable-next-line react/prop-types
 export default function ContentCard({ media }) {
@@ -14,21 +13,36 @@ export default function ContentCard({ media }) {
   const { user } = useUser();
   const userId = user?.data?.id;
   const mediaId = media?.id;
+
   const [like, setLike] = useState(false);
+  const [likeCount, setLikeCount] = useState(media?.liked_by?.length || 0);
+
   const { likeFn, isPending } = useLike();
+
+  useEffect(() => {
+    // Ensure state updates correctly if media changes
+    setLike(media?.liked_by?.some((liker) => liker.id === userId));
+    setLikeCount(media?.liked_by?.length || 0);
+  }, [media, userId]);
 
   const handleLike = () => {
     const newLikeStatus = !like;
     setLike(newLikeStatus);
 
+    // Optimistically update the count
+    setLikeCount((prevCount) =>
+      newLikeStatus ? prevCount + 1 : prevCount - 1
+    );
+
     likeFn(
-      {
-        mediaId: mediaId,
-        status: newLikeStatus,
-      },
+      { mediaId, status: newLikeStatus },
       {
         onError: () => {
-          setLike(like);
+          // Revert state if mutation fails
+          setLike(!newLikeStatus);
+          setLikeCount((prevCount) =>
+            newLikeStatus ? prevCount - 1 : prevCount + 1
+          );
         },
       }
     );
@@ -56,19 +70,14 @@ export default function ContentCard({ media }) {
       <div className="flex flex-row gap-4 justify-between items-left md:items-center">
         <div className="flex items-center gap-4">
           <div className="flex gap-2 items-center text-white/60">
-            {like || media?.liked_by?.some((liker) => liker.id === userId) ? (
-              <button className="text-blue-500">
-                <RiThumbUpFill size={21} />
-              </button>
-            ) : (
-              <button onClick={() => handleLike()} disabled={isPending}>
-                <RiThumbUpLine size={21} />
-              </button>
-            )}
-            <p className="!m-0 text-sm text-white/90">
-              {" "}
-              {media?.liked_by?.length}
-            </p>
+            <button
+              onClick={handleLike}
+              disabled={isPending}
+              className={like ? "text-blue-500" : ""}
+            >
+              {like ? <RiThumbUpFill size={21} /> : <RiThumbUpLine size={21} />}
+            </button>
+            <p className="!m-0 text-sm text-white/90"> {likeCount}</p>
           </div>
           <div className="flex gap-2 items-center text-white/60">
             <TbMessage2 size={21} />

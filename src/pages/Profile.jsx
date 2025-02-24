@@ -6,6 +6,8 @@ import FanSection from "../components/features/profile/FanSection";
 
 export default function Profile() {
   const { user, isLoading } = useUser();
+  console.log(user);
+  
 
   if (isLoading) {
     <div className="w-full h-[60dvh] flex items-center justify-center">
