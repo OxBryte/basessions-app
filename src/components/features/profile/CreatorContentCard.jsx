@@ -1,12 +1,11 @@
-import moment from "moment";
 import { useState, useRef, useEffect } from "react";
 import { FaEllipsisVertical } from "react-icons/fa6";
-import { FiThumbsUp } from "react-icons/fi";
 import { TbMessage2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useUser } from "../../hooks/useUser";
 import { useLike } from "../../hooks/useLike";
 import { RiThumbUpFill, RiThumbUpLine } from "react-icons/ri";
+import { HiShare } from "react-icons/hi2";
 
 // eslint-disable-next-line react/prop-types
 export default function CreatorContentCard({ media }) {
@@ -129,6 +128,9 @@ export default function CreatorContentCard({ media }) {
             <p className="!m-0 text-sm text-white/80">
               {media?.comments?.length}
             </p>
+          </div>
+          <div className="text-white/80">
+            <HiShare size={21} />
           </div>
         </div>
         <div className="flex items-center gap-4">

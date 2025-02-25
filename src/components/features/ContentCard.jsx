@@ -6,6 +6,8 @@ import { useLike } from "../hooks/useLike";
 import { useEffect, useState } from "react";
 import { useUser } from "../hooks/useUser";
 import { RiThumbUpFill, RiThumbUpLine } from "react-icons/ri";
+import { BsFillPlayCircleFill } from "react-icons/bs";
+import { HiShare } from "react-icons/hi2";
 
 // eslint-disable-next-line react/prop-types
 export default function ContentCard({ media }) {
@@ -49,17 +51,22 @@ export default function ContentCard({ media }) {
   };
 
   return (
-    <div className="w-full mx-auto space-y-4">
+    <div className="w-full mx-auto space-y-4 relative">
       <Link to={`/${media?.id}`}>
         <div className="space-y-4">
           {!media?.thumbnail_url ? (
             <div className=" w-full h-[220px] rounded-xl bg-white/40"></div>
           ) : (
-            <img
-              src={media?.thumbnail_url}
-              alt=""
-              className=" w-full max-h-[360px] rounded-xl object-cover"
-            />
+            <div className="relative">
+              <img
+                src={media?.thumbnail_url}
+                alt=""
+                className=" w-full max-h-[360px] rounded-xl object-cover"
+              />
+              <div className="absolute inset-0 m-auto flex items-center justify-center bg-black/30 duration-300">
+                <BsFillPlayCircleFill size={46} />
+              </div>
+            </div>
           )}
           <h1 className="text-lg text-white/80 font-semibold">
             {media?.title}{" "}
@@ -84,6 +91,9 @@ export default function ContentCard({ media }) {
             <p className="!m-0 text-sm text-white/80">
               {media?.comments?.length}
             </p>
+          </div>
+          <div className="text-white/80">
+            <HiShare size={21} />
           </div>
         </div>
         <div className="flex items-center gap-4">
