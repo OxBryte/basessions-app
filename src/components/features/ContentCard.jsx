@@ -63,7 +63,7 @@ export default function ContentCard({ media }) {
                 alt=""
                 className=" w-full max-h-[360px] rounded-xl object-cover"
               />
-              <div className="absolute inset-0 m-auto flex items-center justify-center bg-black/30 duration-300">
+              <div className="absolute inset-0 m-auto flex items-center  rounded-xl justify-center bg-black/30 duration-300">
                 <BsFillPlayCircleFill size={46} />
               </div>
             </div>

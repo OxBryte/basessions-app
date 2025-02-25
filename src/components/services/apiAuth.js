@@ -4,6 +4,7 @@ const apiURL = import.meta.env.VITE_BASE_URL;
 const token = document.cookie.includes("token=")
   ? document.cookie.split("token=")[1].split(";")[0]
   : null;
+// console.log(token);
 
 export async function userSignup(body) {
   try {

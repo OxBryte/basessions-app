@@ -14,10 +14,10 @@ export const AuthProvider = ({ children }) => {
   
 
   const logout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-    queryClient.invalidateQueries(["user"]);
-    window.location.href = "/"; // Redirect to login page
+    // localStorage.removeItem("token");
+    // setToken(null);
+    // queryClient.invalidateQueries(["user"]);
+    // window.location.href = "/"; // Redirect to login page
   };
 
   // // Check for error or token expiration

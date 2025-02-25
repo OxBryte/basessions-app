@@ -13,6 +13,8 @@ import { useUser } from "./components/hooks/useUser";
 import EditProfile from "./pages/EditProfile";
 import CreatorProfile from "./pages/CreatorProfile";
 import WatchVideo from "./pages/WatchVideo";
+import Settings from "./pages/Settings";
+import Notifications from "./pages/Notification";
 
 function App() {
   const { user } = useUser();
@@ -37,6 +39,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:id" element={<CreatorProfile />} />
           <Route path="/:id" element={<WatchVideo />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/notifications" element={<Notifications />} />
         </Route>
 
         {/* Route */}

@@ -3,6 +3,7 @@ import { CiSettings } from "react-icons/ci";
 import { goBack } from "../../libs/utils";
 import { FaChartPie } from "react-icons/fa";
 import { useUser } from "../../hooks/useUser";
+import { Link } from "react-router-dom";
 
 export default function ProfileNav() {
   const { user } = useUser();
@@ -22,9 +23,11 @@ export default function ProfileNav() {
           <div>
             <BiHistory size={28} />
           </div>
-          <div>
-            <CiSettings size={28} />
-          </div>
+          <Link to="/settings">
+            <div>
+              <CiSettings size={28} />
+            </div>
+          </Link>
         </div>
       </div>
     </div>
