@@ -6,7 +6,7 @@ import FanSection from "../components/features/profile/FanSection";
 
 export default function Profile() {
   const { user, isLoading } = useUser();
-  console.log(user);
+  // console.log(user);
   
 
   if (isLoading) {

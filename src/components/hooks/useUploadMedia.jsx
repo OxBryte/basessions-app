@@ -12,7 +12,7 @@ export const useUploadMedia = () => {
       return await uploadMedia(body);
     },
     onSuccess(data) {
-      console.log(data);
+      // console.log(data);
       toast.success(`${data.message}`);
 
       //redirect to dashboard

@@ -9,7 +9,7 @@ export const useComment = () => {
       return await postComment({ comment }, mediaId);
     },
     onSuccess(data) {
-      console.log(data);
+    //   console.log(data);
       toast.success("Comment sent successfully");
     },
     onError(error) {
