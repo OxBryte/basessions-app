@@ -10,6 +10,7 @@ import { BiChevronLeft } from "react-icons/bi";
 import { goBack } from "../components/libs/utils";
 import { useEffect, useState } from "react";
 import { useLike } from "../components/hooks/useLike";
+import Comments from "../components/features/Comments";
 
 export default function WatchVideo() {
   const { user } = useUser();
@@ -70,7 +71,7 @@ export default function WatchVideo() {
           </div>
         </div>
       </div>
-      <div className="max-w-[620px] mx-auto">
+      <div className="max-w-[620px] mx-auto !relative">
         <div className="w-full">
           <Player
             src={singleMedia?.url}
@@ -106,7 +107,7 @@ export default function WatchVideo() {
               </div>
               <div className="flex gap-2 items-center text-white/60">
                 <TbMessage2 size={21} />
-                <p className="!m-0 text-sm text-white/80">0</p>
+                <p className="!m-0 text-sm text-white/80">{singleMedia?.comments?.length}</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -159,6 +160,8 @@ export default function WatchVideo() {
             </button>
           </div>
         </div>
+        <hr className="border-white/10" />
+        <Comments id={id} singleMedia={singleMedia} />
       </div>
     </>
   );

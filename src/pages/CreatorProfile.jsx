@@ -11,8 +11,8 @@ export default function CreatorProfile() {
 
   if (isLoading) {
     return (
-      <div className="w-full h-[60dvh] flex items-center justify-center">
-        <img src="session_logo.svg" alt="" className="animate-pulse" />
+      <div className="w-full h-[90dvh] flex items-center justify-center">
+        <img src="/session_logo.svg" alt="" className="animate-pulse" />
       </div>
     );
   }

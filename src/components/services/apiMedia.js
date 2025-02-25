@@ -49,10 +49,7 @@ export async function getSingleMedia(mediaId) {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await axios.get(
-      `${apiURL}/media/${mediaId}`,
-      config
-    );
+    const { data } = await axios.get(`${apiURL}/media/${mediaId}`, config);
 
     return data.data;
   } catch (error) {
@@ -73,11 +70,7 @@ export async function updateLike(mediaId, body) {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await axios.put(
-      `${apiURL}media/${mediaId}`,
-      body,
-      config,
-    );
+    const { data } = await axios.put(`${apiURL}media/${mediaId}`, body, config);
 
     return data.data;
   } catch (error) {
@@ -85,6 +78,26 @@ export async function updateLike(mediaId, body) {
     // window.location.href = "/";
     throw new Error(
       error.response?.data?.message || "An error occurred while fetching media"
+    );
+  }
+}
+
+export async function postComment(body, mediaId) {
+  const token = localStorage.getItem("token");
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  try {
+    const { data } = await axios.patch(
+      `${apiURL}media/${mediaId}/comment`,
+      body,
+      config
+    );
+    return data.data;
+  } catch (error) {
+    console.error("Error while posting comment:", error);
+    throw new Error(
+      error.response?.data?.message || "An error occurred while posting comment"
     );
   }
 }
