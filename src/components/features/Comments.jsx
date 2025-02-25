@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BiCaretDown } from "react-icons/bi";
 import { PiPaperPlaneTiltFill } from "react-icons/pi";
 import { TbMessage } from "react-icons/tb";
-import { useComment } from "../hooks/UseComment";
+import { useComment } from "../hooks/useComment";
 import moment from "moment";
 import Spinner from "../ui/Spinner";
 
