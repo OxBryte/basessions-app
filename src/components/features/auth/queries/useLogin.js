@@ -21,6 +21,7 @@ export const useLogin = () => {
 
       //save token in local storage
       localStorage.setItem("token", data.data.token);
+      document.cookie = `token=${data.data.token}; path=/; max-age=604800; Secure; SameSite=Strict;`;
       navigate("/");
     },
     onError(error) {

@@ -1,5 +1,8 @@
 import axios from "axios";
 const apiURL = import.meta.env.VITE_BASE_URL;
+const token = document.cookie.includes("token=")
+  ? document.cookie.split("token=")[1].split(";")[0]
+  : null;
 
 export async function getMedias() {
   try {
@@ -19,7 +22,7 @@ export async function getMedias() {
 export async function getUserMedias(userId) {
   try {
     // Assuming the token is stored in localStorage or similar
-    const token = localStorage.getItem("token");
+
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -43,7 +46,7 @@ export async function getUserMedias(userId) {
 export async function getSingleMedia(mediaId) {
   try {
     // Assuming the token is stored in localStorage or similar
-    const token = localStorage.getItem("token");
+
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -64,7 +67,7 @@ export async function getSingleMedia(mediaId) {
 export async function updateLike(mediaId, body) {
   try {
     // Assuming the token is stored in localStorage or similar
-    const token = localStorage.getItem("token");
+
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -83,7 +86,6 @@ export async function updateLike(mediaId, body) {
 }
 
 export async function postComment(body, mediaId) {
-  const token = localStorage.getItem("token");
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };

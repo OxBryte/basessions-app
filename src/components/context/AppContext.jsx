@@ -10,7 +10,8 @@ export const AuthProvider = ({ children }) => {
   const { isLoading, user } = useUser();
   const { isLoading: loading } = useMedia();
   const queryClient = useQueryClient();
-  const [, setToken] = useState(localStorage.getItem("token") || null);
+  const [, setToken] = useState(document.cookie.includes('token=') || null) ;
+  
 
   const logout = () => {
     localStorage.removeItem("token");

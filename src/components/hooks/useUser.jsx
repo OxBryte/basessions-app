@@ -3,7 +3,9 @@ import { getCreatorProfile, getCurrentUser } from "../services/apiAuth";
 import { getMedias, getSingleMedia, getUserMedias } from "../services/apiMedia";
 
 export function useUser() {
-  const token = localStorage.getItem("token");
+  const token = document.cookie.includes("token=")
+    ? document.cookie.split("token=")[1].split(";")[0]
+    : null;
   const {
     isPending: isLoading,
     data: user,

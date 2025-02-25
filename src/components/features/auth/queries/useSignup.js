@@ -13,7 +13,7 @@ export const useSignup = () => {
       return await userSignup(body);
     },
     onSuccess(data) {
-    //   console.log(data);
+      //   console.log(data);
       toast.success(`${data.message}`);
 
       //set user data and session in global state
@@ -22,10 +22,10 @@ export const useSignup = () => {
       //save token in local storage
       localStorage.setItem("userEmail", data.data.user.email);
       localStorage.setItem("token", data.data.token);
+      document.cookie = `token=${data.data.token}; path=/; max-age=604800; Secure; SameSite=Strict;`;
 
-        //redirect to dashboard
-        navigate("/verify");
-       
+      //redirect to dashboard
+      navigate("/verify");
     },
     onError(error) {
       console.log(error);
