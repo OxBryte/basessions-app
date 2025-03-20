@@ -14,11 +14,20 @@ export default function Home() {
 
   return (
     <div className="w-full space-y-10 mx-auto">
-      {medias
-        ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-        .map((media) => (
-          <ContentCard key={media.id} media={media} />
-        ))}
+      {medias.length === 0 ? (
+        <div className="w-full h-[60vh] flex flex-col gap-4 items-center justify-center">
+          <img src="session_logo.svg" alt="" />
+          <p className="text-lg text-gray-500">No media content available</p>
+        </div>
+      ) : (
+        <>
+          {medias
+            ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            .map((media) => (
+              <ContentCard key={media.id} media={media} />
+            ))}
+        </>
+      )}
     </div>
   );
 }

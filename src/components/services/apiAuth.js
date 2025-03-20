@@ -32,7 +32,11 @@ export async function userLogin(body) {
 
 export async function verifyUser(body) {
   try {
-    const { data } = await axios.patch(`${apiURL}user/verify`, body);
+    const { data } = await axios.patch(`${apiURL}user/verify`, body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data;
   } catch (error) {
     console.error("Error while verifying user:", error);
