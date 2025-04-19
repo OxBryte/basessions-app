@@ -15,11 +15,50 @@ export const truncate = (text = "", maxLength = 50) => {
 //   return <>{truncate(text, length)}</>;
 // };
 
-
 export const goBack = () => {
-    // Using browser's built history navigation
-    window.history.back();
-    
-    // Alternative method:
-    // window.history.go(-1);
-  };
+  // Using browser's built history navigation
+  window.history.back();
+
+  // Alternative method:
+  // window.history.go(-1);
+};
+
+export async function copyToClipboard(text) {
+  // First try the modern API
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // fall through to fallback
+    }
+  }
+
+  // Fallback approach
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  // avoid scrolling to bottom
+  textarea.style.position = "fixed";
+  textarea.style.top = "0";
+  textarea.style.left = "0";
+  textarea.style.width = "1px";
+  textarea.style.height = "1px";
+  textarea.style.padding = "0";
+  textarea.style.border = "none";
+  textarea.style.outline = "none";
+  textarea.style.boxShadow = "none";
+  textarea.style.background = "transparent";
+
+  document.body.appendChild(textarea);
+  textarea.select();
+
+  let success = false;
+  try {
+    success = document.execCommand("copy");
+  } catch {
+    success = false;
+  }
+
+  document.body.removeChild(textarea);
+  return success;
+}
