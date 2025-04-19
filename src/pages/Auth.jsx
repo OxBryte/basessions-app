@@ -74,7 +74,7 @@ export function AuthLogin() {
               })}
             />
             {errors.password && (
-              <span className="text-red-500">
+              <span className="text-xs text-red-500">
                 Password should be more that 7 characters
               </span>
             )}
@@ -107,6 +107,7 @@ export function AuthLogin() {
         <div className="flex flex-col gap-3 w-full">
           <button
             onClick={handleSubmit(onSubmit)}
+            type="submit"
             className="bg-[#0052FE] text-white hover:bg-[#0052FE]/80 w-full rounded-2xl px-6 py-4"
           >
             {isPending ? <Spinner /> : "Login"}
@@ -188,7 +189,7 @@ export function AuthSignup() {
               })}
             />
             {errors.password && (
-              <span className="text-red-500">
+              <span className="text-xs text-red-500">
                 Password should be more that 7 characters
               </span>
             )}

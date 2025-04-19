@@ -4,10 +4,17 @@ import { Link } from "react-router-dom";
 import { useUser } from "../../hooks/useUser";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AppContext";
+import { PiWallet } from "react-icons/pi";
 
 export default function ProfileDetails() {
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
   const { logout } = useContext(AuthContext);
+
+   if (isLoading) {
+     <div className="w-full h-[60dvh] flex items-center justify-center">
+       <img src="session_logo.svg" alt="" className="animate-pulse" />
+     </div>;
+   }
 
   return (
     <div className="space-y-4 w-full pb-5 border-b border-white/10">
@@ -21,12 +28,22 @@ export default function ProfileDetails() {
             backgroundImage: `url(${user?.data?.avatar_url})`,
           }}
         />
-        <Link to="/edit-profile">
-          <div className="bg-[#FFFFFF0D] rounded-full px-5 py-2 flex gap-2 items-center">
-            <BiEditAlt />
-            Edit
-          </div>
-        </Link>
+        <div className="flex gap-2 items-center">
+          <Link to="/edit-profile">
+            <div className="bg-[#FFFFFF0D] rounded-full px-5 py-2 flex gap-2 items-center">
+              <BiEditAlt />
+              Edit
+            </div>
+          </Link>
+          <Link to="/wallet">
+            <div className="">
+              <PiWallet
+                size={20}
+                className="p-2 rounded-full w-10 h-10 bg-white/10 "
+              />
+            </div>
+          </Link>
+        </div>
       </div>
       <div className="space-y-1">
         <div className="flex items-center gap-4">
@@ -70,7 +87,7 @@ export default function ProfileDetails() {
           </p>
         </div>
       )}
-      <button onClick={logout}>Logout</button>
+      {/* <button onClick={logout}>Logout</button> */}
     </div>
   );
 }

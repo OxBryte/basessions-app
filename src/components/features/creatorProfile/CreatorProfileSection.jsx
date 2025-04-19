@@ -7,7 +7,7 @@ export default function CreatorProfileSection({ userId }) {
   const [activeTab, setActiveTab] = useState("tab1");
 
   const { userMedia, isLoading } = useUserMedia(userId);
-console.log(userMedia)
+  // console.log(userMedia);
 
   return (
     <>

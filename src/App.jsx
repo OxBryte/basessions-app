@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthLogin, AuthSignup } from "./pages/Auth";
-import Layout from "./components/layouts/layout";
+import Layout, { ProfileLayout } from "./components/layouts/layout";
 import Home from "./pages/Home";
 import ProfileComplete from "./components/features/auth/ProfileComplete";
 import Profile from "./pages/Profile";
@@ -15,6 +15,7 @@ import CreatorProfile from "./pages/CreatorProfile";
 import WatchVideo from "./pages/WatchVideo";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notification";
+import Wallet from "./components/features/profile/Wallet";
 
 function App() {
   const { user } = useUser();
@@ -38,6 +39,9 @@ function App() {
           )}
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:id" element={<CreatorProfile />} />
+          <Route element={<ProfileLayout />}>
+          <Route path="/wallet" element={<Wallet />} />
+          </Route>
           <Route path="/:id" element={<WatchVideo />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/notifications" element={<Notifications />} />

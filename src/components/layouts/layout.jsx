@@ -9,3 +9,12 @@ export default function Layout() {
     </div>
   );
 }
+
+// profile layout
+export function ProfileLayout() {
+  return (
+    <div className="w-full max-w-[620px] mx-auto px-4 py-4">
+      <Outlet />
+    </div>
+  );
+}
