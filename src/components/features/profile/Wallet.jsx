@@ -31,7 +31,7 @@ export default function Wallet() {
           </div>
           <div className="flex flex-col gap-2 items-center justify-center p-4 rounded-lg bg-white/5">
             <PiPaperPlaneTiltFill size={24} />
-            <p className="text-xs text-white/60">Recieve</p>
+            <p className="text-xs text-white/60">Send</p>
           </div>
           <div className="flex flex-col gap-2 items-center justify-center p-4 rounded-lg bg-white/5">
             <PiQrCode size={24} />
