@@ -8,13 +8,20 @@ import {
 } from "react-icons/pi";
 import { useState } from "react";
 import QRCode from "react-qr-code";
+import { useUser } from "../../hooks/useUser";
 
 export default function Wallet() {
   const [send, setSend] = useState(false);
   const [modal, setModal] = useState(false);
   const [amount, setAmount] = useState("");
   const [toAddress, setToAddress] = useState("");
-  const walletAddress = "0xB9Ffcd5fB867905e2f823a5A29DC7A2cD1C101b5";
+
+  const { user } = useUser();
+  
+  const walletAddress = user?.data?.wallet_address;
+  // console.log(walletAddress);
+
+
 
   async function handleCopy(address) {
     const ok = await copyToClipboard(address);

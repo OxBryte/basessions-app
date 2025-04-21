@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { BiCaretDown } from "react-icons/bi";
 import { PiPaperPlaneTiltFill } from "react-icons/pi";

@@ -46,6 +46,12 @@ export default function CreatorSection() {
         </div>
         {activeTab === "tab1" && (
           <div className="w-full space-y-6">
+            {userMedia?.length === 0 && (
+              <div className="w-full h-[20dvh] gap-3 flex flex-col items-center justify-center">
+                <img src="session_logo.svg" alt="" className="w-10" />
+                <p className="text-white/60">No uploads yet</p>
+              </div>
+            )}
             {isLoading && (
               <div className="w-full h-[60dvh] flex items-center justify-center">
                 <img src="session_logo.svg" alt="" className="animate-pulse" />

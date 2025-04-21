@@ -7,6 +7,11 @@ const token = document.cookie.includes("token=")
 
 export async function updateProfile(body) {
   try {
+    
+    const token = document.cookie.includes("token=")
+      ? document.cookie.split("token=")[1].split(";")[0]
+      : null;
+    
     const formData = new FormData();
     Object.keys(body).forEach((key) => {
       if (body[key] !== "") {

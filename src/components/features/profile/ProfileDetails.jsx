@@ -2,19 +2,17 @@ import { BiEditAlt } from "react-icons/bi";
 import { BsTwitterX } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useUser } from "../../hooks/useUser";
-import { useContext } from "react";
-import { AuthContext } from "../../context/AppContext";
 import { PiWallet } from "react-icons/pi";
 
 export default function ProfileDetails() {
   const { user, isLoading } = useUser();
-  const { logout } = useContext(AuthContext);
+  // const { logout } = useContext(AuthContext);
 
-   if (isLoading) {
-     <div className="w-full h-[60dvh] flex items-center justify-center">
-       <img src="session_logo.svg" alt="" className="animate-pulse" />
-     </div>;
-   }
+  if (isLoading) {
+    <div className="w-full h-[60dvh] flex items-center justify-center">
+      <img src="session_logo.svg" alt="" className="animate-pulse" />
+    </div>;
+  }
 
   return (
     <div className="space-y-4 w-full pb-5 border-b border-white/10">
