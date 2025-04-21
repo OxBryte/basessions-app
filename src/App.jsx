@@ -16,6 +16,7 @@ import WatchVideo from "./pages/WatchVideo";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notification";
 import Wallet from "./components/features/profile/Wallet";
+import WalletSettings from "./components/features/profile/WalletSettings";
 
 function App() {
   const { user } = useUser();
@@ -44,6 +45,7 @@ function App() {
           </Route>
           <Route path="/:id" element={<WatchVideo />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/settings/wallet" element={<WalletSettings />} />
           <Route path="/notifications" element={<Notifications />} />
         </Route>
 

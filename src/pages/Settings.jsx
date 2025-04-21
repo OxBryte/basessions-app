@@ -16,12 +16,14 @@ export default function Settings() {
             <p>Settings</p>
           </div>
           <div className="w-full flex flex-col gap-5">
-            <div className="flex items-center gap-4 justify-between">
-              <p className="text-md">Wallet</p>
-              <button>
-                <BiChevronRight size={28} />
-              </button>
-            </div>
+            <Link to="/settings/wallet">
+              <div className="flex items-center gap-4 justify-between">
+                <p className="text-md">Wallet</p>
+                <button>
+                  <BiChevronRight size={28} />
+                </button>
+              </div>
+            </Link>
             <Link to="/notifications">
               <div className="flex items-center gap-4 justify-between">
                 <p className="text-md">Notification settings</p>
