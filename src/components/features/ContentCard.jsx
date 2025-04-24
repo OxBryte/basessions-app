@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import moment from "moment";
 import { HiOutlineCurrencyDollar } from "react-icons/hi";
 import { TbMessage2 } from "react-icons/tb";
@@ -134,7 +135,7 @@ export default function ContentCard({ media }) {
             </div>
           </Link>
           <p className="text-xs text-white/60">
-            {moment(media?.created_at).startOf("hour").fromNow()}
+            {moment(media?.created_at).startOf("seconds").fromNow()}
           </p>
           <button className="border border-white/60 text-white/60 px-3 py-1.5 gap-2 rounded-full flex items-center">
             <HiOutlineCurrencyDollar size={20} />

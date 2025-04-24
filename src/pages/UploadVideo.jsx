@@ -15,7 +15,9 @@ export default function UploadVideo() {
   const [description, setDescription] = useState(""); // Add state for description
   const [videoFile, setVideoFile] = useState(null); // Add state for video file
   const [thumbnail, setThumbnail] = useState(null); // Add state for thumbnail
-  const { uploadMediaFn, isPending } = useUploadMedia();
+  const [openModal, setOpenModal] = useState(false);
+  const [data, setData] = useState(null);
+  const { uploadMediaFn, isPending } = useUploadMedia(setOpenModal, setData);
 
   const {
     register,
@@ -66,8 +68,11 @@ export default function UploadVideo() {
       user_id: userId,
     };
     uploadMediaFn(edited);
-    console.log(edited);
+    // console.log(edited);
   };
+
+console.log(data);
+
 
   return (
     <div>
@@ -242,11 +247,32 @@ export default function UploadVideo() {
               onClick={handleSubmit(onSubmit)}
               className="bg-[#0052FE] px-4 py-3 w-full rounded-full"
             >
-              {isPending ? <Spinner /> : "Upload and Mint"}
+              {isPending ? <Spinner /> : "Upload video"}
             </button>
           </form>
         </div>
       </div>
+      {openModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50">
+          <div className="bg-white p-4 rounded-lg">
+            <h2 className="text-lg font-semibold">Upload Successful</h2>
+            <p>Your video has been uploaded successfully!</p>
+            <p>This will be handling your mint function</p>
+            <button
+              // onClick={() => setOpenModal(false)}
+              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Mint
+            </button>
+            <button
+              // onClick={() => setOpenModal(false)}
+              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

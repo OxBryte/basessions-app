@@ -41,7 +41,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:id" element={<CreatorProfile />} />
           <Route element={<ProfileLayout />}>
-          <Route path="/wallet" element={<Wallet />} />
+            <Route path="/wallet" element={<Wallet />} />
           </Route>
           <Route path="/:id" element={<WatchVideo />} />
           <Route path="/settings" element={<Settings />} />

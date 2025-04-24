@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { uploadMedia } from "../services/apiProfile";
 
-export const useUploadMedia = () => {
+export const useUploadMedia = (setOpenModal, setData) => {
   const navigate = useNavigate();
 
   const { mutateAsync: uploadMediaFn, isPending } = useMutation({
@@ -13,10 +13,12 @@ export const useUploadMedia = () => {
     },
     onSuccess(data) {
       // console.log(data);
+      setData(data);
       toast.success(`${data.message}`);
+      setOpenModal(true);
 
       //redirect to dashboard
-      navigate("/");
+      // navigate("/");
     },
     onError(error) {
       console.log(error);
