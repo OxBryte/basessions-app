@@ -10,21 +10,22 @@ export const AuthProvider = ({ children }) => {
   const { isLoading, user } = useUser();
   const { isLoading: loading } = useMedia();
   const queryClient = useQueryClient();
-  const [, setToken] = useState(document.cookie.includes('token=') || null) ;
-  
+
+  const [, setToken] = useState(() => {
+    const match = document.cookie.match(/token=([^;]+)/);
+    return match ? match[1] : null;
+  });
 
   const logout = () => {
-    // localStorage.removeItem("token");
-    // setToken(null);
-    // queryClient.invalidateQueries(["user"]);
-    // window.location.href = "/"; // Redirect to login page
+    // Remove token cookie
+    document.cookie = "token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    setToken(null);
+    // Invalidate user-related queries
+    queryClient.invalidateQueries(["user"]);
+    // Redirect to login page
+    window.location.href = "/";
   };
 
-  // // Check for error or token expiration
-  // if (error || !localStorage.getItem("token")) {
-  //   logout(); // Call logout to handle redirection
-  //   return null; // Prevent rendering of children
-  // }
 
   if (loading) {
     return (
