@@ -287,7 +287,7 @@ export default function UploadVideo() {
       </div>
       {openModal && (
         <div className="fixed inset-0 flex items-center justify-center p-5 bg-black/50">
-          <div className="bg-[#131313] p-5 w-full  flex flex-col items-center text-center gap-3 rounded-lg">
+          <div className="bg-[#131313] p-5 max-w-[380px] w-full  flex flex-col items-center text-center gap-3 rounded-lg">
             <div className="w-[140px] h-[140px] overflow-hidden">
               <img src="success.gif" alt="" />
             </div>
