@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useRef, useEffect } from "react";
 import { FaEllipsisVertical } from "react-icons/fa6";
 import { TbMessage2 } from "react-icons/tb";
@@ -6,8 +7,8 @@ import { useUser } from "../../hooks/useUser";
 import { useLike } from "../../hooks/useLike";
 import { RiThumbUpFill, RiThumbUpLine } from "react-icons/ri";
 import { HiShare } from "react-icons/hi2";
+import { useDeleteMedia } from "../../hooks/useUploadMedia";
 
-// eslint-disable-next-line react/prop-types
 export default function CreatorContentCard({ media }) {
   const [showOption, setShowOption] = useState(false);
   const optionsRef = useRef(null);
@@ -33,6 +34,11 @@ export default function CreatorContentCard({ media }) {
   const [likeCount, setLikeCount] = useState(media?.liked_by?.length || 0);
 
   const { likeFn, isPending } = useLike();
+  const { deleteMediaFn } = useDeleteMedia();
+
+  const handleDelete = () => {
+    deleteMediaFn(mediaId);
+  };
 
   useEffect(() => {
     // Ensure state updates correctly if media changes
@@ -101,7 +107,13 @@ export default function CreatorContentCard({ media }) {
               <div className="p-3 w-full hover:bg-white/20 cursor-pointer">
                 Edit
               </div>
-              <div className="p-3 w-full hover:bg-white/20 cursor-pointer">
+              <div
+                className="p-3 w-full hover:bg-white/20 cursor-pointer"
+                onClick={() => {
+                  handleDelete();
+                  setShowOption(false);
+                }}
+              >
                 Delete
               </div>
               <div className="p-3 w-full hover:bg-white/20 cursor-pointer">

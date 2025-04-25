@@ -6,7 +6,6 @@ import { PiWallet } from "react-icons/pi";
 
 export default function ProfileDetails() {
   const { user, isLoading } = useUser();
-  // const { logout } = useContext(AuthContext);
 
   if (isLoading) {
     <div className="w-full h-[60dvh] flex items-center justify-center">
@@ -85,7 +84,6 @@ export default function ProfileDetails() {
           </p>
         </div>
       )}
-      {/* <button onClick={logout}>Logout</button> */}
     </div>
   );
 }

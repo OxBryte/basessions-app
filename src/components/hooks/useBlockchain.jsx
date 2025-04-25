@@ -37,30 +37,48 @@ const uploadVideo = async (privateKey, mediaId, mintLimit, price) => {
   const receipt = await web3.eth.sendSignedTransaction(signed.rawTransaction);
 
   console.log("Uploaded:", receipt);
-  
+
   return receipt;
 };
-
 
 // This function is used to mint a video on the blockchain
 // It takes the private key of the user, the video ID, and the price in Wei
 // The function creates a transaction object with the necessary details, signs it with the user's private key, and sends it to the blockchain
 // The transaction is then sent to the blockchain and the receipt is logged
-const mintVideo = async (privateKey, videoId, priceInWei) => {
-  const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+const mintVideo = async (privateKey, videoId) => {
+  try {
+    const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+    const data = contract.methods.mintVideo(videoId).encodeABI();
 
-  const tx = {
-    from: account.address,
-    to: CONTRACT_ADDRESS,
-    value: priceInWei,
-    gas: 300000,
-    data: contract.methods.mintVideo(videoId).encodeABI(),
-  };
+    const gas = await contract.methods.mintVideo(videoId).estimateGas({
+      from: account.address,
+      // value: priceInWei,
+    });
 
-  const signed = await web3.eth.accounts.signTransaction(tx, privateKey);
-  const receipt = await web3.eth.sendSignedTransaction(signed.rawTransaction);
+    const pendingBlock = await web3.eth.getBlock("pending");
+    const baseFee = BigInt(pendingBlock.baseFeePerGas);
+    const priorityFee = BigInt(web3.utils.toWei("2", "gwei"));
+    const maxFee = baseFee + priorityFee;
 
-  console.log("Minted:", receipt);
+    const tx = {
+      from: account.address,
+      to: CONTRACT_ADDRESS,
+      // value: priceInWei,
+      gas,
+      data,
+      maxFeePerGas: "0x" + maxFee.toString(16),
+      maxPriorityFeePerGas: "0x" + priorityFee.toString(16),
+    };
+
+    const signed = await web3.eth.accounts.signTransaction(tx, privateKey);
+    const receipt = await web3.eth.sendSignedTransaction(signed.rawTransaction);
+
+    console.log("✅ Mint success:", receipt);
+    return receipt;
+  } catch (err) {
+    console.error("❌ Error during mint:", err?.message || err);
+    throw err;
+  }
 };
 
 // This function is used to tip a creator for their content

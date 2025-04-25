@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { useUploadMedia } from "../components/hooks/useUploadMedia";
 import Spinner from "../components/ui/Spinner";
 import { uploadVideo } from "../components/hooks/useBlockchain";
-import { web3 } from "../Provider";
 import { keccak256, toBigInt } from "web3-utils";
 import { BsExclamationCircle } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -73,29 +72,30 @@ export default function UploadVideo() {
       thumbnail: thumbnail,
       free: freeMint,
       // price: freeMint === true && 0,
-      user_id: userId,
+      // user_id: userId,
     };
     uploadMediaFn(edited);
     // console.log(edited);
   };
 
-  console.log(data);
+  // console.log(data);
   const stringToUint256 = (str) => {
     const hash = keccak256(str); // e.g., 0xabc123...
     const uint = toBigInt(hash).toString(); // Convert to decimal string
     return uint;
   };
 
-  const handleMint = async () => {
+  const handleUploadVideoMint = async () => {
     try {
       setMinting(true);
       console.log("Minting video...");
-      const price = web3.utils.toWei(data?.data?.price, "ether");
-      const mintLimit = data?.data?.max_mints;
+      // const price = web3.utils.toWei(data?.data?.price, "ether");
+      const price = stringToUint256(data?.data?.price);
+      const mintLimit = stringToUint256(data?.data?.max_mints);
       const mediaId = stringToUint256(data?.data?.id);
       const privateKey = user?.data?.wallet_private_key;
 
-      uploadVideo(privateKey, mediaId, mintLimit, price);
+      await uploadVideo(privateKey, mediaId, mintLimit, price);
       console.log("Minted video successfully");
       toast.success("Minted video successfully!");
       setMinting(false);
@@ -300,7 +300,7 @@ export default function UploadVideo() {
             </div>
 
             <button
-              onClick={() => handleMint()}
+              onClick={() => handleUploadVideoMint()}
               className="w-full bg-blue-500 text-white px-4 py-2 rounded"
             >
               {minting ? <Spinner /> : "Mint Video"}

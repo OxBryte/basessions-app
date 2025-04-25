@@ -68,3 +68,28 @@ export async function uploadMedia(body) {
     );
   }
 }
+
+
+ export async function deleteMedia(mediaId) {
+   try {
+     const token = document.cookie.includes("token=")
+       ? document.cookie.split("token=")[1].split(";")[0]
+       : null;
+     // Assuming the token is stored in localStorage or similar
+
+     const config = {
+       headers: {
+         Authorization: `Bearer ${token}`,
+       },
+     };
+     const { data } = await axios.delete(`${apiURL}media/${mediaId}`, config);
+
+     return data;
+   } catch (error) {
+     console.error("Error while fetching media:", error);
+     // window.location.href = "/";
+     throw new Error(
+       error.response?.message || "An error occurred while fetching media"
+     );
+   }
+ }

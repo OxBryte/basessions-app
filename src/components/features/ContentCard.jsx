@@ -9,8 +9,11 @@ import { useUser } from "../hooks/useUser";
 import { RiThumbUpFill, RiThumbUpLine } from "react-icons/ri";
 import { BsFillPlayCircleFill } from "react-icons/bs";
 import { HiShare } from "react-icons/hi2";
+import { keccak256, toBigInt } from "web3-utils";
+import toast from "react-hot-toast";
+import { mintVideo } from "../hooks/useBlockchain";
+import Spinner from "../ui/Spinner";
 
-// eslint-disable-next-line react/prop-types
 export default function ContentCard({ media }) {
   // console.log(media);
   const { user } = useUser();
@@ -19,6 +22,7 @@ export default function ContentCard({ media }) {
 
   const [like, setLike] = useState(false);
   const [likeCount, setLikeCount] = useState(media?.liked_by?.length || 0);
+  const [minting, setMinting] = useState(false);
 
   const { likeFn, isPending } = useLike();
 
@@ -51,6 +55,30 @@ export default function ContentCard({ media }) {
     );
   };
 
+  const stringToUint256 = (str) => {
+    const hash = keccak256(str); // e.g., 0xabc123...
+    const uint = toBigInt(hash).toString(); // Convert to decimal string
+    return uint;
+  };
+
+  const handleMintVideo = async () => {
+    try {
+      setMinting(true);
+      console.log("Minting video...");
+      // const priceInWei = web3.utils.toWei(media?.price, "ether");
+      const videoId = stringToUint256(media?.id);
+      const privateKey = user?.data?.wallet_private_key;
+
+      await mintVideo(privateKey, videoId);
+      console.log("Minted video successfully");
+      toast.success("Minted video successfully!");
+      setMinting(false);
+    } catch (error) {
+      console.log("Error minting video:", error);
+      setMinting(false);
+    }
+  };
+
   return (
     <div className="w-full mx-auto space-y-4 relative">
       <Link to={`/${media?.id}`}>
@@ -75,7 +103,7 @@ export default function ContentCard({ media }) {
           <p className="text-white/40 text-sm">{media?.description}</p>
         </div>
       </Link>
-      <div className="flex flex-row gap-4 justify-between items-left md:items-center">
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-left md:items-center">
         <div className="flex items-center gap-4">
           <div className="flex gap-2 items-center text-white/60">
             <button
@@ -97,17 +125,22 @@ export default function ContentCard({ media }) {
             <HiShare size={21} />
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="flex flex-col md:gap-0 gap-2 items-center">
-            <p className="text-white/80 text-sm">Total Mints</p>
-            <p className="text-white/60 text-sm">0/{media?.max_mints}</p>
+        <div className="flex justify-between items-center gap-4">
+          <div className="flex items-center gap-4">
+            <div className="flex md:flex-col md:gap-0 gap-2 items-center">
+              <p className="text-white/80 text-sm">Total Mints</p>
+              <p className="text-white/60 text-sm">0/{media?.max_mints}</p>
+            </div>
+            <div className="flex md:flex-col md:gap-0 gap-2 items-center">
+              <p className="text-white/80 text-sm">Price</p>
+              <p className="text-white/60 text-sm"> {media?.price} ETH</p>
+            </div>
           </div>
-          <div className="flex flex-col md:gap-0 gap-2 items-center">
-            <p className="text-white/80 text-sm">Price</p>
-            <p className="text-white/60 text-sm"> {media?.price} ETH</p>
-          </div>
-          <button className="px-6 py-2.5 bg-[#0052FE] rounded-full text-sm">
-            Mint
+          <button
+            className="px-7 py-2.5 bg-[#0052FE] rounded-full text-sm"
+            onClick={handleMintVideo}
+          >
+            {minting ? <Spinner /> : "Mint"}
           </button>
         </div>
       </div>
@@ -116,7 +149,7 @@ export default function ContentCard({ media }) {
           <Link to={`/profile/${media?.creator?.id}`}>
             <div className="flex gap-3 items-center">
               <div
-                className="w-12 h-12 bg-white/30 rounded-full"
+                className="w-10 h-10 bg-white/30 rounded-full"
                 style={{
                   backgroundPosition: "center",
                   backgroundSize: "cover",
@@ -124,7 +157,7 @@ export default function ContentCard({ media }) {
                   backgroundImage: `url(${media?.creator?.avatar_url})`,
                 }}
               ></div>
-              <div className="!space-y-1">
+              <div className="!space-y-0">
                 <h1 className="font-semibold !m-0 text-md text-white">
                   {media?.creator?.display_name}
                 </h1>
@@ -132,12 +165,12 @@ export default function ContentCard({ media }) {
                   @{media?.creator?.username}
                 </p>
               </div>
+              <p className="text-xs text-white/60">
+                {moment(media?.created_at).startOf("seconds").fromNow()}
+              </p>
             </div>
           </Link>
-          <p className="text-xs text-white/60">
-            {moment(media?.created_at).startOf("seconds").fromNow()}
-          </p>
-          <button className="border border-white/60 text-white/60 px-3 py-1.5 gap-2 rounded-full flex items-center">
+          <button className="border border-white/60 text-white/60 px-3 py-1.5 gap-2 text-sm rounded-full flex items-center">
             <HiOutlineCurrencyDollar size={20} />
             Tip
           </button>
