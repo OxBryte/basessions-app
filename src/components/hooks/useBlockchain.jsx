@@ -1,5 +1,6 @@
 import { CONTRACT_ADDRESS } from "../../contract/contactDet";
 import { contract, web3 } from "../../Provider";
+import { toWei } from "web3-utils";
 
 // This function is used to upload a video to the blockchain
 // It takes the private key of the user, the media ID of the video, the mint limit, and the price in Wei
@@ -7,19 +8,39 @@ import { contract, web3 } from "../../Provider";
 // The transaction is then sent to the blockchain and the receipt is logged
 const uploadVideo = async (privateKey, mediaId, mintLimit, price) => {
   const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+  const txData = contract.methods
+    .uploadVideo(mediaId, mintLimit, price)
+    .encodeABI();
+
+  const gas = await contract.methods
+    .uploadVideo(mediaId, mintLimit, price)
+    .estimateGas({
+      from: account.address,
+    });
+
+  // Fetch base fee
+  const pendingBlock = await web3.eth.getBlock("pending");
+  const baseFee = BigInt(pendingBlock.baseFeePerGas); // base fee from the network
+  const priorityFee = BigInt(toWei("2", "gwei")); // 2 gwei tip
+  const maxFee = baseFee + priorityFee;
 
   const tx = {
     from: account.address,
     to: CONTRACT_ADDRESS,
-    gas: 300000,
-    data: contract.methods.uploadVideo(mediaId, mintLimit, price).encodeABI(),
+    data: txData,
+    gas,
+    maxFeePerGas: "0x" + maxFee.toString(16),
+    maxPriorityFeePerGas: "0x" + priorityFee.toString(16),
   };
 
   const signed = await web3.eth.accounts.signTransaction(tx, privateKey);
   const receipt = await web3.eth.sendSignedTransaction(signed.rawTransaction);
 
   console.log("Uploaded:", receipt);
+  
+  return receipt;
 };
+
 
 // This function is used to mint a video on the blockchain
 // It takes the private key of the user, the video ID, and the price in Wei

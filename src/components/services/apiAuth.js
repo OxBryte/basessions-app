@@ -1,10 +1,6 @@
 import axios from "axios";
 
 const apiURL = import.meta.env.VITE_BASE_URL;
-const token = document.cookie.includes("token=")
-  ? document.cookie.split("token=")[1].split(";")[0]
-  : null;
-// console.log(token);
 
 export async function userSignup(body) {
   try {
@@ -32,6 +28,9 @@ export async function userLogin(body) {
 
 export async function verifyUser(body) {
   try {
+    const token = document.cookie.includes("token=")
+      ? document.cookie.split("token=")[1].split(";")[0]
+      : null;
     const { data } = await axios.patch(`${apiURL}user/verify`, body, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,6 +47,9 @@ export async function verifyUser(body) {
 
 export async function getCurrentUser() {
   try {
+    const token = document.cookie.includes("token=")
+      ? document.cookie.split("token=")[1].split(";")[0]
+      : null;
     // Assuming the token is stored in localStorage or similar
     const config = {
       headers: {
@@ -68,6 +70,9 @@ export async function getCurrentUser() {
 
 export async function getCreatorProfile(creatorId) {
   try {
+    const token = document.cookie.includes("token=")
+      ? document.cookie.split("token=")[1].split(";")[0]
+      : null;
     // Assuming the token is stored in localStorage or similar
     const config = {
       headers: {

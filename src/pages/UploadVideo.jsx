@@ -6,6 +6,11 @@ import { useUser } from "../components/hooks/useUser";
 import { useForm } from "react-hook-form";
 import { useUploadMedia } from "../components/hooks/useUploadMedia";
 import Spinner from "../components/ui/Spinner";
+import { uploadVideo } from "../components/hooks/useBlockchain";
+import { web3 } from "../Provider";
+import { keccak256, toBigInt } from "web3-utils";
+import { BsExclamationCircle } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 export default function UploadVideo() {
   const { user } = useUser();
@@ -18,6 +23,8 @@ export default function UploadVideo() {
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState(null);
   const { uploadMediaFn, isPending } = useUploadMedia(setOpenModal, setData);
+  const [minting, setMinting] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -71,8 +78,32 @@ export default function UploadVideo() {
     // console.log(edited);
   };
 
-console.log(data);
+  console.log(data);
+  const stringToUint256 = (str) => {
+    const hash = keccak256(str); // e.g., 0xabc123...
+    const uint = toBigInt(hash).toString(); // Convert to decimal string
+    return uint;
+  };
 
+  const handleMint = async () => {
+    try {
+      setMinting(true);
+      console.log("Minting video...");
+      const price = web3.utils.toWei(data?.data?.price, "ether");
+      const mintLimit = data?.data?.max_mints;
+      const mediaId = stringToUint256(data?.data?.id);
+      const privateKey = user?.data?.wallet_private_key;
+
+      uploadVideo(privateKey, mediaId, mintLimit, price);
+      console.log("Minted video successfully");
+      setMinting(false);
+      setOpenModal(false);
+      navigate("/"); // Redirect to home page after minting
+    } catch (error) {
+      console.log("Error minting video:", error);
+      setMinting(false);
+    }
+  };
 
   return (
     <div>
@@ -161,7 +192,7 @@ console.log(data);
             </div>
 
             <div className="w-full flex flex-col gap-2">
-              <label htmlFor="title" className="font-light">
+              <label htmlFor="title" className="text-sm font-light">
                 Title*
               </label>
               <input
@@ -172,7 +203,7 @@ console.log(data);
               />
             </div>
             <div className="w-full flex flex-col gap-2">
-              <label htmlFor="description" className="font-light">
+              <label htmlFor="description" className="text-sm font-light">
                 Description*
               </label>
               <textarea
@@ -202,8 +233,8 @@ console.log(data);
             </div>
             <div className="grid grid-cols-2 items-center gap-4 w-full justify-between">
               <div className="flex flex-col gap-2">
-                <label htmlFor="mintPrice" className="font-light">
-                  Set mint price
+                <label htmlFor="mintPrice" className="text-sm font-light">
+                  Set mint price (ETH)
                 </label>
                 <input
                   type="number"
@@ -215,7 +246,7 @@ console.log(data);
                 />
               </div>
               <div className=" flex flex-col gap-2">
-                <label htmlFor="mintNumber" className="font-light">
+                <label htmlFor="mintNumber" className="text-sm font-light">
                   Number of mints
                 </label>
                 <input
@@ -227,7 +258,7 @@ console.log(data);
               </div>
             </div>
             <div className="w-full flex items-center gap-2">
-              <label htmlFor="freeMint" className="font-light">
+              <label htmlFor="freeMint" className="text-sm font-light">
                 Free Mint
               </label>
               <div
@@ -253,22 +284,24 @@ console.log(data);
         </div>
       </div>
       {openModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-          <div className="bg-white p-4 rounded-lg">
-            <h2 className="text-lg font-semibold">Upload Successful</h2>
-            <p>Your video has been uploaded successfully!</p>
-            <p>This will be handling your mint function</p>
+        <div className="fixed inset-0 flex items-center justify-center p-5 bg-black/50">
+          <div className="bg-[#131313] p-5 w-full  flex flex-col items-center text-center gap-3 rounded-lg">
+            <div className="w-[140px] h-[140px] overflow-hidden">
+              <img src="success.gif" alt="" />
+            </div>
+            <p className="text-white/70">
+              Your video has been uploaded successfully!
+            </p>
+            <div className="flex gap-3 items-center text-white/60">
+              <BsExclamationCircle />
+              <p className=" text-sm">Proceed to mint your video</p>
+            </div>
+
             <button
-              // onClick={() => setOpenModal(false)}
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+              onClick={() => handleMint()}
+              className="w-full bg-blue-500 text-white px-4 py-2 rounded"
             >
-              Mint
-            </button>
-            <button
-              // onClick={() => setOpenModal(false)}
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Close
+              {minting ? <Spinner /> : "Mint Video"}
             </button>
           </div>
         </div>
