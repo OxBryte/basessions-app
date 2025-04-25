@@ -13,6 +13,7 @@ import { keccak256, toBigInt } from "web3-utils";
 import toast from "react-hot-toast";
 import { mintVideo } from "../hooks/useBlockchain";
 import Spinner from "../ui/Spinner";
+import { web3 } from "../../Provider";
 
 export default function ContentCard({ media }) {
   // console.log(media);
@@ -65,11 +66,11 @@ export default function ContentCard({ media }) {
     try {
       setMinting(true);
       console.log("Minting video...");
-      // const priceInWei = web3.utils.toWei(media?.price, "ether");
+      const priceInWei = web3.utils.toWei(media?.price, "ether");
       const videoId = stringToUint256(media?.id);
       const privateKey = user?.data?.wallet_private_key;
 
-      await mintVideo(privateKey, videoId);
+      await mintVideo(privateKey, videoId, priceInWei);
       console.log("Minted video successfully");
       toast.success("Minted video successfully!");
       setMinting(false);
