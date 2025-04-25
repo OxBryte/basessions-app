@@ -11,6 +11,7 @@ import { web3 } from "../Provider";
 import { keccak256, toBigInt } from "web3-utils";
 import { BsExclamationCircle } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function UploadVideo() {
   const { user } = useUser();
@@ -96,6 +97,7 @@ export default function UploadVideo() {
 
       uploadVideo(privateKey, mediaId, mintLimit, price);
       console.log("Minted video successfully");
+      toast.success("Minted video successfully!");
       setMinting(false);
       setOpenModal(false);
       navigate("/"); // Redirect to home page after minting
