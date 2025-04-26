@@ -1,6 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCreatorProfile, getCurrentUser } from "../services/apiAuth";
-import { getMedias, getSingleMedia, getUserMedias } from "../services/apiMedia";
+import {
+  getLikedMedia,
+  getMedias,
+  getSingleMedia,
+  getUserMedias,
+} from "../services/apiMedia";
 
 export function useUser() {
   const token = document.cookie.includes("token=")
@@ -55,4 +60,14 @@ export function useCreatorProfile(creatorId) {
   });
 
   return { isLoading, creatorProfile };
+}
+
+export function useLikedMedia() {
+  const { isPending: isLoading, data: likedMedia } = useQuery({
+    queryKey: ["userMedia"],
+    queryFn: () => getLikedMedia(),
+    // enabled: !!userId,
+  });
+
+  return { isLoading, likedMedia };
 }

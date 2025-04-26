@@ -112,3 +112,27 @@ export async function postComment(body, mediaId) {
     );
   }
 }
+
+export async function getLikedMedia() {
+  try {
+    const token = document.cookie.includes("token=")
+      ? document.cookie.split("token=")[1].split(";")[0]
+      : null;
+    // Assuming the token is stored in localStorage or similar
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.get(`${apiURL}media/liked`, config);
+
+    return data.data;
+  } catch (error) {
+    console.error("Error while fetching media:", error);
+    // window.location.href = "/";
+    throw new Error(
+      error.response?.data?.message || "An error occurred while fetching media"
+    );
+  }
+}

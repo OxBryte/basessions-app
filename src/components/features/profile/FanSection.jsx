@@ -1,7 +1,11 @@
 import { useState } from "react";
+import { useLikedMedia } from "../../hooks/useUser";
+import ContentCard from "../ContentCard";
 
 export default function FanSection() {
   const [activeTab, setActiveTab] = useState("tab1");
+
+  const { likedMedia } = useLikedMedia();
 
   return (
     <>
@@ -38,6 +42,13 @@ export default function FanSection() {
           )}
           {activeTab === "tab2" && (
             <div className="space-y-6 w-full">
+              {likedMedia?.length > 0 ? (
+                likedMedia.map((media) => (
+                  <ContentCard key={media?.id} media={media} />
+                ))
+              ) : (
+                <p className="w-full h-[320px]">No liked videos yet</p>
+              )}
             </div>
           )}
         </div>

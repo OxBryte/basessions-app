@@ -4,7 +4,7 @@ import { HiOutlineCurrencyDollar } from "react-icons/hi";
 import { TbMessage2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useLike } from "../hooks/useLike";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useUser } from "../hooks/useUser";
 import { RiThumbUpFill, RiThumbUpLine } from "react-icons/ri";
 import { BsFillPlayCircleFill } from "react-icons/bs";
@@ -19,42 +19,53 @@ export default function ContentCard({ media }) {
   // console.log(media);
   const { user } = useUser();
   const userId = user?.data?.id;
-  const mediaId = media?.id;
+  const prevMediaId = useRef(media?.id);
 
-  const [like, setLike] = useState(false);
-  const [likeCount, setLikeCount] = useState(media?.liked_by?.length || 0);
+  const [like, setLike] = useState(
+    () =>
+      media?.liked_by?.some((liker) => liker.id?.toString() === userId) ?? false
+  );
+  const [likeCount, setLikeCount] = useState(
+    () => media?.liked_by?.length || 0
+  );
   const [minting, setMinting] = useState(false);
 
   const { likeFn, isPending } = useLike();
 
+  // When the media ID changes, reset to whatever the new props say
   useEffect(() => {
-    // Ensure state updates correctly if media changes
-    setLike(media?.liked_by?.some((liker) => liker.id === userId));
-    setLikeCount(media?.liked_by?.length || 0);
-  }, [media, userId]);
+    if (media?.id !== prevMediaId.current) {
+      prevMediaId.current = media?.id;
+      setLike(
+        media?.liked_by?.some((liker) => liker.id.toString() === userId) ??
+          false
+      );
+      setLikeCount(media?.liked_by?.length || 0);
+    }
+  }, [media?.id, media?.liked_by, userId]);
 
-  const handleLike = () => {
-    const newLikeStatus = !like;
-    setLike(newLikeStatus);
+   const handleLike = () => {
+     const next = !like;
+     setLike(next);
+     setLikeCount((c) => c + (next ? 1 : -1));
 
-    // Optimistically update the count
-    setLikeCount((prevCount) =>
-      newLikeStatus ? prevCount + 1 : prevCount - 1
-    );
-
-    likeFn(
-      { mediaId, status: newLikeStatus },
-      {
-        onError: () => {
-          // Revert state if mutation fails
-          setLike(!newLikeStatus);
-          setLikeCount((prevCount) =>
-            newLikeStatus ? prevCount - 1 : prevCount + 1
-          );
-        },
-      }
-    );
-  };
+     likeFn(
+       { mediaId: media.id, status: next },
+       {
+         onError: () => {
+           // rollback
+           setLike(!next);
+           setLikeCount((c) => c + (next ? -1 : 1));
+         },
+         onSuccess: () => {
+           // OPTION A: Let your query library refetch the media so that
+           // media.liked_by actually contains/removes this user.
+           // If you’re using React Query:
+           // queryClient.invalidateQueries(['media', media.id]);
+         },
+       }
+     );
+   };
 
   const stringToUint256 = (str) => {
     const hash = keccak256(str); // e.g., 0xabc123...
@@ -129,17 +140,22 @@ export default function ContentCard({ media }) {
         <div className="flex justify-between items-center gap-4">
           <div className="flex items-center gap-4">
             <div className="flex md:flex-col md:gap-0 gap-2 items-center">
-              <p className="text-white/80 text-sm">Total Mints</p>
-              <p className="text-white/60 text-sm">0/{media?.max_mints}</p>
+              <p className="text-white/80 text-xs md:text-sm">Total Mints</p>
+              <p className="text-white/60 text-xs md:text-sm">
+                0/{media?.max_mints}
+              </p>
             </div>
             <div className="flex md:flex-col md:gap-0 gap-2 items-center">
-              <p className="text-white/80 text-sm">Price</p>
-              <p className="text-white/60 text-sm"> {media?.price} ETH</p>
+              <p className="text-white/80 text-xs md:text-sm">Price</p>
+              <p className="text-white/60 text-xs md:text-sm">
+                {" "}
+                {media?.price} ETH
+              </p>
             </div>
           </div>
           <button
             className="px-7 py-2.5 bg-[#0052FE] rounded-full text-sm"
-            onClick={handleMintVideo}
+            onClick={() => handleMintVideo()}
           >
             {minting ? <Spinner /> : "Mint"}
           </button>
@@ -159,7 +175,7 @@ export default function ContentCard({ media }) {
                 }}
               ></div>
               <div className="!space-y-0">
-                <h1 className="font-semibold !m-0 text-md text-white">
+                <h1 className="font-semibold !m-0 text-sm text-white">
                   {media?.creator?.display_name}
                 </h1>
                 <p className="text-white/60 !m-0 text-xs">
