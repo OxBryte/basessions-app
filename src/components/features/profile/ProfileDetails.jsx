@@ -43,10 +43,10 @@ export default function ProfileDetails() {
         </div>
       </div>
       <div className="space-y-1">
-        <div className="flex items-center gap-4">
+        <div className="flex items-end gap-4">
           <h1 className="font-semibold text-2xl">{user?.data?.display_name}</h1>
           <p className="bg-[#FF9A354D] text-xs px-3 py-1.5 rounded-full">
-            Premium {user?.data?.type}
+            {user?.data?.type}
           </p>
         </div>
         <p className="text-white/40 text-xs">@{user?.data?.username}</p>

@@ -36,9 +36,9 @@ export default function Navbar() {
           <div className="m-0">
             <BiSearch size={24} />
           </div>
-          <div className="m-0">
+          {/* <div className="m-0">
             <BsFillBellFill size={24} />
-          </div>
+          </div> */}
         </div>
       )}
       {user?.data?.type === "fan" && (

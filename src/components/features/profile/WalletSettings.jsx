@@ -1,6 +1,7 @@
 import { IoChevronBack } from "react-icons/io5";
-import { goBack } from "../../libs/utils";
+import { copyToClipboard, goBack } from "../../libs/utils";
 import { useUser } from "../../hooks/useUser";
+import { BiCopy } from "react-icons/bi";
 
 export default function WalletSettings() {
   const { user } = useUser();
@@ -15,18 +16,36 @@ export default function WalletSettings() {
             </div>
             <p>Wallet Details</p>
           </div>
-          <div className="w-full overflow-auto flex flex-col gap-5">
+          <div className="w-full flex flex-col gap-5">
             <div className="space-y-3">
               <p className="text-white/60">Wallet address</p>
-              <p className="text-white font-semibold">
-                {user?.data?.wallet_address}
-              </p>
+              <div className="space-y-4 p-3 bg-white/10 rounded-lg min-h-[100px] w-full">
+                <p className="text-white font-semibold break-words">
+                  {user?.data?.wallet_address}
+                </p>
+                <div
+                  className=""
+                  onClick={() => copyToClipboard(user?.data?.wallet_address)}
+                >
+                  <BiCopy className="text-white/60" />
+                </div>
+              </div>
             </div>
             <div className="space-y-3">
               <p className="text-white/60">Private key</p>
-              <p className="text-white font-semibold">
-                {user?.data?.wallet_private_key}
-              </p>
+              <div className="space-y-4 p-3 bg-white/10 rounded-lg min-h-[100px] w-full">
+                <p className="text-white font-semibold break-words">
+                  {user?.data?.wallet_private_key}
+                </p>
+                <div
+                  className=""
+                  onClick={() =>
+                    copyToClipboard(user?.data?.wallet_private_key)
+                  }
+                >
+                  <BiCopy className="text-white/60" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
