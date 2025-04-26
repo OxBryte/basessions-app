@@ -49,9 +49,9 @@ export default function Navbar() {
           <div className="m-0 text-white/20">
             <BiSearch size={24} />
           </div>
-          <div className="m-0 text-white/20">
+          {/* <div className="m-0 text-white/20">
             <BsFillBellFill size={24} />
-          </div>
+          </div> */}
         </div>
       )}
     </div>

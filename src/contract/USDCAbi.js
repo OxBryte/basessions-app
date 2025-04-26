@@ -1,86 +1,26 @@
 export const USDC_ABI = [
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "implementationContract",
-        type: "address",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "constructor",
+    constant: true,
+    inputs: [{ name: "_owner", type: "address" }],
+    name: "balanceOf",
+    outputs: [{ name: "balance", type: "uint256" }],
+    type: "function",
   },
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "previousAdmin",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "newAdmin",
-        type: "address",
-      },
-    ],
-    name: "AdminChanged",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "implementation",
-        type: "address",
-      },
-    ],
-    name: "Upgraded",
-    type: "event",
-  },
-  { stateMutability: "payable", type: "fallback" },
-  {
+    constant: true,
     inputs: [],
-    name: "admin",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
-    stateMutability: "view",
+    name: "decimals",
+    outputs: [{ name: "", type: "uint8" }],
     type: "function",
   },
   {
-    inputs: [{ internalType: "address", name: "newAdmin", type: "address" }],
-    name: "changeAdmin",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "implementation",
-    outputs: [{ internalType: "address", name: "", type: "address" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
+    constant: false,
     inputs: [
-      { internalType: "address", name: "newImplementation", type: "address" },
+      { name: "_to", type: "address" },
+      { name: "_value", type: "uint256" },
     ],
-    name: "upgradeTo",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "newImplementation", type: "address" },
-      { internalType: "bytes", name: "data", type: "bytes" },
-    ],
-    name: "upgradeToAndCall",
-    outputs: [],
-    stateMutability: "payable",
+    name: "transfer",
+    outputs: [{ name: "success", type: "bool" }],
     type: "function",
   },
 ];

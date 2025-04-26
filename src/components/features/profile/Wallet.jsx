@@ -20,9 +20,7 @@ export default function Wallet() {
   const { user } = useUser();
   const { balances, ethUsdValue } = useWallet(
     user?.data?.wallet_private_key,
-    user?.data?.wallet_address,
-    import.meta.env.VITE_RPC_URL,
-    import.meta.env.VITE_PUBLIC_USDC_ADDRESS
+    user?.data?.wallet_address
   );
 
   const walletAddress = user?.data?.wallet_address;

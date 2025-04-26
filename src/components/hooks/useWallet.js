@@ -2,10 +2,13 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import Web3 from "web3";
 import { USDC_ABI } from "../../contract/USDCAbi";
 
-export function useWallet(privateKey, address, rpcUrl, usdcAddress) {
-    const [balances, setBalances] = useState({ eth: "0", usdc: "0" });
-    const [ethPrice, setEthPrice] = useState(0); // USD per ETH
-    const [ethUsdValue, setEthUsdValue] = useState("0.00");
+export function useWallet(privateKey, address) {
+  const [balances, setBalances] = useState({ eth: "0", usdc: "0" });
+  const [ethPrice, setEthPrice] = useState(0); // USD per ETH
+  const [ethUsdValue, setEthUsdValue] = useState("0.00");
+
+  const rpcUrl = import.meta.env.VITE_RPC_URL;
+  const usdcAddress = import.meta.env.VITE_PUBLIC_USDC_ADDRESS;
 
   const web3 = useMemo(
     () => new Web3(new Web3.providers.HttpProvider(rpcUrl)),
@@ -23,29 +26,18 @@ export function useWallet(privateKey, address, rpcUrl, usdcAddress) {
 
   const fetchBalances = useCallback(async () => {
     if (!address) {
-      console.warn("[useWallet] no address provided – skipping balance fetch");
+      console.warn("[useWallet] no address provided skipping balance fetch");
       return;
     }
 
     try {
-      console.log("[useWallet] RPC URL:", rpcUrl);
-      console.log("[useWallet] Fetching ETH balance for", address);
-
       const rawEth = await web3.eth.getBalance(address);
-      console.log("[useWallet] raw ETH wei:", rawEth);
       const eth = web3.utils.fromWei(rawEth, "ether");
 
       let usdc = "0";
       try {
-        console.log("[useWallet] Fetching USDC balance for", address);
         const rawUsdc = await usdcContract.methods.balanceOf(address).call();
         const decimals = await usdcContract.methods.decimals().call();
-        console.log(
-          "[useWallet] raw USDC units:",
-          rawUsdc,
-          "decimals:",
-          decimals
-        );
         usdc = (Number(rawUsdc) / 10 ** decimals).toString();
       } catch (usdcErr) {
         console.error("[useWallet] USDC fetch error:", usdcErr);
@@ -57,17 +49,17 @@ export function useWallet(privateKey, address, rpcUrl, usdcAddress) {
       console.error("[useWallet] error fetching ETH balance:", err);
     }
   }, [web3, address, usdcContract, rpcUrl]);
-    
-    const fetchEthPrice = useCallback(async () => {
+
+  const fetchEthPrice = useCallback(async () => {
     try {
       const resp = await fetch(
-        'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd'
+        "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
       );
       const data = await resp.json();
       const price = data.ethereum?.usd;
-      if (typeof price === 'number') setEthPrice(price);
+      if (typeof price === "number") setEthPrice(price);
     } catch (err) {
-      console.error('[useWallet] price fetch error:', err);
+      console.error("[useWallet] price fetch error:", err);
     }
   }, []);
 
@@ -78,11 +70,10 @@ export function useWallet(privateKey, address, rpcUrl, usdcAddress) {
       setEthUsdValue((ethNum * ethPrice).toFixed(2));
     }
   }, [balances.eth, ethPrice]);
-    
 
   useEffect(() => {
-      fetchBalances();
-      fetchEthPrice();
+    fetchBalances();
+    fetchEthPrice();
   }, [fetchBalances, fetchEthPrice]);
 
   const withdrawETH = useCallback(
