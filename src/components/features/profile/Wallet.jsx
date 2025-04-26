@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 import QRCode from "react-qr-code";
 import { useUser } from "../../hooks/useUser";
+import { useWallet } from "../../hooks/useWallet";
 
 export default function Wallet() {
   const [send, setSend] = useState(false);
@@ -17,11 +18,14 @@ export default function Wallet() {
   const [toAddress, setToAddress] = useState("");
 
   const { user } = useUser();
-  
+  const { balances, ethUsdValue } = useWallet(
+    user?.data?.wallet_private_key,
+    user?.data?.wallet_address,
+    import.meta.env.VITE_RPC_URL,
+    import.meta.env.VITE_PUBLIC_USDC_ADDRESS
+  );
+
   const walletAddress = user?.data?.wallet_address;
-  // console.log(walletAddress);
-
-
 
   async function handleCopy(address) {
     const ok = await copyToClipboard(address);
@@ -46,7 +50,7 @@ export default function Wallet() {
           <div className="w-[100px] h-[100px] rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500"></div>
           <div className="space-y-1 place-items-center">
             <p className="text-xs text-white/60">Total balance</p>
-            <p className="text-4xl font-bold">$4,543</p>
+            <p className="text-4xl font-bold">${ethUsdValue}</p>
           </div>
         </div>
         <div className="grid grid-cols-3 w-full gap-2">
@@ -56,7 +60,7 @@ export default function Wallet() {
           </div>
           <div
             className="flex flex-col gap-2 items-center justify-center p-4 rounded-lg bg-white/5 cursor-pointer"
-            onClick={() => setSend(true)}
+            // onClick={() => setSend(true)}
           >
             <PiPaperPlaneTiltFill size={24} />
             <p className="text-xs text-white/60">Send</p>
@@ -67,6 +71,35 @@ export default function Wallet() {
           >
             <PiQrCode size={24} />
             <p className="text-xs text-white/60">Recieve</p>
+          </div>
+        </div>
+        <div className="w-full flex flex-col gap-4">
+          <div className="flex gap-3 w-full justify-between items-center">
+            <p className="text-sm">Tokens</p>
+          </div>
+          <div className="w-full flex items-center justify-between gap-5">
+            <div className="flex gap-3 items-center">
+              <img src="base.png" alt="" className="w-8" />
+              <div className="space-y-1">
+                <p className="text-sm font-medium">Ethereum</p>
+                <p className="text-white/60 text-xs">
+                  {Number(balances.eth).toFixed(4)}
+                </p>
+              </div>
+            </div>
+            <p>${ethUsdValue}</p>
+          </div>
+          <div className="w-full flex items-center justify-between gap-5">
+            <div className="flex gap-3 items-center">
+              <img src="usdc.png" alt="" className="w-8" />
+              <div className="space-y-1">
+                <p className="text-sm font-medium">USDC</p>
+                <p className="text-white/60 text-xs">
+                  {Number(balances.usdc).toFixed(4)}
+                </p>
+              </div>
+            </div>
+            <p>$00.00</p>
           </div>
         </div>
         <div className="w-full space-y-4">
@@ -83,7 +116,7 @@ export default function Wallet() {
       {send && (
         <div className="fixed inset-0 flex items-center justify-center">
           <div
-            className="bg-white/20 rounded-lg p-6 w-full max-w-sm z-10"
+            className="bg-[#131313] rounded-lg p-6 w-full max-w-sm z-10"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-xl font-semibold mb-4">Send Funds</h2>
@@ -132,14 +165,14 @@ export default function Wallet() {
       {modal && (
         <div className="fixed inset-0 flex items-center justify-center">
           <div
-            className="bg-white/20 rounded-lg p-6 w-full max-w-xs z-10 text-center"
+            className="bg-[#131313] rounded-lg p-6 w-full max-w-xs z-10 text-center"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-xl font-semibold mb-4">Receive Funds</h2>
             <div className="bg-gray-100 p-4 inline-block rounded mb-4">
               <QRCode value={walletAddress} size={128} />
             </div>
-            <div className="flex items-center justify-between bg-gray-50 p-2 rounded">
+            <div className="flex items-center justify-between bg-none">
               <code className="truncate">{walletAddress}</code>
               <button
                 onClick={handleCopy.bind(null, walletAddress)}
@@ -150,7 +183,7 @@ export default function Wallet() {
             </div>
             <button
               onClick={() => setModal(false)}
-              className="mt-4 px-4 py-2 bg-gray-200 rounded"
+              className="mt-4 px-4 py-2 bg-white/10 rounded"
             >
               Close
             </button>
