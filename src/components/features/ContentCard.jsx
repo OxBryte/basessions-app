@@ -154,8 +154,8 @@ export default function ContentCard({ media }) {
             </div>
           </div>
           <button
-            className="px-7 py-2.5 bg-[#0052FE] rounded-full text-sm"
-            onClick={() => handleMintVideo()}
+            className="px-5 py-2.5 bg-[#0052FE] rounded-full text-xs"
+            // onClick={() => handleMintVideo()}
           >
             {minting ? <Spinner /> : "Mint"}
           </button>

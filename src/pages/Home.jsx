@@ -46,7 +46,7 @@ export default function Home() {
           className={`${
             hide
               ? "hidden"
-              : "flex w-full p-4 items-center justify-center fixed bottom-4 left-0 inset-x-0"
+              : "flex w-full p-4 items-center justify-center fixed bottom-20 left-0 inset-x-0 z-10"
           }`}
         >
           <div className="w-full max-w-md p-6 rounded-lg bg-[#2C2C2C] flex flex-col items-center gap-2 relative">

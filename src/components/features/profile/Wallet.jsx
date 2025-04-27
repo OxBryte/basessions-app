@@ -36,7 +36,7 @@ export default function Wallet() {
   }
 
   return (
-    <div>
+    <div className="w-full max-w-[620px] mx-auto px-4 py-4">
       <div className="mx-auto flex gap-4 justify-between items-center w-full min-h-[60px]">
         <div onClick={goBack} className="cursor-pointer">
           <BiChevronLeft size={28} />
