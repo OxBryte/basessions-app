@@ -1,11 +1,13 @@
-import { BsExclamationCircle } from "react-icons/bs";
+import { BsExclamationCircle, BsXLg } from "react-icons/bs";
 import ContentCard from "../components/features/ContentCard";
 import { useMedia, useUser } from "../components/hooks/useUser";
 import { useWallet } from "../components/hooks/useWallet";
 import { BiCopy } from "react-icons/bi";
 import { copyToClipboard, truncate } from "../components/libs/utils";
+import { useState } from "react";
 
 export default function Home() {
+  const [hide, setHide] = useState(false);
   const { medias, isLoading } = useMedia();
   const { user } = useUser();
   const { balances } = useWallet(
@@ -39,9 +41,21 @@ export default function Home() {
           </>
         )}
       </div>
-      {balances?.eth === "0" && (
-        <div className="w-full p-4 flex items-center justify-center fixed bottom-4 left-0 inset-x-0">
-          <div className="w-full max-w-md p-6 rounded-lg bg-[#2C2C2C] flex flex-col items-center gap-2">
+      {user && balances?.eth === "0" && (
+        <div
+          className={`${
+            hide
+              ? "hidden"
+              : "flex w-full p-4 items-center justify-center fixed bottom-4 left-0 inset-x-0"
+          }`}
+        >
+          <div className="w-full max-w-md p-6 rounded-lg bg-[#2C2C2C] flex flex-col items-center gap-2 relative">
+            <div
+              className="absolute top-5 right-5"
+              onClick={() => setHide(true)}
+            >
+              <BsXLg />
+            </div>
             <div className="flex items-center gap-2">
               <BsExclamationCircle />
               <p className="text-sm">Wallet</p>
