@@ -6,9 +6,12 @@ import { Link } from "react-router-dom";
 import { useLike } from "../hooks/useLike";
 import { useEffect, useRef, useState } from "react";
 import { useUser } from "../hooks/useUser";
-import { RiThumbUpFill, RiThumbUpLine } from "react-icons/ri";
+import {
+  RiShareCircleLine,
+  RiThumbUpFill,
+  RiThumbUpLine,
+} from "react-icons/ri";
 import { BsFillPlayCircleFill } from "react-icons/bs";
-import { HiShare } from "react-icons/hi2";
 import { keccak256, toBigInt } from "web3-utils";
 import toast from "react-hot-toast";
 import { mintVideo } from "../hooks/useBlockchain";
@@ -44,28 +47,28 @@ export default function ContentCard({ media }) {
     }
   }, [media?.id, media?.liked_by, userId]);
 
-   const handleLike = () => {
-     const next = !like;
-     setLike(next);
-     setLikeCount((c) => c + (next ? 1 : -1));
+  const handleLike = () => {
+    const next = !like;
+    setLike(next);
+    setLikeCount((c) => c + (next ? 1 : -1));
 
-     likeFn(
-       { mediaId: media.id, status: next },
-       {
-         onError: () => {
-           // rollback
-           setLike(!next);
-           setLikeCount((c) => c + (next ? -1 : 1));
-         },
-         onSuccess: () => {
-           // OPTION A: Let your query library refetch the media so that
-           // media.liked_by actually contains/removes this user.
-           // If you’re using React Query:
-           // queryClient.invalidateQueries(['media', media.id]);
-         },
-       }
-     );
-   };
+    likeFn(
+      { mediaId: media.id, status: next },
+      {
+        onError: () => {
+          // rollback
+          setLike(!next);
+          setLikeCount((c) => c + (next ? -1 : 1));
+        },
+        onSuccess: () => {
+          // OPTION A: Let your query library refetch the media so that
+          // media.liked_by actually contains/removes this user.
+          // If you’re using React Query:
+          // queryClient.invalidateQueries(['media', media.id]);
+        },
+      }
+    );
+  };
 
   const stringToUint256 = (str) => {
     const hash = keccak256(str); // e.g., 0xabc123...
@@ -94,9 +97,9 @@ export default function ContentCard({ media }) {
   return (
     <div className="w-full mx-auto space-y-4 relative">
       <Link to={`/${media?.id}`}>
-        <div className="space-y-4">
+        <div className="space-y-3">
           {!media?.thumbnail_url ? (
-            <div className=" w-full h-[220px] rounded-xl bg-white/40"></div>
+            <div className="w-full h-[220px] max-h-[220px] min-h-[220px] rounded-xl bg-white/40"></div>
           ) : (
             <div className="relative">
               <img
@@ -134,7 +137,7 @@ export default function ContentCard({ media }) {
             </p>
           </div>
           <div className="text-white/80">
-            <HiShare size={21} />
+            <RiShareCircleLine size={21} />
           </div>
         </div>
         <div className="flex justify-between items-center gap-4">
