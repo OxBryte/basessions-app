@@ -4,7 +4,10 @@ export const CONTRACT_ABI = [
     stateMutability: "nonpayable",
     type: "constructor",
   },
+  { inputs: [], name: "FailedTransferError", type: "error" },
   { inputs: [], name: "IncorrectMintFeeError", type: "error" },
+  { inputs: [], name: "IncorrectPaymentAmountError", type: "error" },
+  { inputs: [], name: "InvalidAddressError", type: "error" },
   {
     inputs: [{ internalType: "string", name: "", type: "string" }],
     name: "InvalidFollowingError",
@@ -126,6 +129,45 @@ export const CONTRACT_ABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "uint256",
+        name: "newFee",
+        type: "uint256",
+      },
+    ],
+    name: "FeeUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newMintLimit",
+        type: "uint256",
+      },
+    ],
+    name: "GlobalMintLimitUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newMintPrice",
+        type: "uint256",
+      },
+    ],
+    name: "MaxMintPriceUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "uint256",
         name: "videoId",
@@ -158,6 +200,63 @@ export const CONTRACT_ABI = [
       },
     ],
     name: "MintPriceUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "prevOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "newWallet",
+        type: "address",
+      },
+    ],
+    name: "ProjectWalletUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "projectSharePercentage",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "creatorSharePercentage",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "minterSharePercentage",
+        type: "uint256",
+      },
+    ],
+    name: "RevenueSplitUpdated",
     type: "event",
   },
   {
@@ -249,6 +348,13 @@ export const CONTRACT_ABI = [
     ],
     name: "VideoUploaded",
     type: "event",
+  },
+  {
+    inputs: [],
+    name: "acceptOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
     inputs: [
@@ -467,6 +573,20 @@ export const CONTRACT_ABI = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "maxMintPrice",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "mintLimit",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [{ internalType: "uint256", name: "_videoId", type: "uint256" }],
     name: "mintVideo",
     outputs: [],
@@ -483,6 +603,13 @@ export const CONTRACT_ABI = [
   {
     inputs: [],
     name: "owner",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "pendingOwner",
     outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
     type: "function",
@@ -541,13 +668,24 @@ export const CONTRACT_ABI = [
     type: "function",
   },
   {
-    inputs: [
-      { internalType: "address", name: "_creator", type: "address" },
-      { internalType: "uint256", name: "_amount", type: "uint256" },
-    ],
+    inputs: [],
+    name: "test",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "_creator", type: "address" }],
     name: "tipCreator",
     outputs: [],
     stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "_newOwner", type: "address" }],
+    name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -560,6 +698,24 @@ export const CONTRACT_ABI = [
   {
     inputs: [{ internalType: "uint256", name: "_videoId", type: "uint256" }],
     name: "unlikeVideo",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "_newMintLimit", type: "uint256" },
+    ],
+    name: "updateGlobalMintLimit",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "_newMaxMintPrice", type: "uint256" },
+    ],
+    name: "updateMaximumMintPrice",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -639,4 +795,4 @@ export const CONTRACT_ABI = [
   },
 ];
 
-export const CONTRACT_ADDRESS = "0xE89E8eCE729E90a11B543AAE85a30D91E62AB91A";
+export const CONTRACT_ADDRESS = "0x34e8850bF17eF3EBC52609f8Ec04273eA9039C48";

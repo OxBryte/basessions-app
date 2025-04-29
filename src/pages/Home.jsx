@@ -5,9 +5,11 @@ import { useWallet } from "../components/hooks/useWallet";
 import { BiCopy } from "react-icons/bi";
 import { copyToClipboard, truncate } from "../components/libs/utils";
 import { useState } from "react";
+import MintModal from "../components/features/MintModal";
 
 export default function Home() {
   const [hide, setHide] = useState(false);
+  const [selectedMedia, setSelectedMedia] = useState(null);
   const { medias, isLoading } = useMedia();
   const { user } = useUser();
   const { balances } = useWallet(
@@ -27,7 +29,7 @@ export default function Home() {
     <div className="relative">
       <div className="w-full space-y-10 mx-auto">
         {medias.length === 0 ? (
-          <div className="w-full h-[60vh] flex flex-col gap-4 items-center justify-center">
+          <div className="w-full h-[80vh] flex flex-col gap-4 items-center justify-center">
             <img src="session_logo.svg" alt="" />
             <p className="text-lg text-gray-500">No media content available</p>
           </div>
@@ -36,7 +38,11 @@ export default function Home() {
             {medias
               ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
               .map((media) => (
-                <ContentCard key={media.id} media={media} />
+                <ContentCard
+                  key={media.id}
+                  media={media}
+                  onMint={() => setSelectedMedia(media)}
+                />
               ))}
           </>
         )}
@@ -75,6 +81,12 @@ export default function Home() {
             </div>
           </div>
         </div>
+      )}
+      {selectedMedia && (
+        <MintModal
+          media={selectedMedia}
+          onClose={() => setSelectedMedia(null)}
+        />
       )}
     </div>
   );

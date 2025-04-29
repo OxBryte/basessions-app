@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import moment from "moment";
 import { HiOutlineCurrencyDollar } from "react-icons/hi";
-import { TbMessage2 } from "react-icons/tb";    
+import { TbMessage2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useLike } from "../hooks/useLike";
 import { useEffect, useRef, useState } from "react";
@@ -12,14 +12,8 @@ import {
   RiThumbUpLine,
 } from "react-icons/ri";
 import { BsFillPlayCircleFill } from "react-icons/bs";
-import { keccak256, toBigInt } from "web3-utils";
-import toast from "react-hot-toast";
-import { mintVideo } from "../hooks/useBlockchain";
-import Spinner from "../ui/Spinner";
-import { web3 } from "../../Provider";
 
-export default function ContentCard({ media }) {
-  // console.log(media);
+export default function ContentCard({ media, onMint }) {
   const { user } = useUser();
   const userId = user?.data?.id;
   const prevMediaId = useRef(media?.id);
@@ -31,7 +25,6 @@ export default function ContentCard({ media }) {
   const [likeCount, setLikeCount] = useState(
     () => media?.liked_by?.length || 0
   );
-  const [minting, setMinting] = useState(false);
 
   const { likeFn, isPending } = useLike();
 
@@ -68,30 +61,6 @@ export default function ContentCard({ media }) {
         },
       }
     );
-  };
-
-  const stringToUint256 = (str) => {
-    const hash = keccak256(str); // e.g., 0xabc123...
-    const uint = toBigInt(hash).toString(); // Convert to decimal string
-    return uint;
-  };
-
-  const handleMintVideo = async () => {
-    try {
-      setMinting(true);
-      console.log("Minting video...");
-      const priceInWei = web3.utils.toWei(media?.price, "ether");
-      const videoId = stringToUint256(media?.id);
-      const privateKey = user?.data?.wallet_private_key;
-
-      await mintVideo(privateKey, videoId, priceInWei);
-      console.log("Minted video successfully");
-      toast.success("Minted video successfully!");
-      setMinting(false);
-    } catch (error) {
-      console.log("Error minting video:", error);
-      setMinting(false);
-    }
   };
 
   return (
@@ -158,9 +127,9 @@ export default function ContentCard({ media }) {
           </div>
           <button
             className="px-5 py-2.5 bg-[#0052FE] rounded-full text-xs"
-            // onClick={() => handleMintVideo()}
+            onClick={onMint}
           >
-            {minting ? <Spinner /> : "Mint"}
+            Mint
           </button>
         </div>
       </div>
