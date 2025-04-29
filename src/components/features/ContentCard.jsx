@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import moment from "moment";
 import { HiOutlineCurrencyDollar } from "react-icons/hi";
-import { TbMessage2 } from "react-icons/tb";
+import { TbMessage2 } from "react-icons/tb";    
 import { Link } from "react-router-dom";
 import { useLike } from "../hooks/useLike";
 import { useEffect, useRef, useState } from "react";
