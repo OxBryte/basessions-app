@@ -18,7 +18,7 @@ const queryClient = new QueryClient({
   },
 });
 
-eruda.init();
+// eruda.init();
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
