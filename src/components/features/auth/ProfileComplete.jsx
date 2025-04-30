@@ -1,6 +1,4 @@
 import { BiEditAlt } from "react-icons/bi";
-import { IoChevronBack } from "react-icons/io5";
-import { goBack } from "../../libs/utils";
 import { useForm } from "react-hook-form";
 import { useUpdateProfile } from "./queries/useUpdateProfile";
 import { useState } from "react";
@@ -36,11 +34,8 @@ export default function ProfileComplete() {
   };
 
   return (
-    <div className="w-full max-w-[620px] mx-auto px-4 my-10">
-      <div className="space-y-4">
-        <div onClick={goBack} className="cursor-pointer">
-          <IoChevronBack size={24} />
-        </div>
+    <div className="w-full max-w-[620px] mx-auto px-4">
+      <div className="space-y-4 py-4">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-6 items-center"

@@ -6,8 +6,6 @@ import { useSingleMedia, useUser } from "../components/hooks/useUser";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import Player from "../components/features/videoPlayer/Player";
-import { BiChevronLeft } from "react-icons/bi";
-import { goBack } from "../components/libs/utils";
 import { useEffect, useRef, useState } from "react";
 import { useLike } from "../components/hooks/useLike";
 import Comments from "../components/features/Comments";
@@ -71,14 +69,7 @@ export default function WatchVideo() {
 
   return (
     <>
-      <div className="bg-[#2C2C2C]">
-        <div className="max-w-[620px] mx-auto flex gap-4 justify-between items-center w-full p-4 min-h-[80px] bg-[#2C2C2C] ">
-          <div onClick={goBack} className="cursor-pointer">
-            <BiChevronLeft size={28} />
-          </div>
-        </div>
-      </div>
-      <div className="max-w-[620px] mx-auto !relative">
+      <div className="relative">
         <div className="w-full">
           <Player
             src={singleMedia?.url}
