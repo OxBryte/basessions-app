@@ -23,9 +23,12 @@ export default function MintModal({ media, onClose }) {
     try {
       const priceInWei = web3.utils.toWei(media.price, "ether");
       const videoId = stringToUint256(media.id);
+
+      console.log(priceInWei, videoId);
+
       const privateKey = user.data.wallet_private_key;
       await mintVideo(privateKey, videoId, priceInWei);
-      toast.success("Minted video successfully!");
+      toast.success("Video minted successfully!");
       onClose();
     } catch (err) {
       console.error(err);

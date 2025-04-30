@@ -769,13 +769,6 @@ export const CONTRACT_ABI = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "videoCount",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     name: "videos",
     outputs: [
@@ -798,4 +791,4 @@ export const CONTRACT_ABI = [
   },
 ];
 
-export const CONTRACT_ADDRESS = "0x229968DAacE9C2FF61E79fDb93ab879625ef727A";
+export const CONTRACT_ADDRESS = "0xBAad1Cb0c9b104240Ee744dc3DeC90b845037bF3";

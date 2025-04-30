@@ -88,24 +88,23 @@ export default function UploadVideo() {
   };
 
   const handleUploadVideoMint = async () => {
+    setMinting(true);
     try {
-      setMinting(true);
-      console.log("Minting video...");
       const price = web3.utils.toWei(data?.data?.price, "ether");
       // const price = stringToUint256(data?.data?.price);
-      
-      const mintLimit = data?.data?.max_mints
+
+      const mintLimit = data?.data?.max_mints;
       const mediaId = stringToUint256(data?.data?.id);
       const privateKey = user?.data?.wallet_private_key;
 
       await uploadVideo(privateKey, mediaId, mintLimit, price);
-      console.log("Minted video successfully");
       toast.success("Minted video successfully!");
       setMinting(false);
       setOpenModal(false);
       navigate("/"); // Redirect to home page after minting
     } catch (error) {
       console.log("Error minting video:", error);
+      toast.error("Failed to Upload.");
       setMinting(false);
     }
   };
