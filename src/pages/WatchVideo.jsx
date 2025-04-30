@@ -8,7 +8,7 @@ import moment from "moment";
 import Player from "../components/features/videoPlayer/Player";
 import { BiChevronLeft } from "react-icons/bi";
 import { goBack } from "../components/libs/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLike } from "../components/hooks/useLike";
 import Comments from "../components/features/Comments";
 
@@ -17,39 +17,49 @@ export default function WatchVideo() {
   const userId = user?.data?.id;
   const { id } = useParams();
   const { singleMedia, isLoading } = useSingleMedia(id);
+  const prevMediaId = useRef(singleMedia?.id);
 
-  const [like, setLike] = useState(false);
+  console.log(singleMedia, userId);
+  
+
+  const [like, setLike] = useState(
+    () =>
+      singleMedia?.liked_by?.some((liker) => liker.id === userId) ??
+      false
+  );
   const [likeCount, setLikeCount] = useState(
-    singleMedia?.liked_by?.length || 0
+    () => singleMedia?.liked_by?.length || 0
   );
 
   const { likeFn, isPending } = useLike();
 
+  // When the media ID changes, reset to whatever the new props say
   useEffect(() => {
-    // Ensure state updates correctly if media changes
-    setLike(singleMedia?.liked_by?.some((liker) => liker.id === userId));
-    setLikeCount(singleMedia?.liked_by?.length || 0);
-  }, [singleMedia, userId]);
+    if (singleMedia?.id !== prevMediaId.current) {
+      prevMediaId.current = singleMedia?.id;
+      setLike(
+        singleMedia?.liked_by?.some(
+          (liker) => liker.id === userId
+        ) ?? false
+      );
+      setLikeCount(singleMedia?.liked_by?.length || 0);
+    }
+  }, [singleMedia?.id, singleMedia?.liked_by, userId]);
 
   const handleLike = () => {
-    const newLikeStatus = !like;
-    setLike(newLikeStatus);
-
-    // Optimistically update the count
-    setLikeCount((prevCount) =>
-      newLikeStatus ? prevCount + 1 : prevCount - 1
-    );
+    const next = !like;
+    setLike(next);
+    setLikeCount((c) => c + (next ? 1 : -1));
 
     likeFn(
-      { mediaId: id, status: newLikeStatus },
+      { mediaId: singleMedia.id, status: next },
       {
         onError: () => {
-          // Revert state if mutation fails
-          setLike(!newLikeStatus);
-          setLikeCount((prevCount) =>
-            newLikeStatus ? prevCount - 1 : prevCount + 1
-          );
+          // rollback
+          setLike(!next);
+          setLikeCount((c) => c + (next ? -1 : 1));
         },
+        onSuccess: () => {},
       }
     );
   };
@@ -89,9 +99,6 @@ export default function WatchVideo() {
           <div className="flex flex-row gap-4 justify-between items-left md:items-center">
             <div className="flex items-center gap-4">
               <div className="flex gap-2 items-center text-white/60">
-                {/* <button className="text-blue-500">
-                <RiThumbUpFill size={21} />
-              </button> */}
                 <button
                   onClick={handleLike}
                   disabled={isPending}
@@ -107,7 +114,9 @@ export default function WatchVideo() {
               </div>
               <div className="flex gap-2 items-center text-white/60">
                 <TbMessage2 size={21} />
-                <p className="!m-0 text-sm text-white/80">{singleMedia?.comments?.length}</p>
+                <p className="!m-0 text-sm text-white/80">
+                  {singleMedia?.comments?.length}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-4">

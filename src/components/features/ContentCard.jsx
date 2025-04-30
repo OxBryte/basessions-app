@@ -54,10 +54,6 @@ export default function ContentCard({ media, onMint }) {
           setLikeCount((c) => c + (next ? -1 : 1));
         },
         onSuccess: () => {
-          // OPTION A: Let your query library refetch the media so that
-          // media.liked_by actually contains/removes this user.
-          // If you’re using React Query:
-          // queryClient.invalidateQueries(['media', media.id]);
         },
       }
     );
