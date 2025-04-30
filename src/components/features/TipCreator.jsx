@@ -12,7 +12,7 @@ export default function TipCreator({ media, onClose }) {
   const [amount, setAmount] = useState(0);
 
   const { user } = useUser();
-  const { balances } = useWallet(
+  const { isLoading, balances } = useWallet(
     user?.data?.wallet_private_key,
     user?.data?.wallet_address
   );
@@ -51,7 +51,13 @@ export default function TipCreator({ media, onClose }) {
           <div className="flex justify-between gap-4">
             <span className="text-white">Enter amount</span>
             <p className="text-white/60">
-              {Number(balances?.eth).toFixed(4)} ETH
+              {isLoading ? (
+                <Spinner />
+              ) : (
+                <span className="text-white/60">
+                  {Number(balances?.eth).toFixed(4)} ETH
+                </span>
+              )}
             </p>
           </div>
           <input

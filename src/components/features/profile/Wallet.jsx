@@ -10,6 +10,8 @@ import { useState } from "react";
 import QRCode from "react-qr-code";
 import { useUser } from "../../hooks/useUser";
 import { useWallet } from "../../hooks/useWallet";
+import Spinner from "../../ui/Spinner";
+import { RxReload } from "react-icons/rx";
 
 export default function Wallet() {
   const [send, setSend] = useState(false);
@@ -18,7 +20,7 @@ export default function Wallet() {
   const [toAddress, setToAddress] = useState("");
 
   const { user } = useUser();
-  const { balances, ethUsdValue } = useWallet(
+  const { isLoading, balances, ethUsdValue, refreshBalances } = useWallet(
     user?.data?.wallet_private_key,
     user?.data?.wallet_address
   );
@@ -48,7 +50,18 @@ export default function Wallet() {
           <div className="w-[100px] h-[100px] rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500"></div>
           <div className="space-y-1 place-items-center">
             <p className="text-xs text-white/60">Total balance</p>
-            <p className="text-4xl font-bold">${ethUsdValue}</p>
+            <div className="flex gap-2 items-center">
+              {isLoading ? (
+                <div className="pt-2">
+                  <Spinner />
+                </div>
+              ) : (
+                <p className="text-4xl font-bold">${ethUsdValue}</p>
+              )}
+              <div className="" onClick={refreshBalances}>
+                <RxReload size={20} />
+              </div>
+            </div>
           </div>
         </div>
         <div className="grid grid-cols-3 w-full gap-2">

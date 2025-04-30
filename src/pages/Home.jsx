@@ -14,7 +14,7 @@ export default function Home() {
   const [tipMedia, setTipMedia] = useState(null);
   const { medias, isLoading } = useMedia();
   const { user } = useUser();
-  const { balances } = useWallet(
+  const { isLoading: isLoadingBalance, balances } = useWallet(
     user?.data?.wallet_private_key,
     user?.data?.wallet_address
   );
@@ -50,40 +50,44 @@ export default function Home() {
           </>
         )}
       </div>
-      {user && balances?.eth === "0" && (
-        <div
-          className={`${
-            hide
-              ? "hidden"
-              : "flex w-full p-4 items-center justify-center fixed bottom-20 left-0 inset-x-0 z-10"
-          }`}
-        >
-          <div className="w-full max-w-md p-6 rounded-lg bg-[#2C2C2C] flex flex-col items-center gap-2 relative">
+      {isLoadingBalance ? null : (
+        <>
+          {user && balances?.eth === "0" && (
             <div
-              className="absolute top-5 right-5"
-              onClick={() => setHide(true)}
+              className={`${
+                hide
+                  ? "hidden"
+                  : "flex w-full p-4 items-center justify-center fixed bottom-20 left-0 inset-x-0 z-10"
+              }`}
             >
-              <BsXLg />
-            </div>
-            <div className="flex items-center gap-2">
-              <BsExclamationCircle />
-              <p className="text-sm">Wallet</p>
-            </div>
-            <p className="text-sm">
-              Your currecnt balance is {Number(balances.eth).toFixed(4)} ETH
-            </p>
-            <div className="text-sm">Deposit some eth!</div>
-            <div className="bg-[#0052FE] pl-4 pr-2 py-2 rounded-full text-sm flex items-center justify-between w-full">
-              {truncate(user?.data?.wallet_address, 24)}
-              <div
-                className="bg-white/30 px-3 py-1.5 rounded-full"
-                onClick={() => copyToClipboard(user?.data?.wallet_address)}
-              >
-                <BiCopy size={18} />
+              <div className="w-full max-w-md p-6 rounded-lg bg-[#2C2C2C] flex flex-col items-center gap-2 relative">
+                <div
+                  className="absolute top-5 right-5"
+                  onClick={() => setHide(true)}
+                >
+                  <BsXLg />
+                </div>
+                <div className="flex items-center gap-2">
+                  <BsExclamationCircle />
+                  <p className="text-sm">Wallet</p>
+                </div>
+                <p className="text-sm">
+                  Your currecnt balance is {Number(balances.eth).toFixed(4)} ETH
+                </p>
+                <div className="text-sm">Deposit some eth!</div>
+                <div className="bg-[#0052FE] pl-4 pr-2 py-2 rounded-full text-sm flex items-center justify-between w-full">
+                  {truncate(user?.data?.wallet_address, 24)}
+                  <div
+                    className="bg-white/30 px-3 py-1.5 rounded-full"
+                    onClick={() => copyToClipboard(user?.data?.wallet_address)}
+                  >
+                    <BiCopy size={18} />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          )}
+        </>
       )}
       {selectedMedia && (
         <MintModal
@@ -92,10 +96,7 @@ export default function Home() {
         />
       )}
       {tipMedia && (
-        <TipCreator
-          media={tipMedia}
-          onClose={() => setTipMedia(null)}
-        />
+        <TipCreator media={tipMedia} onClose={() => setTipMedia(null)} />
       )}
     </div>
   );

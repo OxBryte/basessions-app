@@ -45,7 +45,7 @@ export function useWallet(privateKey, address) {
       }
 
       setBalances({ eth, usdc });
-      console.log("[useWallet] Balances set →", { eth, usdc });
+      // console.log("[useWallet] Balances set →", { eth, usdc });
       setIsLoading(false);
     } catch (err) {
       console.error("[useWallet] error fetching ETH balance:", err);
