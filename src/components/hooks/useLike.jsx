@@ -15,7 +15,7 @@ export const useLike = () => {
       toast.error(error.message || "Failed to update like status");
     },
     onSuccess: (data) => {
-      toast.success(data.status ? "Post liked!" : "Post unliked!");
+      // toast.success(data.status ? "Post liked!" : "Post unliked!");
     },
   });
 
