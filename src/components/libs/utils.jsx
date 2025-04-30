@@ -11,12 +11,6 @@ export const truncate = (text = "", maxLength = 50) => {
   return text.slice(0, maxLength - ellipsis.length) + ellipsis;
 };
 
-// eslint-disable-next-line react/prop-types
-// export const TruncateText = ({ children, length = 50 }) => {
-//   const text = typeof children === "string" ? children : String(children);
-//   return <>{truncate(text, length)}</>;
-// };
-
 export const goBack = () => {
   // Using browser's built history navigation
   window.history.back();

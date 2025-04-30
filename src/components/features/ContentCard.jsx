@@ -60,24 +60,21 @@ export default function ContentCard({ media, onMint, onTip }) {
     );
   };
 
-const [videoData, setVideoData] = useState(null);
+  const [videoData, setVideoData] = useState(null);
 
-useEffect(() => {
-  const loadVideo = async () => {
-    try {
-      const videoId = stringToUint256(media?.id); // if media.id is a UUID
-      const video = await getVideo(videoId);
-      setVideoData(video);
-    } catch (err) {
-      console.error("Failed to load video:", err);
-    }
-  };
+  useEffect(() => {
+    const loadVideo = async () => {
+      try {
+        const videoId = stringToUint256(media?.id); // if media.id is a UUID
+        const video = await getVideo(videoId);
+        setVideoData(video);
+      } catch (err) {
+        console.error("Failed to load video:", err);
+      }
+    };
 
-  if (media?.id) loadVideo();
-}, [media?.id]);
-  
-  console.log(videoData);
-  
+    if (media?.id) loadVideo();
+  }, [media?.id]);
 
   return (
     <div className="w-full mx-auto space-y-4 relative">
