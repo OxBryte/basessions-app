@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { BsTwitterX } from "react-icons/bs";
 import { HiOutlineCurrencyDollar } from "react-icons/hi2";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
 export default function CreatorProfileDetails({ creator }) {
@@ -23,10 +24,10 @@ export default function CreatorProfileDetails({ creator }) {
         </div>
       </div>
       <div className="space-y-1">
-        <div className="flex items-end gap-4">
+        <div className="flex items-center gap-2">
           <h1 className="font-semibold text-2xl">{creator?.display_name}</h1>
-          <p className="bg-[#FF9A354D] text-xs px-3 py-1.5 rounded-full">
-            {creator?.type}
+          <p className="text-blue-500">
+            <RiVerifiedBadgeFill size={24} />
           </p>
         </div>
         <p className="text-white/40 text-xs">@{creator?.username}</p>

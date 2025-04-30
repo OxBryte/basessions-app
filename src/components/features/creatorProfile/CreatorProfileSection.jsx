@@ -24,7 +24,7 @@ export default function CreatorProfileSection({ userId }) {
             >
               Uploads
             </button>
-            <button
+            {/* <button
               onClick={() => setActiveTab("tab2")}
               className={`px-2 py-2 ${
                 activeTab === "tab2"
@@ -33,7 +33,7 @@ export default function CreatorProfileSection({ userId }) {
               }`}
             >
               Minted Videos
-            </button>
+            </button> */}
           </div>
         </div>
         {activeTab === "tab1" && (

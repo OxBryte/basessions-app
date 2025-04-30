@@ -14,21 +14,6 @@ export default function BottomBar() {
       ? { to: "/upload", icon: <GoPlusCircle size={24} /> }
       : { to: "/", icon: <BiSearch size={24} /> },
     { to: "/wallet", icon: <LuWallet size={24} /> },
-    {
-      to: "/profile",
-      icon: (
-        <>
-          {isLoading ? (
-            <Spinner />
-          ) : (
-            <div
-              className="w-8 h-8 bg-white/30 rounded-full bg-center bg-cover"
-              style={{ backgroundImage: `url(${user?.data?.avatar_url})` }}
-            />
-          )}
-        </>
-      ),
-    },
   ];
 
   return (
@@ -37,18 +22,33 @@ export default function BottomBar() {
         <NavLink
           key={i}
           to={to}
-          end={to === "/"} // ensures "/" only matches exactly
+          end={to === "/"}
           className={({ isActive }) =>
             `flex flex-col gap-2 items-center ${
-              isActive
-                ? "text-white" // active color
-                : "text-white/50" // inactive color
+              isActive ? "text-white" : "text-white/50"
             }`
           }
         >
           {icon}
         </NavLink>
       ))}
+
+      {/* profile goes last so we can special-case it */}
+      <NavLink to="/profile" end className="flex flex-col gap-2 items-center">
+        {({ isActive }) =>
+          isLoading ? (
+            <Spinner />
+          ) : (
+            <div
+              className={`
+                w-9 h-9 rounded-full bg-center bg-cover
+                ${isActive ? "border-2 border-blue-600" : ""}
+              `}
+              style={{ backgroundImage: `url(${user?.data?.avatar_url})` }}
+            />
+          )
+        }
+      </NavLink>
     </div>
   );
 }

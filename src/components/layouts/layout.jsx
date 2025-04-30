@@ -4,7 +4,6 @@ import BottomBar from "./BottomBar";
 
 export default function Layout() {
   const { pathname } = useLocation();
-  console.log(pathname);
   const isPage = pathname === "/" || pathname === "/";
 
   return (
