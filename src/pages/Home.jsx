@@ -6,10 +6,12 @@ import { BiCopy } from "react-icons/bi";
 import { copyToClipboard, truncate } from "../components/libs/utils";
 import { useState } from "react";
 import MintModal from "../components/features/MintModal";
+import TipCreator from "../components/features/TipCreator";
 
 export default function Home() {
   const [hide, setHide] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState(null);
+  const [tipMedia, setTipMedia] = useState(null);
   const { medias, isLoading } = useMedia();
   const { user } = useUser();
   const { balances } = useWallet(
@@ -42,6 +44,7 @@ export default function Home() {
                   key={media.id}
                   media={media}
                   onMint={() => setSelectedMedia(media)}
+                  onTip={() => setTipMedia(media)}
                 />
               ))}
           </>
@@ -86,6 +89,12 @@ export default function Home() {
         <MintModal
           media={selectedMedia}
           onClose={() => setSelectedMedia(null)}
+        />
+      )}
+      {tipMedia && (
+        <TipCreator
+          media={tipMedia}
+          onClose={() => setTipMedia(null)}
         />
       )}
     </div>

@@ -90,20 +90,45 @@ const mintVideo = async (privateKey, videoId, priceInWei) => {
 // The function creates a transaction object with the necessary details, signs it with the user's private key, and sends it to the blockchain
 // The transaction is then sent to the blockchain and the receipt is logged
 const tipCreator = async (privateKey, creatorAddress, amountInWei) => {
-  const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+  try {
+    const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+    const data = contract.methods
+      .tipCreator(creatorAddress, amountInWei)
+      .encodeABI();
 
-  const tx = {
-    from: account.address,
-    to: CONTRACT_ADDRESS,
-    value: amountInWei,
-    gas: 300000,
-    data: contract.methods.tipCreator(creatorAddress, amountInWei).encodeABI(),
-  };
+    // Estimate gas
+    const gas = await contract.methods
+      .tipCreator(creatorAddress, amountInWei)
+      .estimateGas({
+        from: account.address,
+        value: amountInWei,
+      });
 
-  const signed = await web3.eth.accounts.signTransaction(tx, privateKey);
-  const receipt = await web3.eth.sendSignedTransaction(signed.rawTransaction);
+    // Fetch pending block for base fee
+    const pendingBlock = await web3.eth.getBlock("pending");
+    const baseFee = BigInt(pendingBlock.baseFeePerGas);
+    const priorityFee = BigInt(toWei("2", "gwei")); // 2 gwei tip
+    const maxFee = baseFee + priorityFee;
 
-  console.log("Tipped:", receipt);
+    // Build the transaction
+    const tx = {
+      from: account.address,
+      to: CONTRACT_ADDRESS,
+      value: amountInWei,
+      gas,
+      data,
+      maxFeePerGas: "0x" + maxFee.toString(16),
+      maxPriorityFeePerGas: "0x" + priorityFee.toString(16),
+    };
+
+    const signed = await web3.eth.accounts.signTransaction(tx, privateKey);
+    const receipt = await web3.eth.sendSignedTransaction(signed.rawTransaction);
+
+    console.log("✅ Tipped successfully:", receipt);
+    return receipt;
+  } catch (err) {
+    console.error("❌ Error during tip:", err?.message || err);
+    throw err;
+  }
 };
-
 export { uploadVideo, mintVideo, tipCreator };

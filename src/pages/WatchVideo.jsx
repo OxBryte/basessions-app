@@ -19,9 +19,6 @@ export default function WatchVideo() {
   const { singleMedia, isLoading } = useSingleMedia(id);
   const prevMediaId = useRef(singleMedia?.id);
 
-  console.log(singleMedia, userId);
-  
-
   const [like, setLike] = useState(
     () =>
       singleMedia?.liked_by?.some((liker) => liker.id === userId) ??

@@ -6,6 +6,7 @@ export function useWallet(privateKey, address) {
   const [balances, setBalances] = useState({ eth: "0", usdc: "0" });
   const [ethPrice, setEthPrice] = useState(0); // USD per ETH
   const [ethUsdValue, setEthUsdValue] = useState("0.00");
+  const [isLoading, setIsLoading] = useState(true);
 
   const rpcUrl = import.meta.env.VITE_RPC_URL;
   const usdcAddress = import.meta.env.VITE_PUBLIC_USDC_ADDRESS;
@@ -29,7 +30,7 @@ export function useWallet(privateKey, address) {
       console.warn("[useWallet] no address provided skipping balance fetch");
       return;
     }
-
+    setIsLoading(true);
     try {
       const rawEth = await web3.eth.getBalance(address);
       const eth = web3.utils.fromWei(rawEth, "ether");
@@ -45,8 +46,10 @@ export function useWallet(privateKey, address) {
 
       setBalances({ eth, usdc });
       console.log("[useWallet] Balances set →", { eth, usdc });
+      setIsLoading(false);
     } catch (err) {
       console.error("[useWallet] error fetching ETH balance:", err);
+      setIsLoading(false);
     }
   }, [web3, address, usdcContract, rpcUrl]);
 
@@ -106,6 +109,7 @@ export function useWallet(privateKey, address) {
     balances,
     ethPrice, // e.g. 3,128.54
     ethUsdValue, // e.g. "19.02"
+    isLoading,
     refreshBalances: fetchBalances,
     refreshPrice: fetchEthPrice,
     withdrawETH,

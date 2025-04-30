@@ -13,7 +13,7 @@ import {
 } from "react-icons/ri";
 import { BsFillPlayCircleFill } from "react-icons/bs";
 
-export default function ContentCard({ media, onMint }) {
+export default function ContentCard({ media, onMint, onTip }) {
   const { user } = useUser();
   const userId = user?.data?.id;
   const prevMediaId = useRef(media?.id);
@@ -53,8 +53,7 @@ export default function ContentCard({ media, onMint }) {
           setLike(!next);
           setLikeCount((c) => c + (next ? -1 : 1));
         },
-        onSuccess: () => {
-        },
+        onSuccess: () => {},
       }
     );
   };
@@ -155,7 +154,10 @@ export default function ContentCard({ media, onMint }) {
               </p>
             </div>
           </Link>
-          <button className="border border-white/60 text-white/60 px-3 py-1.5 gap-2 text-sm rounded-full flex items-center">
+          <button
+            className="border border-white/60 text-white/60 px-3 py-1.5 gap-2 text-sm rounded-full flex items-center"
+            onClick={onTip}
+          >
             <HiOutlineCurrencyDollar size={20} />
             Tip
           </button>
