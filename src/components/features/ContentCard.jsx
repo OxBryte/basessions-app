@@ -12,6 +12,8 @@ import {
   RiThumbUpLine,
 } from "react-icons/ri";
 import { BsFillPlayCircleFill } from "react-icons/bs";
+import { getVideo } from "../hooks/useBlockchain";
+import { stringToUint256 } from "../libs/utils";
 
 export default function ContentCard({ media, onMint, onTip }) {
   const { user } = useUser();
@@ -57,6 +59,25 @@ export default function ContentCard({ media, onMint, onTip }) {
       }
     );
   };
+
+const [videoData, setVideoData] = useState(null);
+
+useEffect(() => {
+  const loadVideo = async () => {
+    try {
+      const videoId = stringToUint256(media?.id); // if media.id is a UUID
+      const video = await getVideo(videoId);
+      setVideoData(video);
+    } catch (err) {
+      console.error("Failed to load video:", err);
+    }
+  };
+
+  if (media?.id) loadVideo();
+}, [media?.id]);
+  
+  console.log(videoData);
+  
 
   return (
     <div className="w-full mx-auto space-y-4 relative">
@@ -109,7 +130,7 @@ export default function ContentCard({ media, onMint, onTip }) {
             <div className="flex md:flex-col md:gap-0 gap-2 items-center">
               <p className="text-white/80 text-xs md:text-sm">Total Mints</p>
               <p className="text-white/60 text-xs md:text-sm">
-                0/{media?.max_mints}
+                {Number(videoData?.totalMints)}/{media?.max_mints}
               </p>
             </div>
             <div className="flex md:flex-col md:gap-0 gap-2 items-center">

@@ -131,4 +131,16 @@ const tipCreator = async (privateKey, creatorAddress, amountInWei) => {
     throw err;
   }
 };
-export { uploadVideo, mintVideo, tipCreator };
+
+const getVideo = async (videoId) => {
+  try {
+    const video = await contract.methods.videos(videoId).call();
+    // console.log("Video:", video);
+    return video;
+  } catch (err) {
+    console.error("❌ Error fetching video:", err);
+    throw err;
+  }
+};
+
+export { uploadVideo, mintVideo, tipCreator, getVideo };

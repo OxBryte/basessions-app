@@ -1,22 +1,17 @@
 /* eslint-disable react/prop-types */
-import { keccak256, toBigInt } from "web3-utils";
 import { useState } from "react";
 import { web3 } from "../../Provider";
 import { useUser } from "../hooks/useUser";
 import { mintVideo } from "../hooks/useBlockchain";
 import toast from "react-hot-toast";
 import Spinner from "../ui/Spinner";
+import { stringToUint256 } from "../libs/utils";
 
 export default function MintModal({ media, onClose }) {
   const [loading, setLoading] = useState(false);
 
   const { user } = useUser();
 
-  const stringToUint256 = (str) => {
-    const hash = keccak256(str); // e.g., 0xabc123...
-    const uint = toBigInt(hash).toString(); // Convert to decimal string
-    return uint;
-  };
 
   const handleConfirmMint = async () => {
     setLoading(true);

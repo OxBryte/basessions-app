@@ -1,5 +1,5 @@
 import { IoChevronBack } from "react-icons/io5";
-import { goBack } from "../components/libs/utils";
+import { goBack, stringToUint256 } from "../components/libs/utils";
 import { useState } from "react";
 import { PiImageFill, PiVideoFill } from "react-icons/pi";
 import { useUser } from "../components/hooks/useUser";
@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { useUploadMedia } from "../components/hooks/useUploadMedia";
 import Spinner from "../components/ui/Spinner";
 import { uploadVideo } from "../components/hooks/useBlockchain";
-import { keccak256, toBigInt } from "web3-utils";
 import { BsExclamationCircle } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -78,13 +77,6 @@ export default function UploadVideo() {
     };
     uploadMediaFn(edited);
     // console.log(edited);
-  };
-
-  // console.log(data);
-  const stringToUint256 = (str) => {
-    const hash = keccak256(str); // e.g., 0xabc123...
-    const uint = toBigInt(hash).toString(); // Convert to decimal string
-    return uint;
   };
 
   const handleUploadVideoMint = async () => {

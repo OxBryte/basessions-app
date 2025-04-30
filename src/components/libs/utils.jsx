@@ -1,3 +1,5 @@
+import { keccak256, toBigInt } from "web3-utils";
+
 // utils/truncate.js
 export const truncate = (text = "", maxLength = 50) => {
   const ellipsis = "...";
@@ -62,3 +64,14 @@ export async function copyToClipboard(text) {
   document.body.removeChild(textarea);
   return success;
 }
+
+export const stringToUint256 = (str) => {
+  const hash = keccak256(str); // e.g., 0xabc123...
+  const uint = toBigInt(hash).toString(); // Convert to decimal string
+  return uint;
+};
+
+export const mapping = {
+  [stringToUint256("abc-123")]: "abc-123",
+  [stringToUint256("another-video")]: "another-video",
+};
