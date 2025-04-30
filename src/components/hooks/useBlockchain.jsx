@@ -45,14 +45,14 @@ const uploadVideo = async (privateKey, mediaId, mintLimit, price) => {
 // It takes the private key of the user, the video ID, and the price in Wei
 // The function creates a transaction object with the necessary details, signs it with the user's private key, and sends it to the blockchain
 // The transaction is then sent to the blockchain and the receipt is logged
-const mintVideo = async (privateKey, videoId) => {
+const mintVideo = async (privateKey, videoId, priceInWei) => {
   try {
     const account = web3.eth.accounts.privateKeyToAccount(privateKey);
     const data = contract.methods.mintVideo(videoId).encodeABI();
 
     const gas = await contract.methods.mintVideo(videoId).estimateGas({
       from: account.address,
-      // value: priceInWei,
+      value: priceInWei,
     });
 
     const pendingBlock = await web3.eth.getBlock("pending");
@@ -63,7 +63,7 @@ const mintVideo = async (privateKey, videoId) => {
     const tx = {
       from: account.address,
       to: CONTRACT_ADDRESS,
-      // value: priceInWei,
+      value: priceInWei,
       gas,
       data,
       maxFeePerGas: "0x" + maxFee.toString(16),
@@ -76,7 +76,7 @@ const mintVideo = async (privateKey, videoId) => {
     console.log("✅ Mint success:", receipt);
     return receipt;
   } catch (err) {
-    console.error("❌ Error during mint:", err?.message || err);
+    console.error("❌ Error during mint:", err || err);
     throw err;
   }
 };

@@ -1,9 +1,5 @@
 export const CONTRACT_ABI = [
-  {
-    inputs: [{ internalType: "address", name: "_chain", type: "address" }],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
+  { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   { inputs: [], name: "FailedTransferError", type: "error" },
   { inputs: [], name: "IncorrectMintFeeError", type: "error" },
   { inputs: [], name: "IncorrectPaymentAmountError", type: "error" },
@@ -342,7 +338,7 @@ export const CONTRACT_ABI = [
       {
         indexed: false,
         internalType: "uint256",
-        name: "price",
+        name: "priceInWei",
         type: "uint256",
       },
     ],
@@ -448,8 +444,15 @@ export const CONTRACT_ABI = [
   },
   {
     inputs: [],
-    name: "getFeeAmountInEth",
+    name: "getEthPrice",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getEthPriceFromChainlink",
+    outputs: [{ internalType: "int256", name: "answer", type: "int256" }],
     stateMutability: "view",
     type: "function",
   },
@@ -470,6 +473,13 @@ export const CONTRACT_ABI = [
   {
     inputs: [{ internalType: "address", name: "_creator", type: "address" }],
     name: "getTotalFollowers",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "_videoId", type: "uint256" }],
+    name: "getTotalTransferFee",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -668,13 +678,6 @@ export const CONTRACT_ABI = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "test",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [{ internalType: "address", name: "_creator", type: "address" }],
     name: "tipCreator",
     outputs: [],
@@ -751,7 +754,7 @@ export const CONTRACT_ABI = [
     inputs: [
       { internalType: "uint256", name: "_mediaId", type: "uint256" },
       { internalType: "uint256", name: "_mintLimit", type: "uint256" },
-      { internalType: "uint256", name: "_price", type: "uint256" },
+      { internalType: "uint256", name: "_priceInWei", type: "uint256" },
     ],
     name: "uploadVideo",
     outputs: [],
@@ -795,4 +798,4 @@ export const CONTRACT_ABI = [
   },
 ];
 
-export const CONTRACT_ADDRESS = "0x34e8850bF17eF3EBC52609f8Ec04273eA9039C48";
+export const CONTRACT_ADDRESS = "0x229968DAacE9C2FF61E79fDb93ab879625ef727A";

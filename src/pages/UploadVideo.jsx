@@ -11,6 +11,8 @@ import { keccak256, toBigInt } from "web3-utils";
 import { BsExclamationCircle } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { web3 } from "../Provider";
+// import Web3 from "web3";
 
 export default function UploadVideo() {
   const { user } = useUser();
@@ -89,9 +91,10 @@ export default function UploadVideo() {
     try {
       setMinting(true);
       console.log("Minting video...");
-      // const price = web3.utils.toWei(data?.data?.price, "ether");
-      const price = stringToUint256(data?.data?.price);
-      const mintLimit = stringToUint256(data?.data?.max_mints);
+      const price = web3.utils.toWei(data?.data?.price, "ether");
+      // const price = stringToUint256(data?.data?.price);
+      
+      const mintLimit = data?.data?.max_mints
       const mediaId = stringToUint256(data?.data?.id);
       const privateKey = user?.data?.wallet_private_key;
 
