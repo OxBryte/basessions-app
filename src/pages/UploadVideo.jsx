@@ -1,5 +1,4 @@
-import { IoChevronBack } from "react-icons/io5";
-import { goBack, stringToUint256 } from "../components/libs/utils";
+import { stringToUint256 } from "../components/libs/utils";
 import { useState } from "react";
 import { PiImageFill, PiVideoFill } from "react-icons/pi";
 import { useUser } from "../components/hooks/useUser";
@@ -103,14 +102,8 @@ export default function UploadVideo() {
 
   return (
     <div>
-      <div className="w-full max-w-[620px] mx-auto px-4 my-10">
+      <div className="w-full max-w-[620px] mx-auto px-4">
         <div className="space-y-4">
-          <div className="flex items-center gap-5">
-            <div onClick={goBack} className="cursor-pointer">
-              <IoChevronBack size={24} />
-            </div>
-            <p>Upload Video</p>
-          </div>
           <form
             onSubmit={handleSubmit}
             className="flex flex-col gap-6 items-center"

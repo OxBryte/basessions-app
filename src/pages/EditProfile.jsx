@@ -34,9 +34,9 @@ export default function EditProfile() {
   };
 
   return (
-    <div className="w-full max-w-[620px] mx-auto px-4 my-10">
+    <div className="w-full max-w-[620px] mx-auto px-4">
       <div className="space-y-4">
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-5 py-3">
           <div onClick={goBack} className="cursor-pointer">
             <IoChevronBack size={24} />
           </div>

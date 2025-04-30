@@ -1,5 +1,4 @@
-import { BiChevronLeft } from "react-icons/bi";
-import { copyToClipboard, goBack } from "../../libs/utils";
+import { copyToClipboard } from "../components/libs/utils";
 import {
   PiBatteryEmpty,
   PiCoinsFill,
@@ -8,9 +7,9 @@ import {
 } from "react-icons/pi";
 import { useState } from "react";
 import QRCode from "react-qr-code";
-import { useUser } from "../../hooks/useUser";
-import { useWallet } from "../../hooks/useWallet";
-import Spinner from "../../ui/Spinner";
+import { useUser } from "../components/hooks/useUser";
+import { useWallet } from "../components/hooks/useWallet";
+import Spinner from "../components/ui/Spinner";
 import { RxReload } from "react-icons/rx";
 
 export default function Wallet() {
@@ -38,13 +37,7 @@ export default function Wallet() {
   }
 
   return (
-    <div className="w-full max-w-[620px] mx-auto px-4 py-4">
-      <div className="mx-auto flex gap-4 justify-between items-center w-full min-h-[60px]">
-        <div onClick={goBack} className="cursor-pointer">
-          <BiChevronLeft size={28} />
-        </div>
-        <p className="text-sm text-white/80">Wallet</p>{" "}
-      </div>
+    <>
       <div className="w-full flex flex-col gap-10 items-center my-4">
         <div className="space-y-4 place-items-center">
           <div className="w-[100px] h-[100px] rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500"></div>
@@ -201,6 +194,6 @@ export default function Wallet() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

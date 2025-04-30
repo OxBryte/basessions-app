@@ -15,8 +15,8 @@ import CreatorProfile from "./pages/CreatorProfile";
 import WatchVideo from "./pages/WatchVideo";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notification";
-import Wallet from "./components/features/profile/Wallet";
-import WalletSettings from "./components/features/profile/WalletSettings";
+import Wallet from "./pages/Wallet";
+import WalletSettings from "./pages/WalletSettings";
 
 function App() {
   const { user } = useUser();
@@ -32,20 +32,22 @@ function App() {
 
         {/* Protected Route */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/complete-profile" element={<ProfileComplete />} />
-          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route element={<Layout />}>
+            <Route path="/complete-profile" element={<ProfileComplete />} />
+            <Route path="/edit-profile" element={<EditProfile />} />
 
-          {user?.data?.type === "creator" && (
-            <Route path="/upload" element={<UploadVideo />} />
-          )}
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/:id" element={<CreatorProfile />} />
+            {user?.data?.type === "creator" && (
+              <Route path="/upload" element={<UploadVideo />} />
+            )}
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/:id" element={<CreatorProfile />} />
             <Route path="/wallet" element={<Wallet />} />
-          
-          <Route path="/:id" element={<WatchVideo />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/settings/wallet" element={<WalletSettings />} />
-          <Route path="/notifications" element={<Notifications />} />
+
+            <Route path="/:id" element={<WatchVideo />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/settings/wallet" element={<WalletSettings />} />
+            <Route path="/notifications" element={<Notifications />} />
+          </Route>
         </Route>
 
         {/* Route */}

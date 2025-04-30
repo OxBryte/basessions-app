@@ -1,4 +1,4 @@
-import { BiChevronLeft, BiHistory } from "react-icons/bi";
+import { BiChevronLeft } from "react-icons/bi";
 import { CiSettings } from "react-icons/ci";
 import { goBack } from "../../libs/utils";
 import { FaChartPie } from "react-icons/fa";
@@ -20,9 +20,6 @@ export default function ProfileNav() {
               <FaChartPie size={26} />
             </div>
           )}
-          <div>
-            <BiHistory size={28} />
-          </div>
           <Link to="/settings">
             <div>
               <CiSettings size={28} />

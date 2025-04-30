@@ -2,7 +2,8 @@ import { BiEditAlt } from "react-icons/bi";
 import { BsTwitterX } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useUser } from "../../hooks/useUser";
-import { PiWallet } from "react-icons/pi";
+import { PiGear, PiWallet } from "react-icons/pi";
+import { RiSettingsFill } from "react-icons/ri";
 
 export default function ProfileDetails() {
   const { user, isLoading } = useUser();
@@ -32,9 +33,9 @@ export default function ProfileDetails() {
               Edit
             </div>
           </Link>
-          <Link to="/wallet">
+          <Link to="/settings">
             <div className="">
-              <PiWallet
+              <RiSettingsFill
                 size={20}
                 className="p-2 rounded-full w-10 h-10 bg-white/10 "
               />
