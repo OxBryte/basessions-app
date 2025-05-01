@@ -140,7 +140,7 @@ export default function WatchVideo() {
                 </div>
               </div>
             </Link>
-            <FollowButton />
+            {userId !== singleMedia?.creator?.id && <FollowButton />}
           </div>
           <div className="flex items-center gap-4 justify-between">
             <div className="flex items-center gap-4">
