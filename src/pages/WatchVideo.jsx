@@ -19,6 +19,7 @@ import MintButton from "../components/ui/MintButton";
 import { stringToUint256 } from "../components/libs/utils";
 import { getVideo } from "../components/hooks/useBlockchain";
 import TipButton from "../components/ui/TipButton";
+import FollowButton from "../components/ui/FollowButton";
 
 export default function WatchVideo() {
   const [selectedMedia, setSelectedMedia] = useState(null);
@@ -139,9 +140,7 @@ export default function WatchVideo() {
                 </div>
               </div>
             </Link>
-            <button className="bg-white hover:opacity-80 text-black text-sm px-6 py-2 gap-2 rounded-lg flex items-center">
-              Follow
-            </button>
+            <FollowButton />
           </div>
           <div className="flex items-center gap-4 justify-between">
             <div className="flex items-center gap-4">

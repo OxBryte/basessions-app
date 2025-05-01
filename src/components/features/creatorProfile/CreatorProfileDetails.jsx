@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { BsTwitterX } from "react-icons/bs";
-import { HiOutlineCurrencyDollar } from "react-icons/hi2";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import FollowButton from "../../ui/FollowButton";
 
 export default function CreatorProfileDetails({ creator }) {
   // console.log(creator);
@@ -18,10 +18,7 @@ export default function CreatorProfileDetails({ creator }) {
             backgroundImage: `url(${creator?.avatar_url})`,
           }}
         />
-        <div className="bg-[#FFFFFF0D] rounded-full px-5 py-2 flex gap-2 items-center">
-          <HiOutlineCurrencyDollar size={20} />
-          Tip
-        </div>
+        <FollowButton />
       </div>
       <div className="space-y-1">
         <div className="flex items-center gap-2">

@@ -1,11 +1,22 @@
-import { useCreatorProfile } from "../components/hooks/useUser";
-import { useParams } from "react-router-dom";
+import { useCreatorProfile, useUser } from "../components/hooks/useUser";
+import { useNavigate, useParams } from "react-router-dom";
 import CreatorProfileDetails from "../components/features/creatorProfile/CreatorProfileDetails";
 import CreatorProfileSection from "../components/features/creatorProfile/CreatorProfileSection";
+import { useEffect } from "react";
 
 export default function CreatorProfile() {
   const { id } = useParams();
+  const { user } = useUser();
+  const navigate = useNavigate();
+  const userId = user?.data?.id;
+
   const { creatorProfile, isLoading } = useCreatorProfile(id);
+
+  useEffect(() => {
+    if (id === userId) {
+      navigate("/profile");
+    }
+  });
 
   if (isLoading) {
     return (
