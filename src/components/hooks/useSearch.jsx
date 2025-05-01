@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 export function useSearch() {
   const {
-    isPending: isLoading,
+    isPending: isLoadingSearch,
     data: search,
     error,
   } = useQuery({
@@ -12,7 +12,7 @@ export function useSearch() {
     queryFn: getSearch,
   });
 
-  return { isLoading, error, search };
+  return { isLoadingSearch, error, search };
 }
 
 export const useSearchSubmit = () => {
@@ -20,12 +20,12 @@ export const useSearchSubmit = () => {
 
   const { mutateAsync: searchFn, isPending } = useMutation({
     mutationKey: ["search"],
-    mutationFn: async (body) => {
-      return await searchMedia(body);
+    mutationFn: async (q) => {
+      return await searchMedia(q);
     },
     onSuccess(data) {
       // console.log(data);
-      toast(`${data.message}`, { icon: "🚀" });
+      // toast(`${data.message}`, { icon: "🚀" });
 
       //set user data and session in global state
       queryClient.setQueryData(["search"], data);

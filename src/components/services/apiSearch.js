@@ -17,17 +17,18 @@ export async function getSearch() {
 }
 
 export async function searchMedia(q) {
-  const token = document.cookie.includes("token=")
-    ? document.cookie.split("token=")[1].split(";")[0]
-    : null;
-
   try {
-    const { data } = await axios.get(`${apiURL}search`, {
+    const token = document.cookie.includes("token=")
+      ? document.cookie.split("token=")[1].split(";")[0]
+      : null;
+
+    const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      params: { q },
-    });
+    };
+
+    const { data } = await axios.post(`${apiURL}search?q=${q}`, null, config);
     return data.data;
   } catch (error) {
     console.error("Error while sending search:", error);
