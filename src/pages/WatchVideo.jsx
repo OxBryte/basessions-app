@@ -1,5 +1,8 @@
-import { HiOutlineCurrencyDollar } from "react-icons/hi2";
-import { RiThumbUpFill, RiThumbUpLine } from "react-icons/ri";
+import {
+  RiShareCircleLine,
+  RiThumbUpFill,
+  RiThumbUpLine,
+} from "react-icons/ri";
 import { TbMessage2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useSingleMedia, useUser } from "../components/hooks/useUser";
@@ -9,8 +12,19 @@ import Player from "../components/features/videoPlayer/Player";
 import { useEffect, useRef, useState } from "react";
 import { useLike } from "../components/hooks/useLike";
 import Comments from "../components/features/Comments";
+import { BsDot } from "react-icons/bs";
+import MintModal from "../components/features/MintModal";
+import TipCreator from "../components/features/TipCreator";
+import MintButton from "../components/ui/MintButton";
+import { stringToUint256 } from "../components/libs/utils";
+import { getVideo } from "../components/hooks/useBlockchain";
+import TipButton from "../components/ui/TipButton";
 
 export default function WatchVideo() {
+  const [selectedMedia, setSelectedMedia] = useState(null);
+  const [tipMedia, setTipMedia] = useState(null);
+  const [videoData, setVideoData] = useState(null);
+
   const { user } = useUser();
   const userId = user?.data?.id;
   const { id } = useParams();
@@ -55,10 +69,26 @@ export default function WatchVideo() {
     );
   };
 
+  // get video data from blockchain
+
+  useEffect(() => {
+    const loadVideo = async () => {
+      try {
+        const videoId = stringToUint256(singleMedia?.id); // if media.id is a UUID
+        const video = await getVideo(videoId);
+        setVideoData(video);
+      } catch (err) {
+        console.error("Failed to load video:", err);
+      }
+    };
+
+    if (singleMedia?.id) loadVideo();
+  }, [singleMedia?.id]);
+
   if (isLoading) {
     return (
       <div className="w-full h-[90dvh] flex items-center justify-center">
-        <img src="session_logo.png" alt="" className="animate-pulse w-16" />
+        <img src="session_logo.png" alt="" className="animate-pulse w-16 " />
       </div>
     );
   }
@@ -72,15 +102,48 @@ export default function WatchVideo() {
             thumbnail={singleMedia?.thumbnail_url}
           />
         </div>
-        {/* <div className="w-full h-60 md:h-[40vh] overflow-hidden bg-white/40"></div> */}
-        <div className="space-y-6 px-4 py-6">
-          <div className="space-y-4">
+        <div className="space-y-4 py-6">
+          <div className="space-y-2">
             <h1 className="text-lg text-white/80 font-semibold">
               {singleMedia?.title}{" "}
             </h1>
-            <p className="text-white/40 text-sm">{singleMedia?.description}</p>
+            <p className="text-white/40 text-xs">{singleMedia?.description}</p>
           </div>
-          <div className="flex flex-row gap-4 justify-between items-left md:items-center">
+          <div className="w-full flex items-center gap-4 justify-between">
+            <Link to={`/profile/${singleMedia?.creator?.id}`}>
+              <div className="flex gap-3 items-center">
+                <div
+                  className="w-12 h-12 bg-white/30 rounded-full"
+                  style={{
+                    backgroundPosition: "center",
+                    backgroundSize: "cover",
+                    backgroundRepeat: "no-repeat",
+                    backgroundImage: `url(${singleMedia?.creator?.avatar_url})`,
+                  }}
+                ></div>
+                <div className="!space-y-1">
+                  <h1 className="font-semibold !m-0 text-md text-white">
+                    {singleMedia?.creator?.display_name}
+                  </h1>
+                  <div className="flex gap-1 items-center text-white/60">
+                    <p className="!m-0 text-xs">
+                      @{singleMedia?.creator?.username}
+                    </p>
+                    <BsDot size={23} />
+                    <p className="text-xs">
+                      {moment(singleMedia?.created_at)
+                        .startOf("hour")
+                        .fromNow()}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+            <button className="bg-white hover:opacity-80 text-black text-sm px-6 py-2 gap-2 rounded-lg flex items-center">
+              Follow
+            </button>
+          </div>
+          <div className="flex items-center gap-4 justify-between">
             <div className="flex items-center gap-4">
               <div className="flex gap-2 items-center text-white/60">
                 <button
@@ -102,60 +165,46 @@ export default function WatchVideo() {
                   {singleMedia?.comments?.length}
                 </p>
               </div>
+              <div className="">
+                <RiShareCircleLine size={21} className="text-white/60" />
+              </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="flex flex-col md:gap-0 gap-2 items-center">
+              <MintButton onMint={() => setSelectedMedia(singleMedia)} />
+              <TipButton onTip={() => setTipMedia(singleMedia)} />
+            </div>
+          </div>
+          <div className="flex flex-row gap-4 justify-between items-left md:items-center">
+            <div className="flex items-center gap-4">
+              <div className="flex gap-2 items-center">
                 <p className="text-white/80 text-sm">Total Mints</p>
                 <p className="text-white/60 text-sm">
-                  0/{singleMedia?.max_mints}
+                  {Number(videoData?.totalMints)}/{singleMedia?.max_mints}
                 </p>
               </div>
-              <div className="flex flex-col md:gap-0 gap-2 items-center">
+              <div className="flex gap-2 items-center">
                 <p className="text-white/80 text-sm">Price</p>
                 <p className="text-white/60 text-sm">
                   {" "}
                   {singleMedia?.price} ETH
                 </p>
               </div>
-              <button className="px-6 py-2.5 bg-[#0052FE] rounded-full text-sm">
-                Mint
-              </button>
             </div>
-          </div>
-          <div className="w-full flex items-center gap-4 justify-between">
-            <Link to="">
-              <div className="flex gap-3 items-center">
-                <div
-                  className="w-12 h-12 bg-white/30 rounded-full"
-                  style={{
-                    backgroundPosition: "center",
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundImage: `url(${singleMedia?.creator?.avatar_url})`,
-                  }}
-                ></div>
-                <div className="!space-y-1">
-                  <h1 className="font-semibold !m-0 text-md text-white">
-                    {singleMedia?.creator?.display_name}
-                  </h1>
-                  <p className="text-white/60 !m-0 text-xs">
-                    @{singleMedia?.creator?.username}
-                  </p>
-                </div>
-              </div>
-            </Link>
-            <p className="text-xs text-white/60">
-              {moment(singleMedia?.created_at).startOf("hour").fromNow()}
-            </p>
-            <button className="border border-white/60 text-white/60 px-3 py-1.5 gap-2 rounded-full flex items-center">
-              <HiOutlineCurrencyDollar size={20} />
-              Tip
-            </button>
           </div>
         </div>
         <hr className="border-white/10" />
         <Comments id={id} singleMedia={singleMedia} />
       </div>
+
+      {selectedMedia && (
+        <MintModal
+          media={selectedMedia}
+          onClose={() => setSelectedMedia(null)}
+        />
+      )}
+      {tipMedia && (
+        <TipCreator media={tipMedia} onClose={() => setTipMedia(null)} />
+      )}
     </>
   );
 }

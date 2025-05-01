@@ -7,7 +7,7 @@ export default function Search() {
 
   const { search, isLoadingSearch } = useSearch();
   const { searchFn, isPending } = useSearchSubmit();
-  console.log(search.media);
+  // console.log(search.media);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -38,29 +38,31 @@ export default function Search() {
             {isPending ? <Spinner /> : "Search"}
           </button>
         </div>
+        {isLoadingSearch && (
+          <div className="flex items-center justify-center">
+            <Spinner />
+          </div>
+        )}
+        {search?.media?.length === 0 && !isLoadingSearch && (
+          <div className="flex items-center justify-center">
+            <p className="text-sm text-white/60">No results found</p>
+          </div>
+        )}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {isLoadingSearch && (
-            <div className="flex items-center justify-center">
-              <Spinner />
-            </div>
-          )}
-          {search?.media?.length > 0 ? (
-            search.media.map((item) => (
+          {search?.media?.length > 0 &&
+            search?.media.map((item, _) => (
               <div
-                key={item._id}
+                key={_}
                 className="bg-white/10 rounded-xl p-4 flex flex-col gap-2"
               >
                 <img
-                  src={item.thumbnail_url}
-                  alt={item.title}
+                  src={item?.thumbnail_url}
+                  alt={item?.title}
                   className="rounded-xl h-[160px] w-full object-cover"
                 />
-                <h3 className="text-sm font-semibold">{item.title}</h3>
+                <h3 className="text-sm font-semibold">{item?.title}</h3>
               </div>
-            ))
-          ) : (
-            <div className="text-center text-gray-500">No results found</div>
-          )}
+            ))}
         </div>
       </div>
     </div>

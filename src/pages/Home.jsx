@@ -6,12 +6,10 @@ import { BiCopy } from "react-icons/bi";
 import { copyToClipboard, truncate } from "../components/libs/utils";
 import { useState } from "react";
 import MintModal from "../components/features/MintModal";
-import TipCreator from "../components/features/TipCreator";
 
 export default function Home() {
   const [hide, setHide] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState(null);
-  const [tipMedia, setTipMedia] = useState(null);
   const { medias, isLoading } = useMedia();
   const { user } = useUser();
   const { isLoading: isLoadingBalance, balances } = useWallet(
@@ -32,7 +30,7 @@ export default function Home() {
       <div className="w-full space-y-10 mx-auto">
         {medias.length === 0 ? (
           <div className="w-full h-[80vh] flex flex-col gap-4 items-center justify-center">
-            <img src="session_logo.png" alt="" className="w-16"  />
+            <img src="session_logo.png" alt="" className="w-16" />
             <p className="text-lg text-gray-500">No media content available</p>
           </div>
         ) : (
@@ -44,7 +42,6 @@ export default function Home() {
                   key={media.id}
                   media={media}
                   onMint={() => setSelectedMedia(media)}
-                  onTip={() => setTipMedia(media)}
                 />
               ))}
           </>
@@ -94,9 +91,6 @@ export default function Home() {
           media={selectedMedia}
           onClose={() => setSelectedMedia(null)}
         />
-      )}
-      {tipMedia && (
-        <TipCreator media={tipMedia} onClose={() => setTipMedia(null)} />
       )}
     </div>
   );
