@@ -4,7 +4,7 @@ const apiURL = import.meta.env.VITE_BASE_URL;
 export async function getSearch() {
   try {
     // Assuming the token is stored in localStorage or similar
-    const { data } = await axios.get(`${apiURL}get-searches`);
+    const { data } = await axios.get(`${apiURL}search`);
 
     return data.data;
   } catch (error) {
@@ -16,15 +16,23 @@ export async function getSearch() {
   }
 }
 
+export async function searchMedia(q) {
+  const token = document.cookie.includes("token=")
+    ? document.cookie.split("token=")[1].split(";")[0]
+    : null;
 
-export async function searchMedia(body) {
   try {
-    const { data } = await axios.post(`${apiURL}search-media`, body);
-    return data;
+    const { data } = await axios.get(`${apiURL}search`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: { q },
+    });
+    return data.data;
   } catch (error) {
-    console.error("Error during search:", error);
+    console.error("Error while sending search:", error);
     throw new Error(
-      error.response?.data?.message || "An error occurred during search"
+      error.response?.data?.message || "An error occurred while sending search"
     );
   }
 }

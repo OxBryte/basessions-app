@@ -13,7 +13,7 @@ export default function Search() {
     e.preventDefault();
     if (!searchInput) return;
     // invoke the mutation function with your input
-    searchFn({ query: searchInput }).catch((err) => {
+    searchFn(searchInput).catch((err) => {
       // optionally handle errors here too
       console.error(err);
     });
