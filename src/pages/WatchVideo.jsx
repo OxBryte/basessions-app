@@ -18,9 +18,7 @@ export default function WatchVideo() {
   const prevMediaId = useRef(singleMedia?.id);
 
   const [like, setLike] = useState(
-    () =>
-      singleMedia?.liked_by?.some((liker) => liker.id === userId) ??
-      false
+    () => singleMedia?.liked_by?.some((liker) => liker.id === userId) ?? false
   );
   const [likeCount, setLikeCount] = useState(
     () => singleMedia?.liked_by?.length || 0
@@ -33,9 +31,7 @@ export default function WatchVideo() {
     if (singleMedia?.id !== prevMediaId.current) {
       prevMediaId.current = singleMedia?.id;
       setLike(
-        singleMedia?.liked_by?.some(
-          (liker) => liker.id === userId
-        ) ?? false
+        singleMedia?.liked_by?.some((liker) => liker.id === userId) ?? false
       );
       setLikeCount(singleMedia?.liked_by?.length || 0);
     }
@@ -62,7 +58,7 @@ export default function WatchVideo() {
   if (isLoading) {
     return (
       <div className="w-full h-[90dvh] flex items-center justify-center">
-        <img src="session_logo.svg" alt="" className="animate-pulse" />
+        <img src="session_logo.png" alt="" className="animate-pulse w-16" />
       </div>
     );
   }

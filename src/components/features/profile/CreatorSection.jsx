@@ -12,7 +12,7 @@ export default function CreatorSection() {
   if (loading) {
     return (
       <div className="w-full h-[60dvh] flex items-center justify-center">
-        <img src="session_logo.svg" alt="" className="animate-pulse" />
+        <img src="session_logo.png" alt="" className="animate-pulse w-16" />
       </div>
     );
   }
@@ -48,13 +48,13 @@ export default function CreatorSection() {
           <div className="w-full space-y-6">
             {userMedia?.length === 0 && (
               <div className="w-full h-[20dvh] gap-3 flex flex-col items-center justify-center">
-                <img src="session_logo.svg" alt="" className="w-10" />
+                <img src="session_logo.png" alt="" className="w-16" />
                 <p className="text-white/60">No uploads yet</p>
               </div>
             )}
             {isLoading && (
               <div className="w-full h-[60dvh] flex items-center justify-center">
-                <img src="session_logo.svg" alt="" className="animate-pulse" />
+                <img src="session_logo.png" alt="" className="animate-pulse w-16" />
               </div>
             )}
             {userMedia

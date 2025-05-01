@@ -31,7 +31,7 @@ export function AuthLogin() {
       >
         <div className="before:absolute before:inset-0 before:bg-gradient-to-b before:from-transparent before:to-[#131313]"></div>
         <div className="w-full h-full flex flex-col gap-6 items-center justify-center relative z-10">
-          <img src="session_logo.svg" alt="" />
+          <img src="session_logo.png" alt="" className="w-20" />
           <div className="flex flex-col gap-2 w-full items-center">
             <p>Welcome to</p>
             <h1 className="font-bold text-3xl">Sessions</h1>
@@ -146,7 +146,7 @@ export function AuthSignup() {
       >
         <div className="before:absolute before:inset-0 before:bg-gradient-to-b before:from-transparent before:to-[#131313]"></div>
         <div className="w-full h-full flex flex-col gap-6 items-center justify-center relative z-10">
-          <img src="session_logo.svg" alt="" />
+          <img src="session_logo.png" alt="" className="w-20" />
           <div className="flex flex-col gap-2 w-full items-center">
             <p>Welcome to</p>
             <h1 className="font-bold text-3xl">Sessions</h1>

@@ -8,7 +8,7 @@ export default function Navbar() {
   return (
     <div className="w-full mx-auto flex items-center justify-between gap-8 pt-3 pb-5">
       <Link to="/" className="rounded-full overflow-hidden">
-        <img src="session_logo.svg" alt="" className="w-10" />
+        <img src="session_logo.png" alt="" className="w-8" />
       </Link>
 
       {!user ? (

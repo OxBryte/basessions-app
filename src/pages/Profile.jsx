@@ -10,7 +10,7 @@ export default function Profile() {
 
   if (isLoading) {
     <div className="w-full h-[60dvh] flex items-center justify-center">
-      <img src="session_logo.svg" alt="" className="animate-pulse" />
+      <img src="session_logo.png" alt="" className="animate-pulse w-16" />
     </div>;
   }
 

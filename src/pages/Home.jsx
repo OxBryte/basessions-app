@@ -22,7 +22,7 @@ export default function Home() {
   if (isLoading) {
     return (
       <div className="w-full h-[60dvh] flex items-center justify-center">
-        <img src="session_logo.svg" alt="" className="animate-pulse" />
+        <img src="session_logo.png" alt="" className="animate-pulse w-16" />
       </div>
     );
   }
@@ -32,7 +32,7 @@ export default function Home() {
       <div className="w-full space-y-10 mx-auto">
         {medias.length === 0 ? (
           <div className="w-full h-[80vh] flex flex-col gap-4 items-center justify-center">
-            <img src="session_logo.svg" alt="" />
+            <img src="session_logo.png" alt="" className="w-16"  />
             <p className="text-lg text-gray-500">No media content available</p>
           </div>
         ) : (
