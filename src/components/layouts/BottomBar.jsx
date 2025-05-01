@@ -12,7 +12,7 @@ export default function BottomBar() {
     { to: "/", icon: <GoHome size={24} /> },
     user?.data?.type === "creator"
       ? { to: "/upload", icon: <GoPlusCircle size={24} /> }
-      : { to: "/", icon: <BiSearch size={24} /> },
+      : { to: "/search", icon: <BiSearch size={24} /> },
     { to: "/wallet", icon: <LuWallet size={24} /> },
   ];
 

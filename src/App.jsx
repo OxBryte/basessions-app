@@ -17,6 +17,7 @@ import Settings from "./pages/Settings";
 import Notifications from "./pages/Notification";
 import Wallet from "./pages/Wallet";
 import WalletSettings from "./pages/WalletSettings";
+import Search from "./pages/Search";
 
 function App() {
   const { user } = useUser();
@@ -47,6 +48,7 @@ function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/settings/wallet" element={<WalletSettings />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/search" element={<Search />} />
           </Route>
         </Route>
 
