@@ -1,17 +1,31 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { web3 } from "../../Provider";
 import { useUser } from "../hooks/useUser";
-import { mintVideo } from "../hooks/useBlockchain";
+import { getVideo, mintVideo } from "../hooks/useBlockchain";
 import toast from "react-hot-toast";
 import Spinner from "../ui/Spinner";
 import { stringToUint256 } from "../libs/utils";
 
 export default function MintModal({ media, onClose }) {
   const [loading, setLoading] = useState(false);
+  const [videoData, setVideoData] = useState(null);
 
   const { user } = useUser();
 
+  useEffect(() => {
+    const loadVideo = async () => {
+      try {
+        const videoId = stringToUint256(media?.id); // if media.id is a UUID
+        const video = await getVideo(videoId);
+        setVideoData(video);
+      } catch (err) {
+        console.error("Failed to load video:", err);
+      }
+    };
+
+    if (media?.id) loadVideo();
+  }, [media?.id]);
 
   const handleConfirmMint = async () => {
     setLoading(true);
@@ -55,7 +69,7 @@ export default function MintModal({ media, onClose }) {
           <div className="flex justify-between gap-4">
             <span className="text-white">Total Mints:</span>
             <p className="text-white/60">
-              {media?.current_mints || 0}/{media?.max_mints}
+              {Number(videoData?.totalMints)}/{media?.max_mints}
             </p>
           </div>
         </div>
