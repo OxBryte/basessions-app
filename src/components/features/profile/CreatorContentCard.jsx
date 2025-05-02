@@ -3,10 +3,33 @@ import { useState, useRef, useEffect } from "react";
 import { FaEllipsisVertical } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useDeleteMedia } from "../../hooks/useUploadMedia";
+import { stringToUint256, truncate } from "../../libs/utils";
+import { PiHeartFill } from "react-icons/pi";
+import { BsDot } from "react-icons/bs";
+import moment from "moment";
+import { RiFlowerFill } from "react-icons/ri";
+import { getVideo } from "../../hooks/useBlockchain";
 
 export default function CreatorContentCard({ media }) {
   const [showOption, setShowOption] = useState(false);
+  const [videoData, setVideoData] = useState(null);
   const optionsRef = useRef(null);
+  const { deleteMediaFn } = useDeleteMedia();
+  const mediaId = media?.id;
+
+  useEffect(() => {
+    const loadVideo = async () => {
+      try {
+        const videoId = stringToUint256(media?.id); // if media.id is a UUID
+        const video = await getVideo(videoId);
+        setVideoData(video);
+      } catch (err) {
+        console.error("Failed to load video:", err);
+      }
+    };
+
+    if (media?.id) loadVideo();
+  }, [media?.id]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -14,15 +37,11 @@ export default function CreatorContentCard({ media }) {
         setShowOption(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  const mediaId = media?.id;
-  const { deleteMediaFn } = useDeleteMedia();
 
   const handleDelete = () => {
     deleteMediaFn(mediaId);
@@ -46,7 +65,24 @@ export default function CreatorContentCard({ media }) {
           <h1 className="text-lg text-white/80 font-semibold">
             {media?.title}{" "}
           </h1>
-          <p className="text-white/40 text-sm">{media?.description}</p>
+          <p className="text-white/40 text-sm">
+            {truncate(media?.description, 140)}
+          </p>
+          <div className="flex gap-1 items-center">
+            <p className="text-xs ">
+              {moment(media?.created_at).startOf("seconds").fromNow()}
+            </p>
+            <BsDot size={23} />
+            <div className="flex gap-2 items-center">
+              <p className="text-xs ">{media?.liked_by?.length}</p>
+              <PiHeartFill size={15} />
+            </div>
+            <BsDot size={23} />
+            <div className="flex gap-2 items-center">
+              <p className="text-xs ">{Number(videoData?.totalMints)}</p>
+              <RiFlowerFill size={15} />
+            </div>
+          </div>
         </div>
         {/* <p className="text-xs text-white/60">
           {moment(media?.created_at).startOf("hour").fromNow()}

@@ -3,6 +3,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { BsDot, BsFillPlayCircleFill } from "react-icons/bs";
 import MintButton from "../ui/MintButton";
+import { PiHeartFill } from "react-icons/pi";
 
 export default function ContentCard({ media, onMint }) {
   return (
@@ -52,6 +53,11 @@ export default function ContentCard({ media, onMint }) {
                 <p className="text-xs ">
                   {moment(media?.created_at).startOf("seconds").fromNow()}
                 </p>
+                <BsDot size={23} />
+                <div className="flex gap-2 items-center">
+                  <p className="text-xs ">{media?.liked_by?.length}</p>
+                  <PiHeartFill size={15} />
+                </div>
               </div>
             </div>
           </div>

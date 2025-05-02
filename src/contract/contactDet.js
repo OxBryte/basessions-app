@@ -329,6 +329,13 @@ export const CONTRACT_ABI = [
   },
   {
     inputs: [],
+    name: "USDC_SCALAR",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "acceptOwnership",
     outputs: [],
     stateMutability: "nonpayable",
@@ -433,13 +440,6 @@ export const CONTRACT_ABI = [
   },
   {
     inputs: [],
-    name: "getEthPriceFromChainlink",
-    outputs: [{ internalType: "int256", name: "", type: "int256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "getSharedRevenue",
     outputs: [{ internalType: "uint256[3]", name: "", type: "uint256[3]" }],
     stateMutability: "view",
@@ -461,7 +461,7 @@ export const CONTRACT_ABI = [
   },
   {
     inputs: [{ internalType: "uint256", name: "_videoId", type: "uint256" }],
-    name: "getTotalTransferFee",
+    name: "getTotalMintCost",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -759,4 +759,4 @@ export const CONTRACT_ABI = [
   },
 ];
 
-export const CONTRACT_ADDRESS = "0x98fFb687a6A7a3Ef4fAe4cc5955F1733880137EE";
+export const CONTRACT_ADDRESS = "0x4d77476f7960441591987E5c06e6849317F8ceC3";

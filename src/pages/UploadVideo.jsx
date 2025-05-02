@@ -210,12 +210,12 @@ export default function UploadVideo() {
                       .split(/\s+/)
                       .filter((word) => word.length > 0).length
                   }
-                  /100
+                  /60
                 </span>{" "}
                 {description
                   .trim()
                   .split(/\s+/)
-                  .filter((word) => word.length > 0).length === 100 && (
+                  .filter((word) => word.length > 0).length === 60 && (
                   <span>Limit reached</span>
                 )}
               </div>
