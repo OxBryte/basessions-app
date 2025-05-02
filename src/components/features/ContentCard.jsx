@@ -49,10 +49,10 @@ export default function ContentCard({ media, onMint }) {
 
       <div className="w-full flex items-center gap-4 justify-between">
         {media?.creator ? (
-          <div className="flex gap-3 items-center">
+          <div className="flex gap-2 items-center">
             <Link to={`/profile/${media?.creator?.id}`}>
               <div
-                className="w-12 h-12 bg-white/30 rounded-full"
+                className="w-10 h-10 bg-white/30 rounded-full"
                 style={{
                   backgroundPosition: "center",
                   backgroundSize: "cover",
@@ -70,7 +70,7 @@ export default function ContentCard({ media, onMint }) {
                   <p className=" !m-0 text-xs">@{media?.creator?.username}</p>
                 </Link>
                 <BsDot size={23} />
-                <p className="text-xs ">
+                <p className="text-[10px] ">
                   {moment(media?.created_at).startOf("seconds").fromNow()}
                 </p>
                 <BsDot size={23} />
