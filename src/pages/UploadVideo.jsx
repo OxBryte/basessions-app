@@ -1,16 +1,18 @@
 import { stringToUint256 } from "../components/libs/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PiImageFill, PiVideoFill } from "react-icons/pi";
 import { useUser } from "../components/hooks/useUser";
 import { useForm } from "react-hook-form";
 import { useUploadMedia } from "../components/hooks/useUploadMedia";
 import Spinner from "../components/ui/Spinner";
-import { uploadVideo } from "../components/hooks/useBlockchain";
+import {
+  getUsdcFeeInEth,
+  uploadVideo,
+} from "../components/hooks/useBlockchain";
 import { BsExclamationCircle } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { web3 } from "../Provider";
-// import Web3 from "web3";
 
 export default function UploadVideo() {
   const { user } = useUser();
@@ -22,10 +24,11 @@ export default function UploadVideo() {
   const [thumbnail, setThumbnail] = useState(null); // Add state for thumbnail
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState(null);
-  const { uploadMediaFn, isPending } = useUploadMedia(setOpenModal, setData);
+  const [fee, setFee] = useState(null);
   const [minting, setMinting] = useState(false);
-  const navigate = useNavigate();
 
+  const { uploadMediaFn, isPending } = useUploadMedia(setOpenModal, setData);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -78,6 +81,19 @@ export default function UploadVideo() {
     // console.log(edited);
   };
 
+  useEffect(() => {
+    const loadFee = async () => {
+      try {
+        const fee = await getUsdcFeeInEth();
+        setFee(fee);
+      } catch (err) {
+        console.error("Failed to load video:", err);
+      }
+    };
+
+    loadFee();
+  }, []);
+
   const handleUploadVideoMint = async () => {
     setMinting(true);
     try {
@@ -87,8 +103,7 @@ export default function UploadVideo() {
       const mintLimit = data?.data?.max_mints;
       const mediaId = stringToUint256(data?.data?.id);
       const privateKey = user?.data?.wallet_private_key;
-
-      await uploadVideo(privateKey, mediaId, mintLimit, price);
+      await uploadVideo(privateKey, mediaId, mintLimit, price, fee);
       toast.success("Minted video successfully!");
       setMinting(false);
       setOpenModal(false);

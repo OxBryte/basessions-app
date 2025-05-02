@@ -6,7 +6,7 @@ import { toWei } from "web3-utils";
 // It takes the private key of the user, the media ID of the video, the mint limit, and the price in Wei
 // The function creates a transaction object with the necessary details, signs it with the user's private key, and sends it to the blockchain
 // The transaction is then sent to the blockchain and the receipt is logged
-const uploadVideo = async (privateKey, mediaId, mintLimit, price) => {
+const uploadVideo = async (privateKey, mediaId, mintLimit, price, fee) => {
   try {
     const account = web3.eth.accounts.privateKeyToAccount(privateKey);
     const txData = contract.methods
@@ -17,6 +17,7 @@ const uploadVideo = async (privateKey, mediaId, mintLimit, price) => {
       .uploadVideo(mediaId, mintLimit, price)
       .estimateGas({
         from: account.address,
+        value: fee, // Convert price to Wei
       });
 
     // Fetch base fee
@@ -29,6 +30,7 @@ const uploadVideo = async (privateKey, mediaId, mintLimit, price) => {
       from: account.address,
       to: CONTRACT_ADDRESS,
       data: txData,
+      value: fee, // Convert price to Wei
       gas,
       maxFeePerGas: "0x" + maxFee.toString(16),
       maxPriorityFeePerGas: "0x" + priorityFee.toString(16),
@@ -142,5 +144,15 @@ const getVideo = async (videoId) => {
     throw err;
   }
 };
+const getUsdcFeeInEth = async () => {
+  try {
+    const fee = await contract.methods.getUsdcFeeInEth().call();
+    // console.log("Video:", video);
+    return fee;
+  } catch (err) {
+    console.error("❌ Error fetching video:", err);
+    throw err;
+  }
+};
 
-export { uploadVideo, mintVideo, tipCreator, getVideo };
+export { uploadVideo, mintVideo, tipCreator, getVideo, getUsdcFeeInEth };

@@ -460,8 +460,8 @@ export const CONTRACT_ABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "_videoId", type: "uint256" }],
-    name: "getTotalMintCost",
+    inputs: [],
+    name: "getUsdcFeeInEth",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -719,7 +719,7 @@ export const CONTRACT_ABI = [
     ],
     name: "uploadVideo",
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -759,4 +759,4 @@ export const CONTRACT_ABI = [
   },
 ];
 
-export const CONTRACT_ADDRESS = "0x4d77476f7960441591987E5c06e6849317F8ceC3";
+export const CONTRACT_ADDRESS = "0x78bB839dca36d743876336A60BE5fEbcFF8cC6A6";

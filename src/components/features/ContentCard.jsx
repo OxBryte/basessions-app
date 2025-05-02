@@ -4,8 +4,28 @@ import { Link } from "react-router-dom";
 import { BsDot, BsFillPlayCircleFill } from "react-icons/bs";
 import MintButton from "../ui/MintButton";
 import { PiHeartFill } from "react-icons/pi";
+import { useEffect, useState } from "react";
+import { getVideo } from "../hooks/useBlockchain";
+import { stringToUint256 } from "../libs/utils";
+import { RiFlowerFill } from "react-icons/ri";
 
 export default function ContentCard({ media, onMint }) {
+  const [videoData, setVideoData] = useState(null);
+
+  useEffect(() => {
+    const loadVideo = async () => {
+      try {
+        const videoId = stringToUint256(media?.id); // if media.id is a UUID
+        const video = await getVideo(videoId);
+        setVideoData(video);
+      } catch (err) {
+        console.error("Failed to load video:", err);
+      }
+    };
+
+    if (media?.id) loadVideo();
+  }, [media?.id]);
+
   return (
     <div className="w-full mx-auto space-y-4 relative">
       <Link to={`/${media?.id}`}>
@@ -57,6 +77,11 @@ export default function ContentCard({ media, onMint }) {
                 <div className="flex gap-2 items-center">
                   <p className="text-xs ">{media?.liked_by?.length}</p>
                   <PiHeartFill size={15} />
+                </div>
+                <BsDot size={23} />
+                <div className="flex gap-2 items-center">
+                  <p className="text-xs ">{Number(videoData?.totalMints)}</p>
+                  <RiFlowerFill size={15} />
                 </div>
               </div>
             </div>
