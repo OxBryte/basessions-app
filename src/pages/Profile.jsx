@@ -17,7 +17,7 @@ export default function Profile() {
   return (
     <div>
       {/* <ProfileNav /> */}
-      <div className="w-full max-w-[620px] mx-auto px-4 py-4">
+      <div className="py-4">
         <ProfileDetails />
         {user && user?.data?.type === "creator" && <CreatorSection />}
         {user && user?.data?.type === "fan" && <FanSection />}

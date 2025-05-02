@@ -28,7 +28,7 @@ export default function CreatorProfile() {
 
   return (
     <div>
-      <div className="w-full max-w-[620px] mx-auto px-4 py-4">
+      <div className="py-4">
         <CreatorProfileDetails creator={creatorProfile?.data} />
         <CreatorProfileSection userId={id} />
       </div>
