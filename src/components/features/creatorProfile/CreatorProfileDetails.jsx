@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import FollowButton from "../../ui/FollowButton";
 
 export default function CreatorProfileDetails({ creator }) {
-  // console.log(creator);
   return (
     <div className="space-y-4 w-full pb-5 border-b border-white/10">
       <div className="flex items-center justify-between gap-8">
@@ -18,7 +17,7 @@ export default function CreatorProfileDetails({ creator }) {
             backgroundImage: `url(${creator?.avatar_url})`,
           }}
         />
-        <FollowButton />
+        <FollowButton creatorId={creator?.id} />
       </div>
       <div className="space-y-1">
         <div className="flex items-center gap-2">

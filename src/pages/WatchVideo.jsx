@@ -27,6 +27,8 @@ export default function WatchVideo() {
   const [videoData, setVideoData] = useState(null);
 
   const { user } = useUser();
+  console.log("WatchVideo user", user);
+  
   const userId = user?.data?.id;
   const { id } = useParams();
   const { singleMedia, isLoading } = useSingleMedia(id);
@@ -140,7 +142,9 @@ export default function WatchVideo() {
                 </div>
               </div>
             </Link>
-            {userId !== singleMedia?.creator?.id && <FollowButton />}
+            {userId !== singleMedia?.creator?.id && (
+              <FollowButton creatorId={singleMedia?.creator?.id} />
+            )}
           </div>
           <div className="flex items-center gap-4 justify-between">
             <div className="flex items-center gap-4">

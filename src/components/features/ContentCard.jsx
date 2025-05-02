@@ -37,7 +37,7 @@ export default function ContentCard({ media, onMint }) {
               <img
                 src={media?.thumbnail_url}
                 alt=""
-                className=" w-full min-h-[300px] max-h-[360px] rounded-xl object-cover"
+                className=" w-full min-h-[300px] max-h-[300px] rounded-xl object-cover"
               />
               <div className="absolute inset-0 m-auto flex items-center  rounded-xl justify-center bg-black/30 duration-300">
                 <BsFillPlayCircleFill size={46} />
