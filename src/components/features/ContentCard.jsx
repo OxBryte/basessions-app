@@ -47,7 +47,7 @@ export default function ContentCard({ media, onMint }) {
         </div>
       </Link>
 
-      <div className="w-full flex items-center gap-4 justify-between">
+      <div className="w-full flex flex-col md:flex-row md:items-center gap-3 justify-between">
         {media?.creator ? (
           <div className="flex gap-2 items-center">
             <Link to={`/profile/${media?.creator?.id}`}>
