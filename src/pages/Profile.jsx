@@ -5,8 +5,6 @@ import FanSection from "../components/features/profile/FanSection";
 
 export default function Profile() {
   const { user, isLoading } = useUser();
-  console.log(user);
-  
 
   if (isLoading) {
     <div className="w-full h-[60dvh] flex items-center justify-center">
@@ -16,7 +14,6 @@ export default function Profile() {
 
   return (
     <div>
-      {/* <ProfileNav /> */}
       <div className="py-4">
         <ProfileDetails />
         {user && user?.data?.type === "creator" && <CreatorSection />}
