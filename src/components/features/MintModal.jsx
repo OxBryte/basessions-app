@@ -69,7 +69,7 @@ export default function MintModal({ media, onClose }) {
           <div className="flex justify-between gap-4">
             <span className="text-white">Total Mints:</span>
             <p className="text-white/60">
-              {Number(videoData?.totalMints)}/{media?.max_mints}
+              {Number(videoData?.totalMints || 0)}/{media?.max_mints}
             </p>
           </div>
         </div>

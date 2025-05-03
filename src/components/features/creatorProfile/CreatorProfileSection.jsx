@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useUserMedia } from "../../hooks/useUser";
 import ContentCard from "../ContentCard";
+import MintModal from "../MintModal";
 
 // eslint-disable-next-line react/prop-types
 export default function CreatorProfileSection({ userId }) {
   const [activeTab, setActiveTab] = useState("tab1");
+  const [selectedMedia, setSelectedMedia] = useState(null);
 
   const { userMedia, isLoading } = useUserMedia(userId);
-  // console.log(userMedia);
 
   return (
     <>
@@ -40,17 +41,31 @@ export default function CreatorProfileSection({ userId }) {
           <div className="w-full space-y-6">
             {isLoading && (
               <div className="w-full h-[60dvh] flex items-center justify-center">
-                <img src="session_logo.png" alt="" className="animate-pulse w-16" />
+                <img
+                  src="session_logo.png"
+                  alt=""
+                  className="animate-pulse w-16"
+                />
               </div>
             )}
             {userMedia
               ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sort by createdAt in descending order
               .map((media) => (
-                <ContentCard key={media.id} media={media} />
+                <ContentCard
+                  key={media.id}
+                  media={media}
+                  onMint={() => setSelectedMedia(media)}
+                />
               ))}
           </div>
         )}
       </div>
+      {selectedMedia && (
+        <MintModal
+          media={selectedMedia}
+          onClose={() => setSelectedMedia(null)}
+        />
+      )}
     </>
   );
 }

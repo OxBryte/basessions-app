@@ -182,7 +182,7 @@ export default function WatchVideo() {
               <div className="flex gap-2 items-center">
                 <p className="text-white/80 text-sm">Total Mints</p>
                 <p className="text-white/60 text-sm">
-                  {Number(videoData?.totalMints)}/{singleMedia?.max_mints}
+                  {Number(videoData?.totalMints || 0)}/{singleMedia?.max_mints}
                 </p>
               </div>
               <div className="flex gap-2 items-center">

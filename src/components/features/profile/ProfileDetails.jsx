@@ -86,6 +86,16 @@ export default function ProfileDetails() {
           </p>
         </div>
       )}
+      <div className="flex items-center gap-3 w-full">
+        <div className="flex items-center gap-2">
+          {user?.data?.follower_count}
+          <p className="text-sm text-white/60">Followers</p>
+        </div>
+        <div className="flex items-center gap-2">
+          {user?.data?.following_count}
+          <p className="text-sm text-white/60">Following</p>
+        </div>
+      </div>
     </div>
   );
 }

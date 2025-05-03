@@ -13,6 +13,7 @@ import { BsExclamationCircle } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { web3 } from "../Provider";
+import { useWallet } from "../components/hooks/useWallet";
 
 export default function UploadVideo() {
   const { user } = useUser();
@@ -27,6 +28,10 @@ export default function UploadVideo() {
   const [fee, setFee] = useState(null);
   const [minting, setMinting] = useState(false);
 
+  const { balances } = useWallet(
+    user?.data?.wallet_private_key,
+    user?.data?.wallet_address
+  );
   const { uploadMediaFn, isPending } = useUploadMedia(setOpenModal, setData);
   const navigate = useNavigate();
   const {
@@ -67,6 +72,10 @@ export default function UploadVideo() {
     if (!userId) {
       alert("You must be logged in to upload a video."); // Alert if userId is undefined
       return; // Prevent submission
+    }
+    if (balances?.eth === "0") {
+      toast.error("You need to fund your wallet to upload a video");
+      return; // Prevent submission if balance is 0
     }
     const edited = {
       ...data,

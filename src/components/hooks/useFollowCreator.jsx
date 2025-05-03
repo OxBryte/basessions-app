@@ -10,7 +10,7 @@ export const useFollowCreator = () => {
       return await followCreator(userId);
     },
     onSuccess: (data) => {
-      toast.success(`${data.message}`);
+      // toast.success(`${data.message}`);
       queryClient.invalidateQueries(["user"]);
     },
     onError: (error) => {

@@ -74,13 +74,13 @@ export default function CreatorContentCard({ media }) {
             </p>
             <BsDot size={23} />
             <div className="flex gap-2 items-center">
-              <p className="text-xs ">{media?.liked_by?.length}</p>
               <PiHeartFill size={15} />
+              <p className="text-xs ">{media?.liked_by?.length}</p>
             </div>
             <BsDot size={23} />
             <div className="flex gap-2 items-center">
-              <p className="text-xs ">{Number(videoData?.totalMints)}</p>
               <RiFlowerFill size={15} />
+              <p className="text-xs ">{Number(videoData?.totalMints || 0)}</p>
             </div>
           </div>
         </div>

@@ -75,20 +75,22 @@ export default function ContentCard({ media, onMint }) {
                 </p>
                 <BsDot size={23} />
                 <div className="flex gap-2 items-center">
-                  <p className="text-xs ">{media?.liked_by?.length}</p>
                   <PiHeartFill size={15} />
+                  <p className="text-xs ">{media?.liked_by?.length}</p>
                 </div>
                 <BsDot size={23} />
                 <div className="flex gap-2 items-center">
-                  <p className="text-xs ">{Number(videoData?.totalMints)}</p>
                   <RiFlowerFill size={15} />
+                  <p className="text-xs ">
+                    {Number(videoData?.totalMints || 0)}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         ) : (
-          <div className="flex gap-3 items-center">
-            <div className="space-y-2">
+          <div className="flex gap-4 items-center">
+            <div className="space-y-1">
               <div className="flex gap-4 text-white/60 items-center ">
                 <h1 className="text-lg text-white/80 font-semibold capitalize">
                   {media?.title}{" "}
@@ -98,6 +100,24 @@ export default function ContentCard({ media, onMint }) {
                 </p>
               </div>
               <p className="text-white/40 text-sm">{media?.description}</p>
+              <div className="flex gap-1 text-white/60 items-center ">
+                
+                <p className="text-[10px] ">
+                  {moment(media?.created_at).startOf("seconds").fromNow()}
+                </p>
+                <BsDot size={23} />
+                <div className="flex gap-2 items-center">
+                  <PiHeartFill size={15} />
+                  <p className="text-xs ">{media?.liked_by?.length}</p>
+                </div>
+                <BsDot size={23} />
+                <div className="flex gap-2 items-center">
+                  <RiFlowerFill size={15} />
+                  <p className="text-xs ">
+                    {Number(videoData?.totalMints || 0)}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         )}
