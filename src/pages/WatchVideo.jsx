@@ -20,6 +20,7 @@ import { stringToUint256 } from "../components/libs/utils";
 import { getVideo } from "../components/hooks/useBlockchain";
 import TipButton from "../components/ui/TipButton";
 import FollowButton from "../components/ui/FollowButton";
+import { useEthToUsdc } from "../components/hooks/useEthUsd";
 
 export default function WatchVideo() {
   const [selectedMedia, setSelectedMedia] = useState(null);
@@ -28,11 +29,12 @@ export default function WatchVideo() {
 
   const { user } = useUser();
   console.log("WatchVideo user", user);
-  
+
   const userId = user?.data?.id;
   const { id } = useParams();
   const { singleMedia, isLoading } = useSingleMedia(id);
   const prevMediaId = useRef(singleMedia?.id);
+  const usdcValue = useEthToUsdc(singleMedia?.price);
 
   const [like, setLike] = useState(
     () => singleMedia?.liked_by?.some((liker) => liker.id === userId) ?? false
@@ -189,7 +191,7 @@ export default function WatchVideo() {
                 <p className="text-white/80 text-sm">Price</p>
                 <p className="text-white/60 text-sm">
                   {" "}
-                  {singleMedia?.price} ETH
+                  {singleMedia?.price} ETH ≈ {Number(usdcValue).toFixed(2)} USDC
                 </p>
               </div>
             </div>

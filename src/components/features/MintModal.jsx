@@ -6,11 +6,13 @@ import { getVideo, mintVideo } from "../hooks/useBlockchain";
 import toast from "react-hot-toast";
 import Spinner from "../ui/Spinner";
 import { stringToUint256 } from "../libs/utils";
+import { useEthToUsdc } from "../hooks/useEthUsd";
 
 export default function MintModal({ media, onClose }) {
   const [loading, setLoading] = useState(false);
   const [videoData, setVideoData] = useState(null);
 
+  const usdcValue = useEthToUsdc(media?.price);
   const { user } = useUser();
 
   useEffect(() => {
@@ -64,7 +66,9 @@ export default function MintModal({ media, onClose }) {
           </div>
           <div className="flex justify-between gap-4">
             <span className="text-white">Price:</span>
-            <p className="text-white/60">{media?.price} ETH</p>
+            <p className="text-white/60">
+              {media?.price} ETH ≈ {Number(usdcValue).toFixed(2)} USDC
+            </p>
           </div>
           <div className="flex justify-between gap-4">
             <span className="text-white">Total Mints:</span>
