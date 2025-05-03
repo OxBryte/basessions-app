@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { AuthContext } from "../components/context/AppContext";
 
 export default function Settings() {
-  const {logout} = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
   return (
     <>
@@ -42,14 +42,14 @@ export default function Settings() {
                 <BiChevronRight size={28} />
               </button>
             </div>
+            <button
+              className="w-full flex items-center justify-center gap-4 py-4 cursor-pointer mt-6 text-white"
+              onClick={() => logout()}
+            >
+              <p>Logout</p>
+              <TbLogout size={22} />
+            </button>
           </div>
-        </div>
-        <div
-          className="w-full flex items-center justify-center gap-4 py-4 cursor-pointer"
-          onClick={() => logout()}
-        >
-          <p>Logout</p>
-          <TbLogout size={22} />
         </div>
       </div>
     </>

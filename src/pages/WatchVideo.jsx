@@ -28,7 +28,6 @@ export default function WatchVideo() {
   const [videoData, setVideoData] = useState(null);
 
   const { user } = useUser();
-  console.log("WatchVideo user", user);
 
   const userId = user?.data?.id;
   const { id } = useParams();

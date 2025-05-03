@@ -11,6 +11,7 @@ import { useUser } from "../components/hooks/useUser";
 import { useWallet } from "../components/hooks/useWallet";
 import Spinner from "../components/ui/Spinner";
 import { RxReload } from "react-icons/rx";
+import { MdOutlineSwapHoriz } from "react-icons/md";
 
 export default function Wallet() {
   const [send, setSend] = useState(false);
@@ -57,23 +58,27 @@ export default function Wallet() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-3 w-full gap-2">
+        <div className="grid grid-cols-4 w-full gap-2">
           <div className="flex flex-col gap-2 items-center justify-center p-4 rounded-lg bg-white/5">
-            <PiCoinsFill size={24} />
+            <PiCoinsFill size={22} />
             <p className="text-xs text-white/60">Buy/Sell</p>
+          </div>
+          <div className="flex flex-col gap-2 items-center justify-center p-4 rounded-lg bg-white/5">
+            <MdOutlineSwapHoriz size={22} />
+            <p className="text-xs text-white/60">Swap</p>
           </div>
           <div
             className="flex flex-col gap-2 items-center justify-center p-4 rounded-lg bg-white/5 cursor-pointer"
             // onClick={() => setSend(true)}
           >
-            <PiPaperPlaneTiltFill size={24} />
+            <PiPaperPlaneTiltFill size={22} />
             <p className="text-xs text-white/60">Send</p>
           </div>
           <div
             className="flex flex-col gap-2 items-center justify-center p-4 rounded-lg bg-white/5 cursor-pointer"
             onClick={() => setModal(true)}
           >
-            <PiQrCode size={24} />
+            <PiQrCode size={22} />
             <p className="text-xs text-white/60">Recieve</p>
           </div>
         </div>
