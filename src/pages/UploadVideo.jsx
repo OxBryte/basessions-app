@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { web3 } from "../Provider";
 import { useWallet } from "../components/hooks/useWallet";
+import { useEthToUsdc } from "../components/hooks/useEthUsd";
 
 export default function UploadVideo() {
   const { user } = useUser();
@@ -37,9 +38,12 @@ export default function UploadVideo() {
   const {
     register,
     handleSubmit,
-    // watch,
+    watch,
     // formState: { errors },
   } = useForm();
+
+  const ethAmount = parseFloat(watch("price") || "0");
+  const usdcValue = useEthToUsdc(ethAmount);
 
   const handleDescriptionChange = (event) => {
     const inputText = event.target.value; // Get the current input value
@@ -257,6 +261,7 @@ export default function UploadVideo() {
                   className="bg-[#FFFFFF08] px-4 py-2.5 rounded-lg"
                   {...register("price")}
                 />
+                <div className="text-white/60 text-xs">≈ {Number(usdcValue).toFixed(2)} USDC</div>
               </div>
               <div className=" flex flex-col gap-2">
                 <label htmlFor="mintNumber" className="text-sm font-light">

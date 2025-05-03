@@ -69,3 +69,33 @@ export const mapping = {
   [stringToUint256("abc-123")]: "abc-123",
   [stringToUint256("another-video")]: "another-video",
 };
+
+
+
+// src/utils/crypto.js
+
+let _cachedEthUsdRate = null;
+
+/**
+ * Fetches the current ETH → USD rate (and caches it for the lifetime of the page).
+ */
+export async function fetchEthUsdRate() {
+  if (_cachedEthUsdRate !== null) {
+    return _cachedEthUsdRate;
+  }
+  const res = await fetch(
+    "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
+  );
+  const data = await res.json();
+  _cachedEthUsdRate = data.ethereum.usd;
+  return _cachedEthUsdRate;
+}
+
+/**
+ * Given an ETH amount, returns the USD (USDC) equivalent.
+ */
+export async function convertEthToUsdc(ethAmount) {
+  if (isNaN(ethAmount)) return 0;
+  const rate = await fetchEthUsdRate();
+  return ethAmount * rate;
+}
