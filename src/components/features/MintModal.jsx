@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import Spinner from "../ui/Spinner";
 import { stringToUint256 } from "../libs/utils";
 import { useEthToUsdc } from "../hooks/useEthUsd";
+import { useWallet } from "../hooks/useWallet";
 
 export default function MintModal({ media, onClose }) {
   const [loading, setLoading] = useState(false);
@@ -14,6 +15,10 @@ export default function MintModal({ media, onClose }) {
 
   const usdcValue = useEthToUsdc(media?.price);
   const { user } = useUser();
+  const { balances } = useWallet(
+    user?.data?.wallet_private_key,
+    user?.data?.wallet_address
+  );
 
   useEffect(() => {
     const loadVideo = async () => {
@@ -30,6 +35,11 @@ export default function MintModal({ media, onClose }) {
   }, [media?.id]);
 
   const handleConfirmMint = async () => {
+    if (balances?.eth === "0") {
+      toast.error("You need to fund your wallet to mint a video");
+      return; // Prevent submission if balance is 0
+    }
+
     setLoading(true);
     try {
       const priceInWei = web3.utils.toWei(media.price, "ether");
