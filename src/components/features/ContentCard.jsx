@@ -8,9 +8,22 @@ import { useEffect, useState } from "react";
 import { getVideo } from "../hooks/useBlockchain";
 import { stringToUint256 } from "../libs/utils";
 import { RiFlowerFill } from "react-icons/ri";
+import { useUser } from "../hooks/useUser";
 
 export default function ContentCard({ media, onMint }) {
   const [videoData, setVideoData] = useState(null);
+  const [isLiked, setLiked] = useState(false);
+
+  
+  const { user } = useUser();
+  const userId = user?.data?.id;
+  console.log(isLiked, userId);
+  
+  useEffect(() => {
+    setLiked(
+      userId ? media?.liked_by?.some((l) => l || l?.id === userId) ?? false : false
+    );
+  }, [media?.liked_by, userId]);
 
   useEffect(() => {
     const loadVideo = async () => {
@@ -75,7 +88,10 @@ export default function ContentCard({ media, onMint }) {
                 </p>
                 <BsDot size={23} />
                 <div className="flex gap-2 items-center">
-                  <PiHeartFill size={15} />
+                  <PiHeartFill
+                    size={15}
+                    className={`${isLiked  && "text-red-500"}`}
+                  />
                   <p className="text-xs ">{media?.liked_by?.length}</p>
                 </div>
                 <BsDot size={23} />
@@ -101,7 +117,6 @@ export default function ContentCard({ media, onMint }) {
               </div>
               <p className="text-white/40 text-sm">{media?.description}</p>
               <div className="flex gap-1 text-white/60 items-center ">
-                
                 <p className="text-[10px] ">
                   {moment(media?.created_at).startOf("seconds").fromNow()}
                 </p>

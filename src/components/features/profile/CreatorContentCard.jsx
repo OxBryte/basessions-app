@@ -9,13 +9,27 @@ import { BsDot } from "react-icons/bs";
 import moment from "moment";
 import { RiFlowerFill } from "react-icons/ri";
 import { getVideo } from "../../hooks/useBlockchain";
+import { useUser } from "../../hooks/useUser";
 
 export default function CreatorContentCard({ media }) {
   const [showOption, setShowOption] = useState(false);
   const [videoData, setVideoData] = useState(null);
+  const [isLiked, setLiked] = useState(false);
+
   const optionsRef = useRef(null);
   const { deleteMediaFn } = useDeleteMedia();
+  const { user } = useUser();
+  const userId = user?.data?.id;
   const mediaId = media?.id;
+
+  console.log(media);
+  
+
+  useEffect(() => {
+    setLiked(
+      userId ? media?.liked_by?.some((l) => l || l?.id === userId) ?? false : false
+    );
+  }, [media?.liked_by, userId]);
 
   useEffect(() => {
     const loadVideo = async () => {
@@ -74,7 +88,10 @@ export default function CreatorContentCard({ media }) {
             </p>
             <BsDot size={23} />
             <div className="flex gap-2 items-center">
-              <PiHeartFill size={15} />
+              <PiHeartFill
+                size={15}
+                className={`${isLiked && "text-red-500"}`}
+              />
               <p className="text-xs ">{media?.liked_by?.length}</p>
             </div>
             <BsDot size={23} />

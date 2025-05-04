@@ -43,13 +43,17 @@ export function useUserMedia(userId) {
 }
 
 export function useSingleMedia(mediaId) {
-  const { isPending: isLoading, data: singleMedia } = useQuery({
+  const {
+    isPending: isLoading,
+    data: singleMedia,
+    refetch,
+  } = useQuery({
     queryKey: ["singleMedia", mediaId],
     queryFn: () => getSingleMedia(mediaId),
     enabled: !!mediaId,
   });
 
-  return { isLoading, singleMedia };
+  return { isLoading, singleMedia, refetch };
 }
 
 export function useCreatorProfile(creatorId) {

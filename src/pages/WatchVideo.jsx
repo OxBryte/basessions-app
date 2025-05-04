@@ -1,16 +1,11 @@
-import {
-  RiShareCircleLine,
-  RiThumbUpFill,
-  RiThumbUpLine,
-} from "react-icons/ri";
+import { RiShareCircleLine } from "react-icons/ri";
 import { TbMessage2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useSingleMedia, useUser } from "../components/hooks/useUser";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import Player from "../components/features/videoPlayer/Player";
-import { useEffect, useRef, useState } from "react";
-import { useLike } from "../components/hooks/useLike";
+import { useEffect, useState } from "react";
 import Comments from "../components/features/Comments";
 import { BsDot } from "react-icons/bs";
 import MintModal from "../components/features/MintModal";
@@ -21,6 +16,7 @@ import { getVideo } from "../components/hooks/useBlockchain";
 import TipButton from "../components/ui/TipButton";
 import FollowButton from "../components/ui/FollowButton";
 import { useEthToUsdc } from "../components/hooks/useEthUsd";
+import LikeButton from "../components/ui/LikeButton";
 
 export default function WatchVideo() {
   const [selectedMedia, setSelectedMedia] = useState(null);
@@ -28,53 +24,12 @@ export default function WatchVideo() {
   const [videoData, setVideoData] = useState(null);
 
   const { user } = useUser();
-
   const userId = user?.data?.id;
   const { id } = useParams();
-  const { singleMedia, isLoading } = useSingleMedia(id);
-  const prevMediaId = useRef(singleMedia?.id);
+  const { singleMedia, isLoading, refetch } = useSingleMedia(id);
   const usdcValue = useEthToUsdc(singleMedia?.price);
 
-  const [like, setLike] = useState(
-    () => singleMedia?.liked_by?.some((liker) => liker.id === userId) ?? false
-  );
-  const [likeCount, setLikeCount] = useState(
-    () => singleMedia?.liked_by?.length || 0
-  );
-
-  const { likeFn, isPending } = useLike();
-
-  // When the media ID changes, reset to whatever the new props say
-  useEffect(() => {
-    if (singleMedia?.id !== prevMediaId.current) {
-      prevMediaId.current = singleMedia?.id;
-      setLike(
-        singleMedia?.liked_by?.some((liker) => liker.id === userId) ?? false
-      );
-      setLikeCount(singleMedia?.liked_by?.length || 0);
-    }
-  }, [singleMedia?.id, singleMedia?.liked_by, userId]);
-
-  const handleLike = () => {
-    const next = !like;
-    setLike(next);
-    setLikeCount((c) => c + (next ? 1 : -1));
-
-    likeFn(
-      { mediaId: singleMedia.id, status: next },
-      {
-        onError: () => {
-          // rollback
-          setLike(!next);
-          setLikeCount((c) => c + (next ? -1 : 1));
-        },
-        onSuccess: () => {},
-      }
-    );
-  };
-
   // get video data from blockchain
-
   useEffect(() => {
     const loadVideo = async () => {
       try {
@@ -150,18 +105,8 @@ export default function WatchVideo() {
           <div className="flex items-center gap-4 justify-between">
             <div className="flex items-center gap-4">
               <div className="flex gap-2 items-center text-white/60">
-                <button
-                  onClick={handleLike}
-                  disabled={isPending}
-                  className={like ? "text-blue-500" : ""}
-                >
-                  {like ? (
-                    <RiThumbUpFill size={21} />
-                  ) : (
-                    <RiThumbUpLine size={21} />
-                  )}
-                </button>
-                <p className="!m-0 text-sm text-white/90"> {likeCount}</p>
+                <LikeButton media={singleMedia} onLiked={refetch} />
+                {/* <p className="!m-0 text-sm text-white/90"> {likeCount}</p> */}
               </div>
               <div className="flex gap-2 items-center text-white/60">
                 <TbMessage2 size={21} />
