@@ -17,7 +17,6 @@ export default function ContentCard({ media, onMint }) {
   
   const { user } = useUser();
   const userId = user?.data?.id;
-  console.log(isLiked, userId);
   
   useEffect(() => {
     setLiked(

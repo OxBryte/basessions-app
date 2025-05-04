@@ -24,16 +24,18 @@ export function AuthLogin() {
   };
 
   return (
-    <div className="w-full h-screen space-y-4">
+    <div className="w-full h-screen space-y-4 relative">
+      <div className="absolute -top-20 -left-10 rounded-full w-40 h-40 blur-3xl bg-[#0052FE]"></div>
+      <div className="absolute bottom-0 right-0 rounded-full w-28 h-28 blur-3xl bg-[#0052FE]/50 -z-10"></div>
       <div
         className="h-[55vh] w-full max-w-[620px] mx-auto bg-fill bg-no-repeat bg-top relative"
-        style={{ backgroundImage: "url(/bg-login.png)" }}
+        // style={{ backgroundImage: "url(/bg-login.png)" }}
       >
-        <div className="before:absolute before:inset-0 before:bg-gradient-to-b before:from-transparent before:to-[#131313]"></div>
-        <div className="w-full h-full flex flex-col gap-6 items-center justify-center relative z-10">
-          <img src="session_logo.png" alt="" className="w-20" />
-          <div className="flex flex-col gap-2 w-full items-center">
-            <p>Welcome to</p>
+        {/* <div className="before:absolute before:inset-0 before:bg-gradient-to-b before:from-transparent before:to-[#131313]"></div> */}
+        <div className="w-full h-full flex flex-col gap-4 items-center justify-center relative z-10">
+          <img src="session_logo.png" alt="" className="w-16" />
+          <div className="flex flex-col gap-1 w-full items-center">
+            <p>Welcome Back</p>
             <h1 className="font-bold text-3xl">Sessions</h1>
             <p className="text-center text-white/50 text-xs max-w-[320px]">
               Step into the future of video streaming Onchain. Connect with
@@ -92,14 +94,14 @@ export function AuthLogin() {
           </div>
           <div className="flex w-full items-center justify-between">
             <Link to="/select">
-              <div className="text-sm text-white/40 hover:text-white cursor-pointer w-fit">
+              <div className="text-xs text-white/40 hover:text-white cursor-pointer w-fit">
                 <p>
                   New User?{" "}
                   <span className="text-[#0052FE] ">Create Account</span>
                 </p>
               </div>
             </Link>
-            <div className="text-sm text-white/40 hover:text-white cursor-pointer ">
+            <div className="text-xs text-white/40 hover:text-white cursor-pointer ">
               <p>Forgotten password?</p>
             </div>
           </div>
@@ -139,15 +141,17 @@ export function AuthSignup() {
   };
 
   return (
-    <div className="w-full h-screen space-y-4">
+    <div className="w-full h-screen space-y-4 relative">
+      <div className="absolute -top-20 -left-10 rounded-full w-40 h-40 blur-3xl bg-[#0052FE]"></div>
+      <div className="absolute bottom-0 right-0 rounded-full w-28 h-28 blur-3xl bg-[#0052FE]/50 -z-10"></div>
       <div
         className="h-[55vh] w-full max-w-[620px] mx-auto bg-fill bg-no-repeat bg-top relative"
-        style={{ backgroundImage: "url(/bg-login.png)" }}
+        // style={{ backgroundImage: "url(/bg-login.png)" }}
       >
         <div className="before:absolute before:inset-0 before:bg-gradient-to-b before:from-transparent before:to-[#131313]"></div>
-        <div className="w-full h-full flex flex-col gap-6 items-center justify-center relative z-10">
-          <img src="session_logo.png" alt="" className="w-20" />
-          <div className="flex flex-col gap-2 w-full items-center">
+        <div className="w-full h-full flex flex-col gap-4 items-center justify-center relative z-10">
+          <img src="session_logo.png" alt="" className="w-16" />
+          <div className="flex flex-col gap-1 w-full items-center">
             <p>Welcome to</p>
             <h1 className="font-bold text-3xl">Sessions</h1>
             <p className="text-center text-white/50 text-xs max-w-[320px]">
@@ -207,14 +211,14 @@ export function AuthSignup() {
           </div>
           <div className="flex w-full items-center justify-between">
             <Link to="/login">
-              <div className="text-sm text-white/40 hover:text-white cursor-pointer w-fit">
+              <div className="text-xs text-white/40 hover:text-white cursor-pointer w-fit">
                 <p>
                   Have an account?{" "}
                   <span className="text-[#0052FE] ">Login</span>
                 </p>
               </div>
             </Link>
-            <div className="text-sm text-white/40 hover:text-white cursor-pointer ">
+            <div className="text-xs text-white/40 hover:text-white cursor-pointer ">
               <p>Forgotten password?</p>
             </div>
           </div>
