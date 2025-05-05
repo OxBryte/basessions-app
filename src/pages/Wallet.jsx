@@ -12,6 +12,8 @@ import { useWallet } from "../components/hooks/useWallet";
 import Spinner from "../components/ui/Spinner";
 import { RxReload } from "react-icons/rx";
 import { MdOutlineSwapHoriz } from "react-icons/md";
+import useTransactionHistory from "../components/hooks/useTransactionHistory";
+import toast from "react-hot-toast";
 
 export default function Wallet() {
   const [send, setSend] = useState(false);
@@ -20,19 +22,24 @@ export default function Wallet() {
   const [toAddress, setToAddress] = useState("");
 
   const { user } = useUser();
-  const { isLoading, balances, ethUsdValue, refreshBalances } = useWallet(
-    user?.data?.wallet_private_key,
-    user?.data?.wallet_address
-  );
-
   const walletAddress = user?.data?.wallet_address;
+  const walletPrivateKey = user?.data?.wallet_private_key;
+  const { isLoading, balances, ethUsdValue, refreshBalances } = useWallet(
+    walletPrivateKey,
+    walletAddress
+  );
+  const { transactions, isLoading: isLoadingTransactions } =
+    useTransactionHistory(walletAddress);
+  // console.log(transactions);
 
   async function handleCopy(address) {
     const ok = await copyToClipboard(address);
     if (ok) {
       // show your toast/snackbar
+      toast.success("Address copied successfully");
       console.log("Copied to clipboard!");
     } else {
+      toast.success("Failed to copy address");
       console.error("Copy failed");
     }
   }
@@ -119,6 +126,59 @@ export default function Wallet() {
             <PiBatteryEmpty size={24} />
             <p className="text-sm text-white/60">No transaction history</p>
           </div>
+          {isLoadingTransactions ? (
+            <div
+              // style={divStyles2}
+              className="d-flex flex-column align-items-center gap-2"
+            >
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+              <span>Wait a moment</span>
+            </div>
+          ) : (
+            <div className="overflow-auto w-[100%]">
+              {transactions?.length > 0 && (
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Date/Time</th>
+                      <th scope="col">TX Hash</th>
+                      <th scope="col">Method</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {transactions?.map((tx, index) => (
+                      <tr key={index}>
+                        <th scope="row">{index + 1}</th>
+                        <td>
+                          {new Date(tx?.timeStamp * 1000).toLocaleString()}
+                        </td>
+                        <td>
+                          <a
+                            href={`https://basescan.org/tx/${tx?.hash}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ color: "#FFFFFF", textDecoration: "none" }}
+                          >
+                            {tx?.hash?.substring(0, 20)}...
+                          </a>
+                        </td>
+                        <td>
+                          {tx?.from === walletAddress ? "Sent" : "Received"}
+                        </td>
+                        <td>{`${tx?.value} ETH`}</td>
+                        <td>{tx?.isError === "0" ? "Success" : "Failed"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

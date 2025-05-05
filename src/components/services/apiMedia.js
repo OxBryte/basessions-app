@@ -136,3 +136,31 @@ export async function getLikedMedia() {
     );
   }
 }
+
+
+export async function getRepliedComment(mediaId, parentId) {
+  try {
+    const token = document.cookie.includes("token=")
+      ? document.cookie.split("token=")[1].split(";")[0]
+      : null;
+    // Assuming the token is stored in localStorage or similar
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.get(
+      `${apiURL}media/${mediaId}/comment/${parentId}`,
+      config
+    );
+
+    return data.data;
+  } catch (error) {
+    console.error("Error while fetching media:", error);
+    // window.location.href = "/";
+    throw new Error(
+      error.response?.data?.message || "An error occurred while fetching media"
+    );
+  }
+}
