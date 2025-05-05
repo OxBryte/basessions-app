@@ -14,6 +14,7 @@ import { RxReload } from "react-icons/rx";
 import { MdOutlineSwapHoriz } from "react-icons/md";
 import useTransactionHistory from "../components/hooks/useTransactionHistory";
 import toast from "react-hot-toast";
+import { web3 } from "../Provider";
 
 export default function Wallet() {
   const [send, setSend] = useState(false);
@@ -170,7 +171,10 @@ export default function Wallet() {
                         <td>
                           {tx?.from === walletAddress ? "Sent" : "Received"}
                         </td>
-                        <td>{`${tx?.value} ETH`}</td>
+                        <td>{`${web3.utils.fromWei(
+                          tx?.value,
+                          "ether"
+                        )} ETH`}</td>
                         <td>{tx?.isError === "0" ? "Success" : "Failed"}</td>
                       </tr>
                     ))}
