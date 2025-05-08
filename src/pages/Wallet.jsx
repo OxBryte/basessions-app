@@ -15,6 +15,7 @@ import { MdOutlineSwapHoriz } from "react-icons/md";
 import useTransactionHistory from "../components/hooks/useTransactionHistory";
 import toast from "react-hot-toast";
 import { web3 } from "../Provider";
+import { useWithdraw } from "../components/hooks/useSendFunds";
 
 export default function Wallet() {
   const [send, setSend] = useState(false);
@@ -24,14 +25,10 @@ export default function Wallet() {
 
   const { user } = useUser();
   const walletAddress = user?.data?.wallet_address;
-  const walletPrivateKey = user?.data?.wallet_private_key;
-  const { isLoading, balances, ethUsdValue, refreshBalances } = useWallet(
-    walletPrivateKey,
-    walletAddress
-  );
+  const { isLoading, balances, ethUsdValue, refreshBalances } = useWallet();
   const { transactions, isLoading: isLoadingTransactions } =
     useTransactionHistory(walletAddress);
-  // console.log(transactions);
+  const { withdraw, loading } = useWithdraw();
 
   async function handleCopy(address) {
     const ok = await copyToClipboard(address);
@@ -44,6 +41,28 @@ export default function Wallet() {
       console.error("Copy failed");
     }
   }
+
+  const handleSend = async () => {
+    if (!toAddress || !amount) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+    try {
+      const receipt = await withdraw(toAddress, amount);
+      if (receipt?.status === false) {
+        toast.error("Transaction failed");
+        return;
+      }
+      console.log("Sent! Receipt:", receipt);
+      toast.success("Transaction successful");
+      setToAddress("");
+      setAmount("");
+      setSend(false);
+      refreshBalances();
+    } catch {
+      // error is already set in state
+    }
+  };
 
   return (
     <>
@@ -77,7 +96,7 @@ export default function Wallet() {
           </div>
           <div
             className="flex flex-col gap-2 items-center justify-center p-4 rounded-lg bg-white/5 cursor-pointer"
-            // onClick={() => setSend(true)}
+            onClick={() => setSend(true)}
           >
             <PiPaperPlaneTiltFill size={22} />
             <p className="text-xs text-white/60">Send</p>
@@ -123,14 +142,16 @@ export default function Wallet() {
           <div className="flex gap-3 w-full justify-between items-center">
             <p className="text-sm">Transaction history</p>
           </div>
-          <div className="w-full flex flex-col items-center gap-3 justify-center h-[180px]">
-            <PiBatteryEmpty size={24} />
-            <p className="text-sm text-white/60">No transaction history</p>
-          </div>
+          {transactions?.length === 0 && !isLoadingTransactions && (
+            <div className="w-full flex flex-col items-center gap-3 justify-center h-[180px]">
+              <PiBatteryEmpty size={24} />
+              <p className="text-sm text-white/60">No transaction history</p>
+            </div>
+          )}
           {isLoadingTransactions ? (
             <div
               // style={divStyles2}
-              className="d-flex flex-column align-items-center gap-2"
+              className="w-full flex flex-col items-center gap-2"
             >
               <Spinner animation="border" role="status">
                 <span className="visually-hidden">Loading...</span>
@@ -189,27 +210,27 @@ export default function Wallet() {
       {send && (
         <div className="fixed inset-0 flex items-center justify-center">
           <div
-            className="bg-[#131313] rounded-lg p-6 w-full max-w-sm z-10"
+            className="bg-[#0b0b0b] rounded-lg flex flex-col gap-4 p-6 w-full max-w-sm z-10"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-xl font-semibold mb-4">Send Funds</h2>
-            <label className="block mb-2">
-              <span className="text-gray-700">Amount</span>
+            <h2 className="text-xl font-semibold">Send Funds</h2>
+            <label className="space-y-2">
+              <span className="text-white/60 text-sm">Amount</span>
               <input
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="mt-1 block w-full border-gray-300 rounded"
+                className="block w-full px-4 py-2 rounded-lg text-gray-500"
                 placeholder="0.00"
               />
             </label>
-            <label className="block mb-4">
-              <span className="text-gray-700">To Address</span>
+            <label className="space-y-2">
+              <span className="text-white/60 text-sm">Address</span>
               <input
                 type="text"
                 value={toAddress}
                 onChange={(e) => setToAddress(e.target.value)}
-                className="mt-1 block w-full border-gray-300 rounded"
+                className=" block w-full px-4 py-2 rounded-lg text-gray-500"
                 placeholder="0x…"
               />
             </label>
@@ -221,14 +242,10 @@ export default function Wallet() {
                 Cancel
               </button>
               <button
-                onClick={() => {
-                  // your send logic here
-                  console.log({ amount, toAddress });
-                  setSend(false);
-                }}
+                onClick={() => handleSend()}
                 className="px-4 py-2 bg-blue-600 text-white rounded"
               >
-                Send
+                {loading ? <Spinner /> : "Send"}
               </button>
             </div>
           </div>

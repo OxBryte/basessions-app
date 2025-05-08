@@ -12,10 +12,7 @@ export default function TipCreator({ media, onClose }) {
   const [amount, setAmount] = useState(0);
 
   const { user } = useUser();
-  const { isLoading, balances } = useWallet(
-    user?.data?.wallet_private_key,
-    user?.data?.wallet_address
-  );
+  const { isLoading, balances } = useWallet();
 
   const handleConfirmMint = async () => {
     setLoading(true);

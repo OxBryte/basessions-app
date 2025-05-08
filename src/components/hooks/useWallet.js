@@ -1,12 +1,17 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import Web3 from "web3";
 import { USDC_ABI } from "../../contract/USDCAbi";
+import { useUser } from "./useUser";
 
-export function useWallet(privateKey, address) {
+export function useWallet() {
   const [balances, setBalances] = useState({ eth: "0", usdc: "0" });
   const [ethPrice, setEthPrice] = useState(0); // USD per ETH
   const [ethUsdValue, setEthUsdValue] = useState("0.00");
   const [isLoading, setIsLoading] = useState(true);
+
+    const { user } = useUser();
+    const address = user?.data?.wallet_address;
+    const privateKey = user?.data?.wallet_private_key;
 
   const rpcUrl = import.meta.env.VITE_RPC_URL;
   const usdcAddress = import.meta.env.VITE_PUBLIC_USDC_ADDRESS;

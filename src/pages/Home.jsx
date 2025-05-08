@@ -12,10 +12,7 @@ export default function Home() {
   const [selectedMedia, setSelectedMedia] = useState(null);
   const { medias, isLoading } = useMedia();
   const { user } = useUser();
-  const { isLoading: isLoadingBalance, balances } = useWallet(
-    user?.data?.wallet_private_key,
-    user?.data?.wallet_address
-  );
+  const { isLoading: isLoadingBalance, balances } = useWallet();
 
   if (isLoading) {
     return (

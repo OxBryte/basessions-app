@@ -29,10 +29,7 @@ export default function UploadVideo() {
   const [fee, setFee] = useState(null);
   const [minting, setMinting] = useState(false);
 
-  const { balances } = useWallet(
-    user?.data?.wallet_private_key,
-    user?.data?.wallet_address
-  );
+  const { balances } = useWallet();
   const { uploadMediaFn, isPending } = useUploadMedia(setOpenModal, setData);
   const navigate = useNavigate();
   const {
@@ -261,7 +258,9 @@ export default function UploadVideo() {
                   className="bg-[#FFFFFF08] px-4 py-2.5 rounded-lg"
                   {...register("price")}
                 />
-                <div className="text-white/60 text-xs">≈ {Number(usdcValue).toFixed(2)} USDC</div>
+                <div className="text-white/60 text-xs">
+                  ≈ {Number(usdcValue).toFixed(2)} USDC
+                </div>
               </div>
               <div className=" flex flex-col gap-2">
                 <label htmlFor="mintNumber" className="text-sm font-light">

@@ -15,10 +15,7 @@ export default function MintModal({ media, onClose }) {
 
   const usdcValue = useEthToUsdc(media?.price);
   const { user } = useUser();
-  const { balances } = useWallet(
-    user?.data?.wallet_private_key,
-    user?.data?.wallet_address
-  );
+  const { balances } = useWallet();
 
   useEffect(() => {
     const loadVideo = async () => {
