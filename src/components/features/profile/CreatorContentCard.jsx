@@ -22,13 +22,12 @@ export default function CreatorContentCard({ media }) {
   const userId = user?.data?.id;
   const mediaId = media?.id;
 
-  console.log(media);
-  
+  // console.log(media);
 
   useEffect(() => {
-    setLiked(
-      userId ? media?.liked_by?.some((l) => l || l?.id === userId) ?? false : false
-    );
+    const likes = media?.liked_by ?? [];
+
+    setLiked(Boolean(userId && likes.some((l) => (l?.id ?? l) === userId)));
   }, [media?.liked_by, userId]);
 
   useEffect(() => {

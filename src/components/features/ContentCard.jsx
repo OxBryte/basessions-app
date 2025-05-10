@@ -14,14 +14,13 @@ export default function ContentCard({ media, onMint }) {
   const [videoData, setVideoData] = useState(null);
   const [isLiked, setLiked] = useState(false);
 
-  
   const { user } = useUser();
   const userId = user?.data?.id;
-  
+
   useEffect(() => {
-    setLiked(
-      userId ? media?.liked_by?.some((l) => l || l?.id === userId) ?? false : false
-    );
+    const likes = media?.liked_by ?? [];
+
+    setLiked(Boolean(userId && likes.some((l) => (l?.id ?? l) === userId)));
   }, [media?.liked_by, userId]);
 
   useEffect(() => {
@@ -89,7 +88,7 @@ export default function ContentCard({ media, onMint }) {
                 <div className="flex gap-2 items-center">
                   <PiHeartFill
                     size={15}
-                    className={`${isLiked  && "text-red-500"}`}
+                    className={`${isLiked && "text-red-500"}`}
                   />
                   <p className="text-xs ">{media?.liked_by?.length}</p>
                 </div>

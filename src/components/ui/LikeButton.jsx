@@ -13,10 +13,10 @@ export default function LikeButton({ media, onLiked }) {
 
   // Sync local state whenever the media prop changes
   useEffect(() => {
-    setLiked(
-      userId ? media?.liked_by?.some((l) => l || l?.id === userId) ?? false : false
-    );
-    setCount(media?.liked_by?.length || 0);
+    const likes = media?.liked_by ?? [];
+
+    setLiked(Boolean(userId && likes.some((l) => (l?.id ?? l) === userId)));
+    setCount(likes.length);
   }, [media?.liked_by, userId]);
 
   const handleLike = () => {
