@@ -30,6 +30,8 @@ export default function Wallet() {
     useTransactionHistory(walletAddress);
   const { withdraw, loading } = useWithdraw();
 
+  // console.log("transactions", transactions);
+
   async function handleCopy(address) {
     const ok = await copyToClipboard(address);
     if (ok) {
@@ -161,10 +163,10 @@ export default function Wallet() {
           ) : (
             <div className="overflow-auto w-[100%]">
               {transactions?.length > 0 && (
-                <table className="table table-striped">
+                <table className="">
                   <thead>
-                    <tr>
-                      <th scope="col">#</th>
+                    <tr className="text-left">
+                      {/* <th scope="col">#</th> */}
                       <th scope="col">Date/Time</th>
                       <th scope="col">TX Hash</th>
                       <th scope="col">Method</th>
@@ -175,27 +177,27 @@ export default function Wallet() {
                   <tbody>
                     {transactions?.map((tx, index) => (
                       <tr key={index}>
-                        <th scope="row">{index + 1}</th>
-                        <td>
+                        {/* <th scope="row">{index + 1}</th> */}
+                        <td className="text-sm font-light whitespace-nowrap ">
                           {new Date(tx?.timeStamp * 1000).toLocaleString()}
                         </td>
                         <td>
                           <a
-                            href={`https://basescan.org/tx/${tx?.hash}`}
+                            href={`https://sepolia.basescan.org/tx/${tx?.hash}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{ color: "#FFFFFF", textDecoration: "none" }}
                           >
-                            {tx?.hash?.substring(0, 20)}...
+                            {tx?.hash?.substring(0, 16)}...
                           </a>
                         </td>
-                        <td>
-                          {tx?.from === walletAddress ? "Sent" : "Received"}
+                        <td className="whitespace-nowrap">
+                          {/* {tx?.to === walletAddress ? "Sent" : "Received"} */}
+                          {tx?.functionName}
                         </td>
-                        <td>{`${web3.utils.fromWei(
-                          tx?.value,
-                          "ether"
-                        )} ETH`}</td>
+                        <td>{`${Number(
+                          web3.utils.fromWei(tx?.value, "ether")
+                        ).toFixed(4)} ETH`}</td>
                         <td>{tx?.isError === "0" ? "Success" : "Failed"}</td>
                       </tr>
                     ))}
