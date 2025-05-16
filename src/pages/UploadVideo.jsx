@@ -99,7 +99,6 @@ export default function UploadVideo() {
     const loadFee = async () => {
       try {
         const fee = await getUsdcFeeInEth();
-        console.log(fee, "fee");
         setFee(fee);
       } catch (err) {
         console.error("Failed to load fee:", err);
@@ -124,8 +123,8 @@ export default function UploadVideo() {
       setOpenModal(false);
       navigate("/"); // Redirect to home page after minting
     } catch (error) {
-      console.log("Error minting video:", error);
-      toast.error("Failed to Upload.");
+      console.log("Error minting video:", error?.reason);
+      toast.error(`${error?.reason}`);
       setMinting(false);
     }
   };
@@ -302,6 +301,10 @@ export default function UploadVideo() {
             >
               {isPending ? <Spinner /> : "Upload video"}
             </button>
+            <p className="text-xs text-white/60 text-center -mt-2 font-light animate-bounce">
+              Make sure you have atleats $1.6 or 0.0006 ETH funded in your
+              wallet{" "}
+            </p>
           </form>
         </div>
       </div>

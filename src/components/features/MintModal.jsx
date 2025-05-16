@@ -8,6 +8,7 @@ import Spinner from "../ui/Spinner";
 import { stringToUint256 } from "../libs/utils";
 import { useEthToUsdc } from "../hooks/useEthUsd";
 import { useWallet } from "../hooks/useWallet";
+import { useMintVideo } from "../hooks/useMint";
 
 export default function MintModal({ media, onClose }) {
   const [loading, setLoading] = useState(false);
@@ -16,6 +17,7 @@ export default function MintModal({ media, onClose }) {
   const usdcValue = useEthToUsdc(media?.price);
   const { user } = useUser();
   const { balances } = useWallet();
+  const { mintFn } = useMintVideo();
 
   useEffect(() => {
     const loadVideo = async () => {
@@ -33,7 +35,11 @@ export default function MintModal({ media, onClose }) {
 
   const handleConfirmMint = async () => {
     if (balances?.eth === "0") {
-      toast.error("You need to fund your wallet to mint a video");
+      toast.error("You need to fund your wallet to mint a video.");
+      return; // Prevent submission if balance is 0
+    }
+    if (balances?.eth < media?.price) {
+      toast.error(`You need atleast ${media?.price}eth to mint this video!`);
       return; // Prevent submission if balance is 0
     }
 
@@ -41,16 +47,18 @@ export default function MintModal({ media, onClose }) {
     try {
       const priceInWei = web3.utils.toWei(media.price, "ether");
       const videoId = stringToUint256(media.id);
+      const mediaId = media?.id;
 
       console.log(priceInWei, videoId);
 
       const privateKey = user.data.wallet_private_key;
+      // mintFn(mediaId);
       await mintVideo(privateKey, videoId, priceInWei);
       toast.success("Video minted successfully!");
       onClose();
     } catch (err) {
       console.error(err);
-      toast.error("Failed to mint.");
+      toast.error(`"Failed to mint." ${err?.reason}`);
     } finally {
       setLoading(false);
     }
@@ -73,9 +81,14 @@ export default function MintModal({ media, onClose }) {
           </div>
           <div className="flex justify-between gap-4">
             <span className="text-white">Price:</span>
-            <p className="text-white/60">
-              {media?.price} ETH ≈ {Number(usdcValue).toFixed(2)} USDC
-            </p>
+            <div className="space-y-0">
+              <p className="text-white/60">
+                {media?.price} ETH ≈ {Number(usdcValue).toFixed(2)} USDC
+              </p>
+              <p className="text-white/60 text-xs">
+                {Number(balances?.eth).toFixed(5)}
+              </p>
+            </div>
           </div>
           <div className="flex justify-between gap-4">
             <span className="text-white">Total Mints:</span>
