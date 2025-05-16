@@ -5,7 +5,7 @@ The onchain video content streaming platform
 Made for you!
 # Mainnet Contract Address
 
-0x9CF3C0f29EBe33c692F318D4Bf0f9A77304F9d18
+0x9C0B6D15b26E13f6990FB5659545F9D983214E5C
 
 # Testnet Contract Address
 
