@@ -99,9 +99,10 @@ export default function UploadVideo() {
     const loadFee = async () => {
       try {
         const fee = await getUsdcFeeInEth();
+        console.log(fee, "fee");
         setFee(fee);
       } catch (err) {
-        console.error("Failed to load video:", err);
+        console.error("Failed to load fee:", err);
       }
     };
 
