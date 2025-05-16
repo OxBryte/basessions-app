@@ -87,11 +87,11 @@ export default function Wallet() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-4 w-full gap-2">
-          <div className="flex flex-col gap-2 items-center justify-center p-4 rounded-lg bg-white/5">
+        <div className="grid grid-cols-3 w-full gap-2">
+          {/* <div className="flex flex-col gap-2 items-center justify-center p-4 rounded-lg bg-white/5">
             <PiCoinsFill size={22} />
             <p className="text-xs text-white/60">Buy/Sell</p>
-          </div>
+          </div> */}
           <div className="flex flex-col gap-2 items-center justify-center p-4 rounded-lg bg-white/5">
             <MdOutlineSwapHoriz size={22} />
             <p className="text-xs text-white/60">Swap</p>
