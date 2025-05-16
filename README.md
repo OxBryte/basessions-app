@@ -1,8 +1,12 @@
-# React + Vite
+# Sessions
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The onchain video content streaming platform
 
-Currently, two official plugins are available:
+Made for you!
+# Mainnet Contract Address
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+0x9CF3C0f29EBe33c692F318D4Bf0f9A77304F9d18
+
+# Testnet Contract Address
+
+0x78bB839dca36d743876336A60BE5fEbcFF8cC6A6
