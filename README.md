@@ -2,7 +2,7 @@
 
 The onchain video content streaming platform
 
-Built for you!
+Made for you!
 # Mainnet Contract Address
 
 0x9CF3C0f29EBe33c692F318D4Bf0f9A77304F9d18
