@@ -67,11 +67,11 @@ export function useCreatorProfile(creatorId) {
 }
 
 export function useLikedMedia() {
-  const { isPending: isLoading, data: likedMedia } = useQuery({
+  const { isPending: isLoadingLiked, data: likedMedia } = useQuery({
     queryKey: ["userMedia"],
     queryFn: () => getLikedMedia(),
     // enabled: !!userId,
   });
 
-  return { isLoading, likedMedia };
+  return { isLoadingLiked, likedMedia };
 }

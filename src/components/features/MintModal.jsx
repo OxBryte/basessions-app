@@ -52,7 +52,7 @@ export default function MintModal({ media, onClose }) {
       console.log(priceInWei, videoId);
 
       const privateKey = user.data.wallet_private_key;
-      // mintFn(mediaId);
+      mintFn(mediaId);
       await mintVideo(privateKey, videoId, priceInWei);
       toast.success("Video minted successfully!");
       onClose();

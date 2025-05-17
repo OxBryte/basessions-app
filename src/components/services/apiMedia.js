@@ -176,9 +176,13 @@ export async function mintedVideo(mediaId) {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await axios.put(`${apiURL}media/${mediaId}/mint`, config);
+    const response = await axios.put(
+      `${apiURL}media/${mediaId}/mint`,
+      null,
+      config
+    );
 
-    return data.data;
+    return response.data;
   } catch (error) {
     console.error("Error while fetching media:", error);
     // window.location.href = "/";

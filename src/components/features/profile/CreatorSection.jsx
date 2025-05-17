@@ -10,8 +10,6 @@ export default function CreatorSection() {
 
   const { userMedia, isLoading } = useUserMedia(userId);
   const { isLoading: isLoadingMintedVideo, mintedMedias } = useMintedMedia();
-  console.log("mintedMedias", mintedMedias);
-  
 
   if (loading) {
     return (
@@ -58,10 +56,38 @@ export default function CreatorSection() {
             )}
             {isLoading && (
               <div className="w-full h-[60dvh] flex items-center justify-center">
-                <img src="session_logo.png" alt="" className="animate-pulse w-16" />
+                <img
+                  src="session_logo.png"
+                  alt=""
+                  className="animate-pulse w-16"
+                />
               </div>
             )}
             {userMedia
+              ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              .map((media) => (
+                <CreatorContentCard key={media.id} media={media} />
+              ))}
+          </div>
+        )}
+        {activeTab === "tab2" && (
+          <div className="w-full space-y-6">
+            {mintedMedias?.length === 0 && (
+              <div className="w-full h-[20dvh] gap-3 flex flex-col items-center justify-center">
+                <img src="session_logo.png" alt="" className="w-16" />
+                <p className="text-white/60">No minted videos yet</p>
+              </div>
+            )}
+            {isLoadingMintedVideo && (
+              <div className="w-full h-[60dvh] flex items-center justify-center">
+                <img
+                  src="session_logo.png"
+                  alt=""
+                  className="animate-pulse w-16"
+                />
+              </div>
+            )}
+            {mintedMedias
               ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
               .map((media) => (
                 <CreatorContentCard key={media.id} media={media} />

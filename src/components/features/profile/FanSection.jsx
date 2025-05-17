@@ -6,9 +6,8 @@ import { useMintedMedia } from "../../hooks/useMint";
 export default function FanSection() {
   const [activeTab, setActiveTab] = useState("tab1");
 
-  const { likedMedia } = useLikedMedia();
+  const { likedMedia, isLoadingLiked } = useLikedMedia();
   const { isLoading: isLoadingMintedVideo, mintedMedias } = useMintedMedia();
-  console.log("mintedMedias", mintedMedias);
 
   return (
     <>
@@ -38,20 +37,48 @@ export default function FanSection() {
           </div>
         </div>
         <div className="w-full">
-          {activeTab === "tab1" && (
+          {activeTab === "tab1" && mintedMedias?.length > 0 && (
             <div className="space-y-6 w-full">
-              <p className="w-full h-[320px]">No minted videos yet</p>
+              {mintedMedias?.map((media) => (
+                <ContentCard key={media?.id} media={media} />
+              ))}
             </div>
           )}
-          {activeTab === "tab2" && (
+          {activeTab === "tab1" && mintedMedias?.length === 0 && (
+            <div className="w-full h-[20dvh] gap-3 flex flex-col items-center justify-center">
+              <img src="session_logo.png" alt="" className="w-16" />
+              <p className="text-white/60">No liked videos yet</p>
+            </div>
+          )}
+          {activeTab === "tab2" && likedMedia?.length === 0 && (
+            <div className="w-full h-[20dvh] gap-3 flex flex-col items-center justify-center">
+              <img src="session_logo.png" alt="" className="w-16" />
+              <p className="text-white/60">No liked videos yet</p>
+            </div>
+          )}
+          {isLoadingMintedVideo && (
+            <div className="w-full h-[60dvh] flex items-center justify-center">
+              <img
+                src="session_logo.png"
+                alt=""
+                className="animate-pulse w-16"
+              />
+            </div>
+          )}
+          {isLoadingLiked && (
+            <div className="w-full h-[60dvh] flex items-center justify-center">
+              <img
+                src="session_logo.png"
+                alt=""
+                className="animate-pulse w-16"
+              />
+            </div>
+          )}
+          {activeTab === "tab2" && likedMedia?.length > 0 && (
             <div className="space-y-6 w-full">
-              {likedMedia?.length > 0 ? (
-                likedMedia.map((media) => (
-                  <ContentCard key={media?.id} media={media} />
-                ))
-              ) : (
-                <p className="w-full h-[320px]">No liked videos yet</p>
-              )}
+              {likedMedia?.map((media) => (
+                <ContentCard key={media?.id} media={media} />
+              ))}
             </div>
           )}
         </div>
