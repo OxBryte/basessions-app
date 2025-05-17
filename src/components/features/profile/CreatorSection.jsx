@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useUser, useUserMedia } from "../../hooks/useUser";
 import CreatorContentCard from "./CreatorContentCard";
+import { useMintedMedia } from "../../hooks/useMint";
 
 export default function CreatorSection() {
   const [activeTab, setActiveTab] = useState("tab1");
@@ -8,6 +9,9 @@ export default function CreatorSection() {
   const userId = user?.data?.id;
 
   const { userMedia, isLoading } = useUserMedia(userId);
+  const { isLoading: isLoadingMintedVideo, mintedMedias } = useMintedMedia();
+  console.log("mintedMedias", mintedMedias);
+  
 
   if (loading) {
     return (

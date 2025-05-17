@@ -137,7 +137,6 @@ export async function getLikedMedia() {
   }
 }
 
-
 export async function getRepliedComment(mediaId, parentId) {
   try {
     const token = document.cookie.includes("token=")
@@ -177,10 +176,7 @@ export async function mintedVideo(mediaId) {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await axios.put(
-      `${apiURL}media/${mediaId}/mint`,
-      config
-    );
+    const { data } = await axios.put(`${apiURL}media/${mediaId}/mint`, config);
 
     return data.data;
   } catch (error) {
@@ -188,6 +184,31 @@ export async function mintedVideo(mediaId) {
     // window.location.href = "/";
     throw new Error(
       error.response?.data?.message || "An error occurred while fetching media"
+    );
+  }
+}
+
+export async function getMintedMedia() {
+  try {
+    const token = document.cookie.includes("token=")
+      ? document.cookie.split("token=")[1].split(";")[0]
+      : null;
+    // Assuming the token is stored in localStorage or similar
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.get(`${apiURL}media/mint`, config);
+
+    return data.data;
+  } catch (error) {
+    console.error("Error while fetching minted media:", error);
+    // window.location.href = "/";
+    throw new Error(
+      error.response?.data?.message ||
+        "An error occurred while fetching minted media"
     );
   }
 }

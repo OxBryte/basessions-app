@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useLikedMedia } from "../../hooks/useUser";
 import ContentCard from "../ContentCard";
+import { useMintedMedia } from "../../hooks/useMint";
 
 export default function FanSection() {
   const [activeTab, setActiveTab] = useState("tab1");
 
   const { likedMedia } = useLikedMedia();
+  const { isLoading: isLoadingMintedVideo, mintedMedias } = useMintedMedia();
+  console.log("mintedMedias", mintedMedias);
 
   return (
     <>

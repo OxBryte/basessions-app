@@ -1,5 +1,5 @@
-import { useMutation } from "@tanstack/react-query";
-import { mintedVideo } from "../services/apiMedia";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getMintedMedia, mintedVideo } from "../services/apiMedia";
 import toast from "react-hot-toast";
 
 export const useMintVideo = () => {
@@ -20,3 +20,13 @@ export const useMintVideo = () => {
   });
   return { mintFn, isPending };
 };
+
+
+export function useMintedMedia() {
+  const { isPending: isLoadingMintedVideo, data: mintedMedias } = useQuery({
+    queryKey: ["mintedVideo"],
+    queryFn: getMintedMedia,
+  });
+
+  return { isLoadingMintedVideo, mintedMedias };
+}
