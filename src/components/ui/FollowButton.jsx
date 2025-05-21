@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { useFollowCreator } from "../hooks/useFollowCreator";
 import { useUser } from "../hooks/useUser";
 import Spinner from "./Spinner";
 
 // eslint-disable-next-line react/prop-types
 export default function FollowButton({ creatorId }) {
+  const [test, setTest] = useState("Follow");
   const { user } = useUser();
   // console.log("FollowButton user", user);
 
@@ -14,7 +16,12 @@ export default function FollowButton({ creatorId }) {
   const { isFollowing, followFn } = useFollowCreator();
 
   const handleFollow = () => {
-    followFn(creatorId);
+    followFn(creatorId, {
+      onSuccess: () => {
+        // console.log("Followed successfully");
+        setTest("Following");
+      },
+    });
   };
 
   return (
@@ -24,7 +31,7 @@ export default function FollowButton({ creatorId }) {
         disabled={isFollowing || alreadyFollowing}
         onClick={handleFollow}
       >
-        {isFollowing ? <Spinner /> : alreadyFollowing ? "Following" : "Follow"}
+        {isFollowing ? <Spinner /> : alreadyFollowing ? "Following" : test}
       </button>
     </>
   );
