@@ -22,10 +22,9 @@ const CommentItem = ({
   const { user } = useUser();
   const { commentFn, isPending: isCommentPending } = useComment();
 
-  const { repliedComment } = useGetRepliedComment(
-    mediaId,
-    comment.id
-  );
+  const { repliedComment } = useGetRepliedComment(mediaId, comment.id);
+  console.log("repliedComment", comment);
+  
 
   const commentLength = repliedComment?.comment?.length;
 
@@ -198,14 +197,16 @@ export default function Comments({ id, singleMedia, refetch }) {
       <p className="text-sm">Comments ({totalComments || 0})</p>
 
       {/* Comments List */}
-      {singleMedia?.comments?.map((comment, index) => (
-        <CommentItem
-          key={`${comment.id}-${index}`}
-          comment={comment}
-          mediaId={id}
-          refetch={refetch}
-        />
-      ))}
+      {singleMedia?.comments
+        ?.filter((c) => c.parent_id === null)
+        .map((comment, index) => (
+          <CommentItem
+            key={`${comment.id}-${index}`}
+            comment={comment}
+            mediaId={id}
+            refetch={refetch}
+          />
+        ))}
 
       {/* Add new top-level comment */}
       <div className="sticky bottom-0 w-full bg-[#131313] pt-4">
