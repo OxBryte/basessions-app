@@ -14,7 +14,7 @@ const useTransactionHistory = (address) => {
       setError(null);
 
       const apiKey = import.meta.env.VITE_BASESCAN_API_KEY; // Make sure this is set correctly
-      const url = `https://basescan.org/api`;
+      const url = `https://api.basescan.org/api`;
       // const url = `https://api-sepolia.basescan.org/api`;
 
       try {

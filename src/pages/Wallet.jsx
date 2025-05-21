@@ -193,7 +193,7 @@ export default function Wallet() {
                         </td>
                         <td className="whitespace-nowrap">
                           {/* {tx?.to === walletAddress ? "Sent" : "Received"} */}
-                          {tx?.functionName}
+                          {tx?.functionName.substring(0, 12)}
                         </td>
                         <td>{`${Number(
                           web3.utils.fromWei(tx?.value, "ether")
