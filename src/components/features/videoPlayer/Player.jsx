@@ -184,7 +184,7 @@ const Player = ({ src, thumbnail }) => {
   const renderCustomControls = () => {
     return (
       <div className="flex items-center justify-between gap-4 w-full text-white/80">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 z-10">
           <button onClick={togglePlayPause}>
             {isPlaying ? <FaPause /> : <FaPlay />}
           </button>
@@ -227,7 +227,7 @@ const Player = ({ src, thumbnail }) => {
     <div className="w-full space-y-2 mb-3">
       <div className="relative h-[340px] w-full overflow-hidden">
         <video
-          className="video-player h-full w-full object-contain object-center"
+          className="video-player h-full w-full object-contain object-center z-5"
           ref={videoRef}
           src={src}
           poster={thumbnail}

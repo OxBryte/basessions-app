@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useSingleMedia, useUser } from "../components/hooks/useUser";
 import { useParams } from "react-router-dom";
 import moment from "moment";
-import Player from "../components/features/videoPlayer/Player";
 import { useEffect, useState } from "react";
 import Comments from "../components/features/Comments";
 import { BsDot } from "react-icons/bs";
@@ -17,6 +16,11 @@ import FollowButton from "../components/ui/FollowButton";
 import { useEthToUsdc } from "../components/hooks/useEthUsd";
 import LikeButton from "../components/ui/LikeButton";
 import ShareButton from "../components/ui/ShareButton";
+import { MediaPlayer, MediaProvider, Poster } from "@vidstack/react";
+import {
+  defaultLayoutIcons,
+  DefaultVideoLayout,
+} from "@vidstack/react/player/layouts/default";
 
 export default function WatchVideo() {
   const [selectedMedia, setSelectedMedia] = useState(null);
@@ -56,10 +60,20 @@ export default function WatchVideo() {
     <>
       <div className="relative">
         <div className="w-full">
-          <Player
+          <MediaPlayer
+            title={singleMedia?.title}
             src={singleMedia?.url}
-            thumbnail={singleMedia?.thumbnail_url}
-          />
+            poster={`${singleMedia?.thumbnail_url}`}
+          >
+            <MediaProvider />
+            <Poster
+              className="h-full w-full object-cover object-center vds-poster"
+              src={singleMedia?.thumbnail_url}
+              alt={singleMedia?.title}
+              posterType="image"
+            />
+            <DefaultVideoLayout icons={defaultLayoutIcons} />
+          </MediaPlayer>
         </div>
         <div className="space-y-4 py-6">
           <div className="space-y-2">
