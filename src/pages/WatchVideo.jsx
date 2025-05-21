@@ -1,4 +1,3 @@
-import { RiShareCircleLine } from "react-icons/ri";
 import { TbMessage2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { useSingleMedia, useUser } from "../components/hooks/useUser";
@@ -17,6 +16,7 @@ import TipButton from "../components/ui/TipButton";
 import FollowButton from "../components/ui/FollowButton";
 import { useEthToUsdc } from "../components/hooks/useEthUsd";
 import LikeButton from "../components/ui/LikeButton";
+import ShareButton from "../components/ui/ShareButton";
 
 export default function WatchVideo() {
   const [selectedMedia, setSelectedMedia] = useState(null);
@@ -114,9 +114,7 @@ export default function WatchVideo() {
                   {singleMedia?.comments?.length}
                 </p>
               </div>
-              <div className="">
-                <RiShareCircleLine size={21} className="text-white/60" />
-              </div>
+              <ShareButton singleMedia={singleMedia} />
             </div>
             <div className="flex items-center gap-4">
               <MintButton onMint={() => setSelectedMedia(singleMedia)} />
