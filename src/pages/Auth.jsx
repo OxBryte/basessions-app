@@ -45,11 +45,11 @@ export function AuthLogin() {
           </div>
         </div>
       </div>
-      <div className="space-y-8 w-full max-w-lg mx-auto mt-4 px-6">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-4 items-left"
-        >
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-8 w-full max-w-lg mx-auto mt-4 px-6"
+      >
+        <div className="flex flex-col gap-4 items-left">
           <div>
             <input
               type="text"
@@ -105,17 +105,17 @@ export function AuthLogin() {
               <p>Forgotten password?</p>
             </div>
           </div>
-        </form>
+        </div>
         <div className="flex flex-col gap-3 w-full">
           <button
-            onClick={handleSubmit(onSubmit)}
+            // onClick={handleSubmit(onSubmit)}
             type="submit"
             className="bg-[#0052FE] text-white hover:bg-[#0052FE]/80 w-full rounded-2xl px-6 py-4"
           >
             {isPending ? <Spinner /> : "Login"}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
@@ -162,11 +162,11 @@ export function AuthSignup() {
           </div>
         </div>
       </div>
-      <div className="space-y-8 w-full max-w-lg mx-auto mt-4 px-6">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-4 items-left"
-        >
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-8 w-full max-w-lg mx-auto mt-4 px-6"
+      >
+        <div className="flex flex-col gap-4 items-left">
           <div>
             <input
               type="text"
@@ -222,7 +222,7 @@ export function AuthSignup() {
               <p>Forgotten password?</p>
             </div>
           </div>
-        </form>
+        </div>
         <div className="flex flex-col gap-3 w-full">
           <button
             type="submit"
@@ -232,7 +232,7 @@ export function AuthSignup() {
             {isPending ? <Spinner /> : "Continue"}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
