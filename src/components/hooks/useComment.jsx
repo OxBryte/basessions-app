@@ -1,15 +1,19 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { getRepliedComment, postComment } from "../services/apiMedia";
 
 export const useComment = () => {
+  const queryClient = useQueryClient();
   const { mutateAsync: commentFn, isPending } = useMutation({
     mutationKey: ["comment"],
     mutationFn: async ({ comment, mediaId, parent_id }) => {
       return await postComment({ comment, parent_id }, mediaId);
     },
-    onSuccess(data) {
-      console.log(data);
+    onSuccess() {
+      // console.log(data);
+      // refetch comments
+      queryClient.invalidateQueries(["comments"]);
+
       toast.success("Comment sent successfully");
     },
     onError(error) {
