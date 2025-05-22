@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { RiShareCircleLine } from "react-icons/ri";
 
 export default function ShareButton({ singleMedia }) {
-  const shareUrl = `${window.location.origin}/session/${singleMedia?.id}`;
+  const shareUrl = `${window.location.origin}/${singleMedia?.id}`;
 
   const onShare = async (e) => {
     e.preventDefault();
