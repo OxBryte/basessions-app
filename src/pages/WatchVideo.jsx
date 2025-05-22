@@ -63,7 +63,8 @@ export default function WatchVideo() {
           <MediaPlayer
             title={singleMedia?.title}
             src={singleMedia?.url}
-            poster={`${singleMedia?.thumbnail_url}`}
+            poster={singleMedia?.thumbnail_url}
+            playsInline
           >
             <MediaProvider />
             <Poster
