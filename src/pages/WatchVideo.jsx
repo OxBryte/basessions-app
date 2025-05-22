@@ -154,7 +154,7 @@ export default function WatchVideo() {
           </div>
         </div>
         <hr className="border-white/10" />
-        {/* <Comments id={id} singleMedia={singleMedia} refetch={refetch} /> */}
+        <Comments id={id} singleMedia={singleMedia} refetch={refetch} />
       </div>
 
       {selectedMedia && (
