@@ -302,7 +302,7 @@ export default function UploadVideo() {
               {isPending ? <Spinner /> : "Upload video"}
             </button>
             <p className="text-xs text-white/60 text-center -mt-2 font-light animate-bounce">
-              Make sure you have atleats $1.6 or 0.0006 ETH funded in your
+              Make sure you have atleast $0.8 or 0.00032 ETH funded in your
               wallet{" "}
             </p>
           </form>
