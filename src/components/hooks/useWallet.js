@@ -42,9 +42,9 @@ export function useWallet() {
 
       let usdc = "0";
       try {
-        const rawUsdc = await usdcContract.methods.balanceOf(address).call();
-        const decimals = await usdcContract.methods.decimals().call();
-        usdc = (Number(rawUsdc) / 10 ** decimals).toString();
+       const rawUsdc = await usdcContract.methods.balanceOf(address).call();
+        const usdcBalance = web3.utils.fromWei(rawUsdc, "mwei"); 
+        usdc = usdcBalance || "0";
       } catch (usdcErr) {
         console.error("[useWallet] USDC fetch error:", usdcErr);
       }

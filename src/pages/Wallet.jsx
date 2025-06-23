@@ -32,6 +32,7 @@ export default function Wallet() {
     useTransactionHistory(walletAddress);
   const { withdraw, loading } = useWithdraw();
 
+  const totalUsd = parseFloat(ethUsdValue) + parseFloat(balances?.usdc);
   // console.log("transactions", transactions);
 
   async function handleCopy(address) {
@@ -81,7 +82,7 @@ export default function Wallet() {
                   <Spinner />
                 </div>
               ) : (
-                <p className="text-4xl font-bold">${ethUsdValue}</p>
+                <p className="text-4xl font-bold">${totalUsd.toFixed(2)}</p>
               )}
               <div className="" onClick={refreshBalances}>
                 <RxReload size={20} />
@@ -123,7 +124,7 @@ export default function Wallet() {
               <div className="space-y-1">
                 <p className="text-sm font-medium">Ethereum</p>
                 <p className="text-white/60 text-xs">
-                  {Number(balances.eth).toFixed(4)}
+                  {Number(balances?.eth).toFixed(4)}
                 </p>
               </div>
             </div>
@@ -135,11 +136,11 @@ export default function Wallet() {
               <div className="space-y-1">
                 <p className="text-sm font-medium">USDC</p>
                 <p className="text-white/60 text-xs">
-                  {Number(balances.usdc).toFixed(4)}
+                  {Number(balances?.usdc).toFixed(4)}
                 </p>
               </div>
             </div>
-            <p>$00.00</p>
+            <p>${Number(balances?.usdc).toFixed(2)}</p>
           </div>
         </div>
         <div className="w-full space-y-4">
