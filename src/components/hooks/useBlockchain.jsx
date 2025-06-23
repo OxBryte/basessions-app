@@ -1,6 +1,6 @@
 import { CONTRACT_ADDRESS } from "../../contract/contactDet";
 import { contract, web3 } from "../../Provider";
-import { toWei } from "web3-utils";
+// import { toWei } from "web3-utils";
 
 // This function is used to upload a video to the blockchain
 // It takes the private key of the user, the media ID of the video, the mint limit, and the price in Wei
@@ -21,10 +21,11 @@ const uploadVideo = async (privateKey, mediaId, mintLimit, price, fee) => {
       });
 
     // Fetch base fee
-    const pendingBlock = await web3.eth.getBlock("pending");
-    const baseFee = BigInt(pendingBlock.baseFeePerGas); // base fee from the network
-    const priorityFee = BigInt(toWei("2", "gwei")); // 2 gwei tip
-    const maxFee = baseFee + priorityFee;
+    const gasPrice = await web3.eth.getGasPrice();
+    // const pendingBlock = await web3.eth.getBlock("pending");
+    // const baseFee = BigInt(pendingBlock.baseFeePerGas); // base fee from the network
+    // const priorityFee = BigInt(toWei("2", "gwei")); // 2 gwei tip
+    // const maxFee = baseFee + priorityFee;
 
     const tx = {
       from: account.address,
@@ -32,8 +33,9 @@ const uploadVideo = async (privateKey, mediaId, mintLimit, price, fee) => {
       data: txData,
       value: fee, // Convert price to Wei
       gas,
-      maxFeePerGas: "0x" + maxFee.toString(16),
-      maxPriorityFeePerGas: "0x" + priorityFee.toString(16),
+      gasPrice, // Use the gas price from the network
+      // maxFeePerGas: "0x" + maxFee.toString(16),
+      // maxPriorityFeePerGas: "0x" + priorityFee.toString(16),
     };
 
     const signed = await web3.eth.accounts.signTransaction(tx, privateKey);
@@ -61,19 +63,21 @@ const mintVideo = async (privateKey, videoId, priceInWei) => {
       value: priceInWei,
     });
 
-    const pendingBlock = await web3.eth.getBlock("pending");
-    const baseFee = BigInt(pendingBlock.baseFeePerGas);
-    const priorityFee = BigInt(web3.utils.toWei("2", "gwei"));
-    const maxFee = baseFee + priorityFee;
+    const gasPrice = await web3.eth.getGasPrice();
+    // const pendingBlock = await web3.eth.getBlock("pending");
+    // const baseFee = BigInt(pendingBlock.baseFeePerGas);
+    // const priorityFee = BigInt(web3.utils.toWei("2", "gwei"));
+    // const maxFee = baseFee + priorityFee;
 
     const tx = {
       from: account.address,
       to: CONTRACT_ADDRESS,
       value: priceInWei,
-      gas,
       data,
-      maxFeePerGas: "0x" + maxFee.toString(16),
-      maxPriorityFeePerGas: "0x" + priorityFee.toString(16),
+      gas,
+      gasPrice, // Use the gas price from the network
+      // maxFeePerGas: "0x" + maxFee.toString(16),
+      // maxPriorityFeePerGas: "0x" + priorityFee.toString(16),
     };
 
     const signed = await web3.eth.accounts.signTransaction(tx, privateKey);
@@ -106,11 +110,12 @@ const tipCreator = async (privateKey, creatorAddress, amountInWei) => {
         value: amountInWei,
       });
 
+    const gasPrice = await web3.eth.getGasPrice();
     // Fetch pending block for base fee
-    const pendingBlock = await web3.eth.getBlock("pending");
-    const baseFee = BigInt(pendingBlock.baseFeePerGas);
-    const priorityFee = BigInt(toWei("2", "gwei")); // 2 gwei tip
-    const maxFee = baseFee + priorityFee;
+    // const pendingBlock = await web3.eth.getBlock("pending");
+    // const baseFee = BigInt(pendingBlock.baseFeePerGas);
+    // const priorityFee = BigInt(toWei("2", "gwei")); // 2 gwei tip
+    // const maxFee = baseFee + priorityFee;
 
     // Build the transaction
     const tx = {
@@ -119,8 +124,9 @@ const tipCreator = async (privateKey, creatorAddress, amountInWei) => {
       value: amountInWei,
       gas,
       data,
-      maxFeePerGas: "0x" + maxFee.toString(16),
-      maxPriorityFeePerGas: "0x" + priorityFee.toString(16),
+      gasPrice, // Use the gas price from the network
+      // maxFeePerGas: "0x" + maxFee.toString(16),
+      // maxPriorityFeePerGas: "0x" + priorityFee.toString(16),
     };
 
     const signed = await web3.eth.accounts.signTransaction(tx, privateKey);
