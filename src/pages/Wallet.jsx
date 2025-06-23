@@ -1,7 +1,7 @@
 import { copyToClipboard } from "../components/libs/utils";
 import {
   PiBatteryEmpty,
-  PiCoinsFill,
+  PiCurrencyCircleDollarFill,
   PiPaperPlaneTiltFill,
   PiQrCode,
 } from "react-icons/pi";
@@ -16,6 +16,8 @@ import useTransactionHistory from "../components/hooks/useTransactionHistory";
 import toast from "react-hot-toast";
 import { web3 } from "../Provider";
 import { useWithdraw } from "../components/hooks/useSendFunds";
+import { RiFlowerFill, RiUploadCloud2Fill } from "react-icons/ri";
+import moment from "moment";
 
 export default function Wallet() {
   const [send, setSend] = useState(false);
@@ -161,46 +163,85 @@ export default function Wallet() {
               <span>Wait a moment</span>
             </div>
           ) : (
-            <div className="overflow-auto w-[100%]">
+            <div className="overflow-x-auto  w-[100%]">
               {transactions?.length > 0 && (
-                <table className="">
-                  <thead>
-                    <tr className="text-left">
+                <table className="w-full">
+                  <thead className="text-left">
+                    <tr className="">
                       {/* <th scope="col">#</th> */}
-                      <th scope="col">Date/Time</th>
-                      <th scope="col">TX Hash</th>
-                      <th scope="col">Method</th>
-                      <th scope="col">Amount</th>
-                      <th scope="col">Status</th>
+                      <th scope="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                        Date/Time
+                      </th>
+                      <th scope="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                        TX Hash
+                      </th>
+                      <th scope="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                        Method
+                      </th>
+                      <th scope="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                        Amount
+                      </th>
+                      <th scope="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                        Status
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {transactions?.map((tx, index) => (
-                      <tr key={index}>
-                        {/* <th scope="row">{index + 1}</th> */}
-                        <td className="text-sm font-light whitespace-nowrap ">
-                          {new Date(tx?.timeStamp * 1000).toLocaleString()}
-                        </td>
-                        <td>
-                          <a
-                            href={`https://sepolia.basescan.org/tx/${tx?.hash}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ color: "#FFFFFF", textDecoration: "none" }}
-                          >
-                            {tx?.hash?.substring(0, 16)}...
-                          </a>
-                        </td>
-                        <td className="whitespace-nowrap">
-                          {/* {tx?.to === walletAddress ? "Sent" : "Received"} */}
-                          {tx?.functionName.substring(0, 12)}
-                        </td>
-                        <td>{`${Number(
-                          web3.utils.fromWei(tx?.value, "ether")
-                        ).toFixed(4)} ETH`}</td>
-                        <td>{tx?.isError === "0" ? "Success" : "Failed"}</td>
-                      </tr>
-                    ))}
+                    {transactions?.map((tx, index) => {
+                      let MethodIcon;
+                      if (tx.functionName.includes("uploadVideo")) {
+                        MethodIcon = (
+                          <RiUploadCloud2Fill
+                            size={20}
+                            className="text-white"
+                          />
+                        );
+                      } else if (tx.functionName.includes("mintVideo")) {
+                        MethodIcon = (
+                          <RiFlowerFill size={20} className="text-white" />
+                        );
+                      } else if (tx.functionName.includes("tipCreator")) {
+                        MethodIcon = (
+                          <PiCurrencyCircleDollarFill
+                            size={20}
+                            className="text-white"
+                          />
+                        );
+                      } else {
+                        MethodIcon = (
+                          <span className="text-sm font-light">
+                            {tx.functionName.substring(0, 12)}
+                          </span>
+                        );
+                      }
+
+                      return (
+                        <tr key={index} className="text-left text-white/80">
+                          {/* <th scope="row">{index + 1}</th> */}
+                          <td className="pr-3 py-2 text-sm font-light whitespace-nowrap ">
+                            {moment(tx?.timeStamp * 1000).format(
+                              "MMM DD, YYYY"
+                            )}
+                          </td>
+                          <td className="pr-3 py-2 underline">
+                            <a
+                              href={`https://basescan.org/tx/${tx?.hash}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {tx?.hash?.substring(0, 12)}...
+                            </a>
+                          </td>
+                          <td className="pr-3 py-2 whitespace-nowrap">
+                            {MethodIcon}
+                          </td>
+                          <td className="pr-3 py-2 whitespace-nowrap">{`${Number(
+                            web3.utils.fromWei(tx?.value, "ether")
+                          ).toFixed(4)} ETH`}</td>
+                          <td>{tx?.isError === "0" ? "Success" : "Failed"}</td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               )}

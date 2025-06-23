@@ -78,10 +78,10 @@ export default function UploadVideo() {
       toast.error("You need to fund your wallet to upload a video");
       return; // Prevent submission if balance is 0
     }
-    // if (balances?.eth < "0.0005") {
-    //   toast.error("You need atleast 0.0005 worth of eth to make your upload");
-    //   return; // Prevent submission if balance is less than 0.0005
-    // }
+    if (balances?.eth < "0.0003") {
+      toast.error("You need atleast 0.0005 worth of eth to make your upload");
+      return; // Prevent submission if balance is less than 0.0005
+    }
     const edited = {
       ...data,
       description,
