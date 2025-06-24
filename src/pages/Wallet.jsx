@@ -18,6 +18,7 @@ import { web3 } from "../Provider";
 import { useWithdraw } from "../components/hooks/useSendFunds";
 import { RiFlowerFill, RiUploadCloud2Fill } from "react-icons/ri";
 import moment from "moment";
+import SwapModal from "../components/features/SwapModal";
 
 export default function Wallet() {
   const [send, setSend] = useState(false);
@@ -324,6 +325,9 @@ export default function Wallet() {
           </div>
         </div>
       )}
+      {/* <div className="">
+        <SwapModal/>
+      </div> */}
     </>
   );
 }
