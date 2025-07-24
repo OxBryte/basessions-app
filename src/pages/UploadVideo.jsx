@@ -1,5 +1,5 @@
 import { stringToUint256 } from "../components/libs/utils";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { PiImageFill, PiVideoFill } from "react-icons/pi";
 import { useUser } from "../components/hooks/useUser";
 import { useForm } from "react-hook-form";
@@ -25,9 +25,12 @@ export default function UploadVideo() {
   const [videoFile, setVideoFile] = useState(null); // Add state for video file
   const [thumbnail, setThumbnail] = useState(null); // Add state for thumbnail
   const [openModal, setOpenModal] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [data, setData] = useState(null);
   const [fee, setFee] = useState(null);
   const [minting, setMinting] = useState(false);
+  const [uploadButtonProgress, setUploadButtonProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
 
   const { balances } = useWallet();
   const { uploadMediaFn, isPending } = useUploadMedia(setOpenModal, setData);
@@ -60,6 +63,7 @@ export default function UploadVideo() {
     if (file) {
       setVideoFile(file); // Update state with the selected file
     }
+    processFile(file);
   };
 
   const handleChangeThumbnail = (event) => {
@@ -69,30 +73,94 @@ export default function UploadVideo() {
     }
   };
 
+  const processFile = (file) => {
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith("video/")) {
+      toast.error("Please select a valid video file");
+      return;
+    }
+
+    // Validate file size (200MB limit)
+    if (file.size > 200 * 1024 * 1024) {
+      toast.error("File size must be less than 200MB");
+      return;
+    }
+
+    setVideoFile(file);
+    simulateUpload();
+  };
+
+  const simulateUpload = () => {
+    setUploadProgress(0);
+
+    const interval = setInterval(() => {
+      setUploadProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prev + Math.random() * 15;
+      });
+    }, 200);
+  };
+
+  const formatFileSize = (bytes) => {
+    return (bytes / (1024 * 1024)).toFixed(2);
+  };
+
   const onSubmit = async (data) => {
     if (!userId) {
-      alert("You must be logged in to upload a video."); // Alert if userId is undefined
-      return; // Prevent submission
+      toast.error("You must be logged in to upload a video");
+      return;
     }
     if (balances?.eth === "0") {
       toast.error("You need to fund your wallet to upload a video");
-      return; // Prevent submission if balance is 0
+      return;
     }
-    if (balances?.eth < "0.0003") {
-      toast.error("You need atleast 0.0005 worth of eth to make your upload");
-      return; // Prevent submission if balance is less than 0.0005
+    if (balances?.eth < "0.00006") {
+      toast.error("You need atleast 0.00006 worth of eth to make your upload");
+      return;
     }
+
     const edited = {
       ...data,
       description,
       media_file: videoFile,
       thumbnail: thumbnail,
       free: freeMint,
-      // price: freeMint === true && 0,
-      // user_id: userId,
     };
-    uploadMediaFn(edited);
-    // console.log(edited);
+
+    // Start upload tracking
+    setIsUploading(true);
+    setUploadButtonProgress(0);
+
+    // Create a tracking interval
+    const progressInterval = setInterval(() => {
+      setUploadButtonProgress((prev) => {
+        // Cap at 95% until we get confirmation of completion
+        if (prev >= 95) {
+          clearInterval(progressInterval);
+          return 95;
+        }
+        return prev + Math.random() * 5;
+      });
+    }, 500);
+
+    try {
+      await uploadMediaFn(edited);
+      // When upload completes successfully
+      clearInterval(progressInterval);
+      setUploadButtonProgress(100);
+      // Will be reset when modal closes or on new upload attempt
+    } catch (error) {
+      clearInterval(progressInterval);
+      setIsUploading(false);
+      setUploadButtonProgress(0);
+      console.error("Upload failed:", error);
+      toast.error("Upload failed. Please try again.");
+    }
   };
 
   useEffect(() => {
@@ -129,6 +197,14 @@ export default function UploadVideo() {
     }
   };
 
+  // Reset upload progress when modal closes
+  useEffect(() => {
+    if (!openModal) {
+      setIsUploading(false);
+      setUploadButtonProgress(0);
+    }
+  }, [openModal]);
+
   return (
     <div>
       <div className="w-full max-w-[620px] mx-auto px-4">
@@ -138,7 +214,7 @@ export default function UploadVideo() {
             className="flex flex-col gap-6 items-center"
           >
             <div className="relative space-y-6 w-full">
-              <div className="relative w-full p-4 border border-dashed rounded-xl flex flex-col gap-2 items-center justify-center min-h-[240px]">
+              <div className="relative w-full p-4 bg-[#FFFFFF08] rounded-xl flex flex-col gap-2 items-center justify-center min-h-[240px]">
                 {thumbnail ? ( // Check if a thumbnail is uploaded
                   <div className="absolute inset-0 flex items-center justify-center">
                     <img
@@ -146,9 +222,9 @@ export default function UploadVideo() {
                       alt="Thumbnail Preview"
                       className="object-cover w-full h-full rounded-xl"
                     />
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 -translate-y-1/2">
                       <label className="bg-[#0052FE] rounded-full text-xs px-3 py-1.5 cursor-pointer">
-                        Choose an thumbnail
+                        Choose another thumbnail
                         <input
                           type="file"
                           accept="image/*" // Restrict to image types
@@ -160,9 +236,9 @@ export default function UploadVideo() {
                   </div>
                 ) : (
                   <>
-                    <PiImageFill size={48} />
-                    <p className="text-lg font-light">Upload a thumbnail</p>
-                    <p className="text-xs text-white/40 text-center w-3/4">
+                    <PiImageFill size={40} />
+                    <p className="font-medium">Upload a thumbnail</p>
+                    <p className="text-[10px] font-light text-white/40 text-center w-3/4">
                       Upload a thumbnail for your video <br /> maximum 5mb.
                       Preferred format is MP4.
                     </p>
@@ -178,16 +254,15 @@ export default function UploadVideo() {
                   </>
                 )}
               </div>
-              <div className="w-full p-4 border border-dashed rounded-xl flex flex-col gap-2 items-center justify-center min-h-[200px]">
-                <PiVideoFill size={48} />
-                <p className="text-lg font-light">Select video file</p>
-                <p className="text-xs text-white/40">
-                  Maximum 50mb. Preferred format is MP4.
-                </p>
-                <div className="flex items-center gap-3">
-                  <p className="text-xs">Drag and drop or</p>
+              {!videoFile ? (
+                <div className="w-full p-4 bg-[#FFFFFF08] rounded-xl flex flex-col gap-2 items-center justify-center min-h-[200px]">
+                  <PiVideoFill size={40} />
+                  <p className="font-medium">Select video file</p>
+                  <p className="text-xs text-center font-light text-white/40">
+                    Maximum 200mb. <br /> Preferred format is MP4.
+                  </p>
                   <label className="bg-[#0052FE] rounded-full text-xs px-3 py-1.5 cursor-pointer">
-                    Choose a file
+                    Choose a video file
                     <input
                       type="file"
                       accept="video/*" // Restrict to video types
@@ -196,17 +271,44 @@ export default function UploadVideo() {
                     />
                   </label>
                 </div>
-                {videoFile && ( // Display video details if a file is selected
-                  <div className="mt-2 text-xs">
-                    <p>File Name: {videoFile.name}</p>
-                    <p>
-                      File Size: {(videoFile.size / (1024 * 1024)).toFixed(2)}{" "}
-                      MB
-                    </p>
-                    <p>File Type: {videoFile.type}</p>
+              ) : (
+                <div className="space-y-3 w-full">
+                  <div className="w-full p-4 bg-[#FFFFFF08] rounded-xl flex items-center gap-3">
+                    {videoFile.name.includes(".mov") && (
+                      <img src="/video.png" alt="" className="w-12" />
+                    )}
+                    {videoFile.name.includes(".mp4") && (
+                      <img src="/video.png" alt="" className="w-12" />
+                    )}
+                    <div className="w-full space-y-2 font-light text-xs text-white/60">
+                      <div className="flex items-center justify-between gap-4">
+                        <p>{videoFile.name}</p>
+                        <p className="text-[#0052FE]">
+                          {Math.round(uploadProgress)}%
+                        </p>
+                      </div>
+                      <div className="w-full bg-[#FFFFFF08] rounded-full h-2">
+                        <div
+                          className="bg-[#0052FE] h-2 rounded-full transition-all duration-300 ease-out"
+                          style={{ width: `${uploadProgress}%` }}
+                        />
+                      </div>
+                      <p>{formatFileSize(videoFile.size)} MB</p>
+                    </div>
                   </div>
-                )}
-              </div>
+                  <div className="mt-10">
+                    <label className="bg-[#0052FE] w-fit rounded-full text-xs px-3 py-1.5 cursor-pointer">
+                      Choose another video file
+                      <input
+                        type="file"
+                        accept="video/*" // Restrict to video types
+                        className="hidden" // Hide the input
+                        onChange={handleFileChange} // Handle file change
+                      />
+                    </label>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="w-full flex flex-col gap-2">
@@ -225,7 +327,7 @@ export default function UploadVideo() {
                 Description*
               </label>
               <textarea
-                rows={6}
+                rows={4}
                 placeholder="Write a video description under 100 words"
                 className="bg-[#FFFFFF08] px-4 py-2.5 rounded-lg"
                 value={description} // Bind value to state
@@ -249,7 +351,7 @@ export default function UploadVideo() {
                 )}
               </div>
             </div>
-            <div className="grid grid-cols-2 items-center gap-4 w-full justify-between">
+            <div className="grid grid-cols-2 items-top gap-4 w-full justify-between">
               <div className="flex flex-col gap-2">
                 <label htmlFor="mintPrice" className="text-sm font-light">
                   Set mint price (ETH)
@@ -297,12 +399,27 @@ export default function UploadVideo() {
             </div>
             <button
               onClick={handleSubmit(onSubmit)}
-              className="bg-[#0052FE] px-4 py-3 w-full rounded-full"
+              className="bg-[#0052FE] px-4 py-3 text-sm w-full rounded-full relative overflow-hidden"
+              disabled={isPending || isUploading}
             >
-              {isPending ? <Spinner /> : "Upload video"}
+              {isUploading ? (
+                <>
+                  <div
+                    className="absolute left-0 top-0 bottom-0 bg-blue-600 transition-all duration-300 ease-out"
+                    style={{ width: `${uploadButtonProgress}%` }}
+                  ></div>
+                  <span className="relative z-10">
+                    Uploading... {Math.round(uploadButtonProgress)}%
+                  </span>
+                </>
+              ) : isPending ? (
+                <Spinner />
+              ) : (
+                "Upload video"
+              )}
             </button>
             <p className="text-xs text-white/60 text-center -mt-2 font-light animate-bounce">
-              Make sure you have atleast $0.8 or 0.00032 ETH funded in your
+              Make sure you have atleast $0.2 ≈ 0.00006 ETH funded in your
               wallet{" "}
             </p>
           </form>
