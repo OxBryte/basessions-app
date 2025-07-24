@@ -32,6 +32,11 @@ export default function UploadVideo() {
   const [uploadButtonProgress, setUploadButtonProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
 
+  // New enhanced progress states
+  const [uploadSpeed, setUploadSpeed] = useState("");
+  const [estimatedTime, setEstimatedTime] = useState("");
+  const [uploadStartTime, setUploadStartTime] = useState(null);
+
   const { balances } = useWallet();
   const { uploadMediaFn, isPending } = useUploadMedia(setOpenModal, setData);
   const navigate = useNavigate();
@@ -39,6 +44,7 @@ export default function UploadVideo() {
     register,
     handleSubmit,
     watch,
+    setValue, // Add this to be able to programmatically set form values
     // formState: { errors },
   } = useForm();
 
@@ -106,6 +112,60 @@ export default function UploadVideo() {
     }, 200);
   };
 
+  // Enhanced upload progress simulation with network constraints
+  const simulateUploadProgressAdvanced = (fileSize) => {
+    const startTime = Date.now();
+    setUploadStartTime(startTime);
+    let uploadedBytes = 0;
+
+    const progressInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const elapsedTime = (currentTime - startTime) / 1000; // in seconds
+
+      // Simulate variable upload speed (network constraints)
+      const speedVariation = 0.4 + Math.random() * 0.9; // 0.4x to 1.3x speed variation
+      const baseSpeed = 80 * 1024; // 80 KB/s base speed
+      const currentSpeed = baseSpeed * speedVariation;
+
+      uploadedBytes += currentSpeed * 0.5; // Update every 500ms
+      const percentage = Math.min((uploadedBytes / fileSize) * 100, 95); // Cap at 95% until completion
+
+      setUploadButtonProgress(percentage);
+
+      // Calculate and display upload speed
+      const speedKBps = uploadedBytes / elapsedTime / 1024;
+      if (speedKBps < 1024) {
+        setUploadSpeed(`${speedKBps.toFixed(1)} KB/s`);
+      } else {
+        setUploadSpeed(`${(speedKBps / 1024).toFixed(2)} MB/s`);
+      }
+
+      // Calculate estimated time remaining
+      if (percentage > 5 && percentage < 95) {
+        const remainingBytes = fileSize - uploadedBytes;
+        const avgSpeed = uploadedBytes / elapsedTime;
+        const remainingTime = remainingBytes / avgSpeed;
+
+        if (remainingTime < 60) {
+          setEstimatedTime(`${Math.ceil(remainingTime)}s remaining`);
+        } else {
+          const minutes = Math.floor(remainingTime / 60);
+          const seconds = Math.ceil(remainingTime % 60);
+          setEstimatedTime(`${minutes}m ${seconds}s remaining`);
+        }
+      } else if (percentage >= 95) {
+        setEstimatedTime("Finalizing...");
+      }
+
+      if (percentage >= 95) {
+        clearInterval(progressInterval);
+        return;
+      }
+    }, 500);
+
+    return progressInterval;
+  };
+
   const formatFileSize = (bytes) => {
     return (bytes / (1024 * 1024)).toFixed(2);
   };
@@ -132,32 +192,36 @@ export default function UploadVideo() {
       free: freeMint,
     };
 
-    // Start upload tracking
+    // Start upload tracking with enhanced progress
     setIsUploading(true);
     setUploadButtonProgress(0);
+    setUploadSpeed("");
+    setEstimatedTime("");
 
-    // Create a tracking interval
-    const progressInterval = setInterval(() => {
-      setUploadButtonProgress((prev) => {
-        // Cap at 95% until we get confirmation of completion
-        if (prev >= 95) {
-          clearInterval(progressInterval);
-          return 95;
-        }
-        return prev + Math.random() * 5;
-      });
-    }, 500);
+    // Start enhanced progress simulation
+    let progressInterval = null;
+    if (videoFile) {
+      progressInterval = simulateUploadProgressAdvanced(videoFile.size);
+    }
 
     try {
       await uploadMediaFn(edited);
       // When upload completes successfully
-      clearInterval(progressInterval);
+      if (progressInterval) clearInterval(progressInterval);
       setUploadButtonProgress(100);
-      // Will be reset when modal closes or on new upload attempt
+      setUploadSpeed("");
+      setEstimatedTime("Upload complete!");
+
+      // Brief delay to show completion before resetting
+      setTimeout(() => {
+        setEstimatedTime("");
+      }, 2000);
     } catch (error) {
-      clearInterval(progressInterval);
+      if (progressInterval) clearInterval(progressInterval);
       setIsUploading(false);
       setUploadButtonProgress(0);
+      setUploadSpeed("");
+      setEstimatedTime("");
       console.error("Upload failed:", error);
       toast.error("Upload failed. Please try again.");
     }
@@ -202,8 +266,17 @@ export default function UploadVideo() {
     if (!openModal) {
       setIsUploading(false);
       setUploadButtonProgress(0);
+      setUploadSpeed("");
+      setEstimatedTime("");
     }
   }, [openModal]);
+
+  // Effect to set price to 0 when freeMint is true
+  useEffect(() => {
+    if (freeMint) {
+      setValue("price", "0"); // Set the form value to "0" as a string
+    }
+  }, [freeMint, setValue]); // Run this effect when freeMint changes
 
   return (
     <div>
@@ -359,7 +432,6 @@ export default function UploadVideo() {
                 <input
                   type="number"
                   placeholder="0"
-                  value={freeMint ? 0 : undefined} // Set value to 0 if freeMint is true
                   disabled={freeMint}
                   className="bg-[#FFFFFF08] px-4 py-2.5 rounded-lg"
                   {...register("price")}
@@ -397,18 +469,24 @@ export default function UploadVideo() {
                 />
               </div>
             </div>
+
             <button
               onClick={handleSubmit(onSubmit)}
-              className="bg-[#0052FE] px-4 py-3 text-sm w-full rounded-full relative overflow-hidden"
+              className={`px-4 py-3 text-sm w-full rounded-full relative overflow-hidden transition-all duration-300 ${
+                isPending || isUploading
+                  ? "bg-[#0052FE]/80 cursor-not-allowed"
+                  : "bg-[#0052FE] hover:bg-[#0066FF]"
+              }`}
               disabled={isPending || isUploading}
             >
               {isUploading ? (
                 <>
                   <div
-                    className="absolute left-0 top-0 bottom-0 bg-blue-600 transition-all duration-300 ease-out"
+                    className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-blue-600 to-blue-500 transition-all duration-500 ease-out"
                     style={{ width: `${uploadButtonProgress}%` }}
                   ></div>
-                  <span className="relative z-10">
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                     Uploading... {Math.round(uploadButtonProgress)}%
                   </span>
                 </>
@@ -418,6 +496,28 @@ export default function UploadVideo() {
                 "Upload video"
               )}
             </button>
+            {/* Enhanced Upload Progress Display - Show above button when uploading */}
+            {isUploading && (uploadSpeed || estimatedTime) && (
+              <div className="w-full bg-[#FFFFFF08] rounded-lg space-y-3">
+                <div className="w-full bg-[#FFFFFF08] rounded-full h-3 overflow-hidden">
+                  <div
+                    className="bg-gradient-to-r from-[#0052FE] to-[#0066FF] h-3 rounded-full transition-all duration-500 ease-out relative"
+                    style={{ width: `${uploadButtonProgress}%` }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between text-xs text-white/60">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[#0052FE]">
+                      {uploadButtonProgress.toFixed(1)}%
+                    </span>
+                    <span>{uploadSpeed}</span>
+                  </div>
+                  <span>{estimatedTime}</span>
+                </div>
+              </div>
+            )}
             <p className="text-xs text-white/60 text-center -mt-2 font-light animate-bounce">
               Make sure you have atleast $0.2 ≈ 0.00006 ETH funded in your
               wallet{" "}
