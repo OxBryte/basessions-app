@@ -35,7 +35,6 @@ export default function UploadVideo() {
   // New enhanced progress states
   const [uploadSpeed, setUploadSpeed] = useState("");
   const [estimatedTime, setEstimatedTime] = useState("");
-  const [uploadStartTime, setUploadStartTime] = useState(null);
 
   const { balances } = useWallet();
   const { uploadMediaFn, isPending } = useUploadMedia(setOpenModal, setData);
@@ -115,7 +114,6 @@ export default function UploadVideo() {
   // Enhanced upload progress simulation with network constraints
   const simulateUploadProgressAdvanced = (fileSize) => {
     const startTime = Date.now();
-    setUploadStartTime(startTime);
     let uploadedBytes = 0;
 
     const progressInterval = setInterval(() => {
@@ -477,7 +475,7 @@ export default function UploadVideo() {
                   ? "bg-[#0052FE]/80 cursor-not-allowed"
                   : "bg-[#0052FE] hover:bg-[#0066FF]"
               }`}
-              disabled={isPending || isUploading}
+              disabled={isPending || isUploading || !videoFile || !thumbnail}
             >
               {isUploading ? (
                 <>
@@ -498,7 +496,7 @@ export default function UploadVideo() {
             </button>
             {/* Enhanced Upload Progress Display - Show above button when uploading */}
             {isUploading && (uploadSpeed || estimatedTime) && (
-              <div className="w-full bg-[#FFFFFF08] rounded-lg space-y-3">
+              <div className="w-full -mt-2 rounded-lg space-y-3">
                 <div className="w-full bg-[#FFFFFF08] rounded-full h-3 overflow-hidden">
                   <div
                     className="bg-gradient-to-r from-[#0052FE] to-[#0066FF] h-3 rounded-full transition-all duration-500 ease-out relative"
