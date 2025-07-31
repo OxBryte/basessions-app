@@ -2,16 +2,21 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useUser } from "./components/hooks/useUser";
 
 const ProtectedRoute = () => {
-  const { isAuthenticated } = useUser();
+  const { isAuthenticated, user } = useUser();
+  const isVerified = user?.data?.isVerified;
 
-  console.log(isAuthenticated);
-  
-  // if (isLoading) return <div>Loading...</div>;
-  return isAuthenticated ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" replace />
-  );
+  // If not authenticated, redirect to login
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // If authenticated but not verified, redirect to verify page
+  if (isAuthenticated && !isVerified) {
+    return <Navigate to="/verify" replace />;
+  }
+
+  // If authenticated and verified, allow access to protected content
+  return <Outlet />;
 };
 
 export default ProtectedRoute;
