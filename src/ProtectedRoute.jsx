@@ -10,10 +10,10 @@ const ProtectedRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  // If authenticated but not verified, redirect to verify page
-  if (isAuthenticated && !isVerified) {
-    return <Navigate to="/verify" replace />;
-  }
+  // // If authenticated but not verified, redirect to verify page
+  // if (isAuthenticated && !isVerified) {
+  //   return <Navigate to="/verify" replace />;
+  // }
 
   // If authenticated and verified, allow access to protected content
   return <Outlet />;
