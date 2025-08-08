@@ -6,7 +6,6 @@ import Spinner from "../components/ui/Spinner";
 
 export default function VerifyEmail() {
   const userEmail = localStorage.getItem("userEmail");
-  const token = localStorage.getItem("token");
 
   const { verifyFn, isPending } = useVerify();
 
@@ -28,11 +27,7 @@ export default function VerifyEmail() {
   // Handle OTP submit
   const handleVerify = () => {
     const otpInput = otp.join("");
-    if (otpInput === token) {
-      verifyFn({ email: userEmail, otp: otpInput });
-    } else {
-      alert("Invalid OTP");
-    }
+    verifyFn({ email: userEmail, otp: otpInput });
   };
 
   return (
